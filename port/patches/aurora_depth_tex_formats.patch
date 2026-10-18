@@ -1,0 +1,22 @@
+--- a/lib/gfx/texture_convert.cpp
++++ b/lib/gfx/texture_convert.cpp
+@@ -629,6 +629,19 @@
+   case GX_TF_RGBA8:
+     converted = BuildRGBA8FromGCN(width, height, mips, data);
+     break;
++  // SMS PC port patch (aurora_depth_tex_formats.patch): depth texture formats read from RAM
++  // (a GXCopyTex depth destination bound before any copy reached it, e.g. the Corona boss
++  // bath water's GX_TF_Z24X8 buffer). They share the tile layouts of I8 / IA8 / RGBA8, so the
++  // depth bytes land in the same channels the hardware reads them from. Was a fatal error.
++  case GX_TF_Z8:
++    converted = DecodeTiled<TextureDecoderI8>(width, height, mips, data);
++    break;
++  case GX_TF_Z16:
++    converted = DecodeTiled<TextureDecoderIA8>(width, height, mips, data);
++    break;
++  case GX_TF_Z24X8:
++    converted = BuildRGBA8FromGCN(width, height, mips, data);
++    break;
+   case GX_TF_CMPR:
+     converted = BuildRGBA8FromCMPR(width, height, mips, data);
+     break;

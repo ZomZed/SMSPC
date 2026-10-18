@@ -1,0 +1,292 @@
+--- a/lib/gx/pipeline.cpp
++++ b/lib/gx/pipeline.cpp
+@@ -7,18 +7,64 @@
+ 
+ #include "gx_fmt.hpp"
+ #include "shader_info.hpp"
++#include "../webgpu/gpu.hpp"
++
++#include <cstdio>
++#include <cstdlib>
++#include <string>
+ 
+ #include <tracy/Tracy.hpp>
+ 
+ namespace aurora::gx {
++namespace {
++constexpr Module Log{"aurora::gx::pipeline"};
++} // namespace
+ 
+ gfx::CompiledPipeline create_pipeline(const PipelineConfig& config, const gfx::RenderTargetLayout& layout) {
+   ZoneScoped;
+   const auto hash = xxh3_hash(layout.key, xxh3_hash(config, static_cast<HashType>(gfx::ShaderType::GX)));
+-  const auto create = [&](const PipelineOptions& options, const char* passName) {
++  const auto create = [&](const PipelineOptions& options, const char* passName) -> wgpu::RenderPipeline {
++    // SMS PC port patch (aurora_pipeline_wait.patch): a shader or pipeline validation error
++    // fails only this pipeline (logged, its draws are skipped) instead of aborting through the
++    // uncaptured-error handler. Pipelines also compile at startup from the persistent cache,
++    // so one bad entry recorded by an older build must not stop the game from starting.
++    webgpu::g_device.PushErrorScope(wgpu::ErrorFilter::Validation);
++    const auto finish = [&](wgpu::RenderPipeline pipeline, const std::string& label) -> wgpu::RenderPipeline {
++      std::string errorMessage;
++      bool failed = false;
++      const auto future = webgpu::g_device.PopErrorScope(
++          wgpu::CallbackMode::WaitAnyOnly,
++          [&](wgpu::PopErrorScopeStatus status, wgpu::ErrorType type, wgpu::StringView message) {
++            if (status == wgpu::PopErrorScopeStatus::Success && type != wgpu::ErrorType::NoError) {
++              failed = true;
++              errorMessage = std::string{std::string_view{message}};
++            }
++          });
++      webgpu::g_instance.WaitAny(future, UINT64_MAX);
++      if (failed) {
++        Log.error("{} failed, skipping its draws: {}", label, errorMessage);
++        return {};
++      }
++      return pipeline;
++    };
+     const auto shader = build_shader(config.shaderConfig, layout, options.dstAlphaMode);
+     const auto label = fmt::format("GX Pipeline {:x} {}", hash, passName);
+-    return build_pipeline(config, layout, options, {}, shader, label.c_str());
++    // Debug: AURORA_SHADER_DUMP=<dir> writes each pipeline's WGSL as "<dir>/GX Pipeline <hash> <pass>.wgsl",
++    // so a pipeline named in a WebGPU/driver error can be inspected.
++    if (const char* dumpDir = std::getenv("AURORA_SHADER_DUMP"); dumpDir != nullptr && dumpDir[0] != '\0') {
++      u32 normalAttachment = UINT32_MAX;
++      for (u32 i = 0; i < layout.colorAttachmentCount; ++i) {
++        if (layout.colorAttachments[i].semantic == gfx::ColorAttachmentSemantic::Normal) {
++          normalAttachment = i;
++        }
++      }
++      const auto source = build_shader_source(config.shaderConfig, options.dstAlphaMode, normalAttachment);
++      if (FILE* f = std::fopen(fmt::format("{}/{}.wgsl", dumpDir, label).c_str(), "wb")) {
++        std::fwrite(source.data(), 1, source.size(), f);
++        std::fclose(f);
++      }
++    }
++    return finish(build_pipeline(config, layout, options, {}, shader, label.c_str()), label);
+   };
+ 
+   PipelineOptions options{
+@@ -60,7 +106,11 @@
+ void render(const DrawData& data, const wgpu::RenderPassEncoder& pass) {
+   gfx::CompiledPipeline pipeline;
+   if (!gfx::get_pipeline(data.pipeline, pipeline)) {
+-    return;
++    // SMS PC port patch (aurora_pipeline_wait.patch): wait for a pipeline that is still
++    // compiling instead of skipping the draw (the GameCube never drops geometry).
++    if (!gfx::wait_pipeline(data.pipeline, pipeline)) {
++      return;
++    }
+   }
+   const auto& resources = gfx::detail::resources();
+   pass.SetImmediates(0, &data.immediateData, sizeof(data.immediateData));
+--- a/lib/gx/pipeline.hpp
++++ b/lib/gx/pipeline.hpp
+@@ -17,7 +17,9 @@
+   uint32_t dstAlpha;
+ };
+ 
+-constexpr uint32_t GXPipelineConfigVersion = 13;
++// SMS PC port patch (aurora_pipeline_wait.patch): 13 -> 14 when dstAlpha was normalised in the
++// pipeline key, so caches full of per-alpha-value duplicates are pruned.
++constexpr uint32_t GXPipelineConfigVersion = 14;
+ struct PipelineConfig {
+   uint32_t version = GXPipelineConfigVersion;
+   uint32_t msaaSamples = 1; // deprecated
+--- a/lib/gx/gx.cpp
++++ b/lib/gx/gx.cpp
+@@ -18,8 +18,11 @@
+ #include <atomic>
+ #include <bit>
+ #include <cfloat>
++#include <chrono>
+ #include <cmath>
+ #include <mutex>
++#include <string>
++#include <thread>
+ #include <utility>
+ 
+ static aurora::Module Log("aurora::gx");
+@@ -137,6 +140,78 @@
+   case GX_BM_LOGIC:
+     switch (op) {
+       DEFAULT_FATAL("unsupported logic op {}", underlying(op));
++    // SMS PC port patch (aurora_logic_ops.patch): the remaining logic ops, approximated with
++    // blending (WebGPU has no logic ops). Exact for 0/1 colour values, and for an all-white
++    // source, which is how they are used (TMario::drawLogic draws Mario in white with
++    // mBlendLogicOp, e.g. GX_LO_INV; JPA particles select ops from JPABaseShape::stLogicOp).
++    // Until this patch any of them was a fatal error.
++    case GX_LO_SET: // 1: src + dst saturates to white for a white source
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::One,
++          .dstFactor = wgpu::BlendFactor::One,
++      };
++      break;
++    case GX_LO_AND: // src & dst = src * dst
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::Zero,
++          .dstFactor = wgpu::BlendFactor::Src,
++      };
++      break;
++    case GX_LO_REVAND: // src & ~dst = src * (1 - dst)
++    case GX_LO_INV:    // ~dst = 1 - dst (src white)
++    case GX_LO_NOR:    // ~(src | dst) = (1 - src)(1 - dst), approximated as 1 - dst
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::OneMinusDst,
++          .dstFactor = wgpu::BlendFactor::Zero,
++      };
++      break;
++    case GX_LO_INVAND: // ~src & dst = dst * (1 - src)
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::Zero,
++          .dstFactor = wgpu::BlendFactor::OneMinusSrc,
++      };
++      break;
++    case GX_LO_XOR:  // src ^ dst = src(1 - dst) + dst(1 - src)
++    case GX_LO_NAND: // ~(src & dst), approximated like XOR (equal for a white source)
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::OneMinusDst,
++          .dstFactor = wgpu::BlendFactor::OneMinusSrc,
++      };
++      break;
++    case GX_LO_OR: // src | dst = src + dst(1 - src)
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::One,
++          .dstFactor = wgpu::BlendFactor::OneMinusSrc,
++      };
++      break;
++    case GX_LO_EQUIV: // ~(src ^ dst): src * dst for a white source
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::Zero,
++          .dstFactor = wgpu::BlendFactor::Src,
++      };
++      break;
++    case GX_LO_REVOR: // src | ~dst: white for a white source
++    case GX_LO_INVOR: // ~src | dst: dst for a white source
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = op == GX_LO_REVOR ? wgpu::BlendFactor::One : wgpu::BlendFactor::Zero,
++          .dstFactor = op == GX_LO_REVOR ? wgpu::BlendFactor::Zero : wgpu::BlendFactor::One,
++      };
++      break;
++    case GX_LO_INVCOPY: // ~src: black for a white source
++      colorBlendComponent = {
++          .operation = wgpu::BlendOperation::Add,
++          .srcFactor = wgpu::BlendFactor::OneMinusSrc,
++          .dstFactor = wgpu::BlendFactor::Zero,
++      };
++      break;
+     case GX_LO_CLEAR:
+       colorBlendComponent = {
+           .operation = wgpu::BlendOperation::Add,
+@@ -377,7 +452,40 @@
+       .multisample = wgpu::MultisampleState{.count = layout.sampleCount},
+       .fragment = &fragmentState,
+   };
+-  return g_device.CreateRenderPipeline(&descriptor);
++  // D3D12 can fail CreateGraphicsPipelineState with E_OUTOFMEMORY transiently (seen on AMD with
++  // several game instances sharing the GPU; the same pipeline compiles on the next attempt). An
++  // uncaptured OOM error is fatal, so catch it with an error scope and retry a few times; if it
++  // keeps failing, give up on this pipeline (its draws are skipped) instead of aborting.
++  // Dawn reports the D3D12 E_OUTOFMEMORY as an Internal error, so both filters are captured.
++  for (int attempt = 0;; ++attempt) {
++    g_device.PushErrorScope(wgpu::ErrorFilter::OutOfMemory);
++    g_device.PushErrorScope(wgpu::ErrorFilter::Internal);
++    auto pipeline = g_device.CreateRenderPipeline(&descriptor);
++    wgpu::ErrorType errorType = wgpu::ErrorType::NoError;
++    std::string errorMessage;
++    for (int scope = 0; scope < 2; ++scope) {
++      const auto future = g_device.PopErrorScope(
++          wgpu::CallbackMode::WaitAnyOnly,
++          [&](wgpu::PopErrorScopeStatus status, wgpu::ErrorType type, wgpu::StringView message) {
++            if (status == wgpu::PopErrorScopeStatus::Success && type != wgpu::ErrorType::NoError &&
++                errorType == wgpu::ErrorType::NoError) {
++              errorType = type;
++              errorMessage = std::string{std::string_view{message}};
++            }
++          });
++      webgpu::g_instance.WaitAny(future, UINT64_MAX);
++    }
++    if (errorType == wgpu::ErrorType::NoError) {
++      return pipeline;
++    }
++    if (attempt >= 4) {
++      Log.error("Pipeline '{}' failed after {} attempts, skipping its draws: {}", label, attempt + 1, errorMessage);
++      return {};
++    }
++    Log.warn("Pipeline '{}' creation failed with an internal/out-of-memory error (attempt {}), retrying: {}",
++             label, attempt + 1, errorMessage);
++    std::this_thread::sleep_for(std::chrono::milliseconds(20 << attempt));
++  }
+ }
+ 
+ void populate_pipeline_config(PipelineConfig& config, GXPrimitive primitive, GXVtxFmt fmt) noexcept {
+@@ -487,7 +595,12 @@
+       .blendFacSrc = blendFactor(g_gxState.blendFacSrc),
+       .blendFacDst = blendFactor(g_gxState.blendFacDst),
+       .blendOp = g_gxState.blendOp,
+-      .dstAlpha = alphaUpdate ? g_gxState.dstAlpha : UINT32_MAX,
++      // SMS PC port patch (aurora_pipeline_wait.patch): only whether a constant destination alpha
++      // is enabled and non-zero changes the pipeline (Replace mode, blend state); the value itself
++      // reaches the GPU as the blend constant (DrawData::dstAlpha). Keying pipelines by the value
++      // made every fade step a new pipeline (about 1300 of 2000 GX pipelines in a full SMS sweep,
++      // e.g. the Mario silhouette alpha), which overloaded the driver at startup prewarm.
++      .dstAlpha = !alphaUpdate || g_gxState.dstAlpha == UINT32_MAX ? UINT32_MAX : (g_gxState.dstAlpha != 0 ? 0xFFu : 0u),
+       .polygonOffsetBits = std::bit_cast<uint32_t>(polygonOffset),
+       .polygonOffsetScaleBits = std::bit_cast<uint32_t>(polygonOffsetScale),
+       .polygonOffsetClampBits = std::bit_cast<uint32_t>(g_gxState.clamp),
+--- a/lib/gfx/pipeline_cache.cpp
++++ b/lib/gfx/pipeline_cache.cpp
+@@ -1198,6 +1198,34 @@
+   }
+ }
+ 
++// SMS PC port patch (aurora_pipeline_wait.patch): like get_pipeline, but a pipeline that is
++// still queued (normal or background/prewarm queue) is moved to the front of the queue and
++// waited for, so its draw is never skipped. The GameCube never drops geometry; a skipped
++// draw shows as missing objects for the first frames of a stage, or ends up in an EFB copy.
++bool wait_pipeline(PipelineRef ref, CompiledPipeline& pipeline) {
++  std::unique_lock lock{g_pipelineMutex};
++  if (!g_pipelines.contains(ref)) {
++    if (!g_hasPipelineThread || !g_pendingPipelines.contains(ref)) {
++      return false;
++    }
++    if (auto it = find_pending_pipeline(g_pipelineQueue, ref); it != g_pipelineQueue.end()) {
++      PendingPipeline pending = std::move(*it);
++      g_pipelineQueue.erase(it);
++      g_pipelineQueue.emplace_front(std::move(pending));
++    } else {
++      promote_pending_pipeline(ref, PipelinePriority::Blocking);
++    }
++    g_pipelineQueueCv.notify_one();
++    g_pipelineReadyCv.wait(lock, [=] { return g_pipelines.contains(ref) || g_pipelineThreadEnd; });
++  }
++  const auto it = g_pipelines.find(ref);
++  if (it == g_pipelines.end() || !it->second.main) {
++    return false;
++  }
++  pipeline = it->second;
++  return true;
++}
++
+ bool get_pipeline(PipelineRef ref, CompiledPipeline& pipeline) {
+   std::lock_guard guard{g_pipelineMutex};
+   const auto it = g_pipelines.find(ref);
+--- a/lib/gfx/pipeline_cache.hpp
++++ b/lib/gfx/pipeline_cache.hpp
+@@ -42,5 +42,8 @@
+ PipelineRef find_pipeline(const rmlui::PipelineConfig& config);
+ 
+ bool get_pipeline(PipelineRef ref, CompiledPipeline& pipeline);
++// SMS PC port patch (aurora_pipeline_wait.patch): like get_pipeline, but waits for a
++// pipeline that is still being compiled (moving it to the front of the queue).
++bool wait_pipeline(PipelineRef ref, CompiledPipeline& pipeline);
+ 
+ } // namespace aurora::gfx

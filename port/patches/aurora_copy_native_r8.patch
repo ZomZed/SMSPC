@@ -1,0 +1,19 @@
+--- a/lib/dolphin/gx/GXFrameBuffer.cpp
++++ b/lib/dolphin/gx/GXFrameBuffer.cpp
+@@ -78,6 +78,16 @@
+     dstHeight = static_cast<u32>(rect.height);
+   }
+   const auto texCopyFmt = g_gxState.texCopyFmt;
++  // SMS PC port patch (aurora_copy_native_r8.patch): R8 copies are data maps (SMS's pollution
++  // layers: drawn nearest-sampled one block per texel, copied back, then sampled LINEAR by the
++  // visible goop). At render resolution each texel became a hard block and linear filtering
++  // only softened the block borders: stair-stepped goop edges. Keep them at the GameCube size,
++  // as on hardware, so the filter blends neighbouring texels. Sampling the centre of each
++  // block keeps the copy-back loop exact.
++  if (texCopyFmt == GX_CTF_R8) {
++    dstWidth = g_gxState.texCopyDstWidth;
++    dstHeight = g_gxState.texCopyDstHeight;
++  }
+ 
+   const GXState::CopyTextureKey key{
+       .dest = dest,

@@ -1,0 +1,1012 @@
+# Functions an agent already worked on without a fix (tools/match_targets.py skips them).
+# One per line: <unit> <tab> <substring of the mangled name> <tab> reason. Remove a line when its blocker is solved.
+Enemy/walker	bind__7TWalker	frame + regalloc only (2026-10-15)
+Player/ModelWaterManager	move__18TModelWaterManager	regalloc only
+Map/BathWaterManager	prerender__22TBathWaterMeshRenderer	FP/GPR allocation and scheduling
+Map/BathWaterManager	perform__17TBathWaterManager	per-caller inline budget
+Player/MarioDraw	calcBaseMtx	scheduling only
+Enemy/Kukku	dropCoins	TQuat4::rotate depth (libs)
+Enemy/Kazekun	doAttackPose	setRotate/rotate scheduling + frame
+Enemy/coasterkiller	moveCoaster	stack TVec3 components kept in FPRs (unsolved)
+Animal/AnimalBase	execWalk	MsClamp/TVec4/set<f> out of line (template depth)
+Enemy/koopajr	calcRootMatrix__17TKoopaJrSubmarine	TQuat4 mul/setRotate scheduling (libs)
+Enemy/hauntLeg	calcRootMatrix	cross/normalize scheduling
+Enemy/namekuri	calcRootMatrix	same as hauntLeg
+Enemy/graph	getNearestPosOnGraphLink	clamp/scaleAdd: every spelling worse
+Enemy/spider	bind__7TSpider	register pressure (stmw vs stfd/stw)
+Enemy/Koopa	calcRootMatrix__6TKoopa	needs real JGeometry matrix inlines
+Enemy/BathtubKiller	makeQuat	frame + param regs only
+Enemy/Kazekun		quat rotate scheduling / frame (whole unit)
+Animal/Bird	WalkOnGround	TQuat4::rotate depth (libs)
+Animal/Bird	doLanding	TQuat4::rotate depth (libs)
+Animal/Bird	doFlyToCurPathNode	TQuat4::rotate depth (libs)
+Animal/Bird	init__11TAnimalBird	per-caller inline budget (initParams)
+Enemy/bossgesso	doAttackSingle	inSightAngle 3-level inline + dead getSaveParams call
+Map/MapCheck	checkWalls	frame-only
+Map/MapCheck	checkGround	frame-only
+Map/MapCheck	bgIntersectLine	frame/regalloc only
+GC2D/GCConsole2	perform__11TGCConsole2	14.7KB, many small scheduling diffs; leave to a dedicated run
+System/MarNameRefGen	InsertRaw	TCameraMapTool operator= must inline (<=6 member copies); regrouping fields regresses copy ctor
+GC2D/Talk2D2	setTagParam	ROM unrolls an 8-iteration TColor loop x2; ours stays rolled
+Enemy/enemyMario	initEnemyValues	frame + register shift across 4.4KB
+Map/BathWaterManager	initializeIfYet_	frame + regalloc + scheduling
+GC2D/GCConsole2	countShine	frame-only
+Enemy/fruitsboat	moveObject	stack offsets + copy order after set<f>
+GC2D/hx_wiper	Hxs_Logo_TexDraw	frame + operand scheduling
+Enemy/BathtubPeach	TNervePeachEscape	frame-only
+MSound/MSoundSE	startSoundActorWithInfo	std::sqrtf inlined vs ROM bl (MSL header); + frame
+MSound/MAnmSound	startAnimSound	std::sqrtf inline issue + register swaps
+MSound/MSound	__ct__6MSound	this spilled to stack; cause unknown
+NPC/NpcParts	__ct__9TNpcParts	3x8 contiguous mtctr zeroing loop not reproduced
+GC2D/SelectShine2	perform__19TSelectShineManager	frame + regalloc
+Camera/lensflare	perform__10TLensFlare	register/stack only
+MoveBG/MapObjCorona	setupCollisions_	dot-product load scheduling
+Camera/cameragc	loadAfter__15CPolarSubCamera	frame-only
+Enemy/TabePuku	bind__11TTPHitActor	frame + pos.y/z kept in FPRs
+Enemy/hanasambo	checkGenCoin	TVec3::add stays inlined
+Player/MarioMove	moveRequest__6TMario	stack TVec3 components in FPRs + regalloc
+Player/MarioDraw	MarioHeadCtrl	frame + branch scheduling
+GC2D/Option	checkInput__14TOptionControl	inlined setType path + frame
+Camera/cameralib	CLBRotatePosAndUp	stack + scheduling only
+MarioUtil/MtxUtil	setup__16TMultiMtxEffect	TParamVec copy ctor depth + string pool
+Map/MapMakeList	addCheckDataToGrid	frame + constant load order
+Enemy/bossManta	updateAttractor__11TBossManta	normalize-after-length squared() CSE (libs)
+Enemy/bosswanwan	bind__9TBWBinder	graph-node getPoint regalloc/frame
+Enemy/bosswanwan	execute__19TNerveBWGraphWander	load order + regalloc only
+Enemy/bossgesso	execute__11TNerveBGDie	ROM merges 3||4 into a range check; no source lever
+Enemy/cannon	execute__18TNerveCannonSearch	regalloc only
+Enemy/fireWanwan	TNerveFireWanwanFindMario	TQuat4::rotate depth
+Enemy/bosstelesa	loadAfter__11TBossTelesa	cmplwi/slwi loop indexing + regalloc
+Enemy/enemyMario	emReplayJumpToNearestNode	frame-only
+Player/MarioSpecial	hanging__6TMario	frame-only
+GC2D/Talk2D2	perform__8TTalk2D2	switch order + unrolled loop + frame
+Animal/boid	calcBoids	nested vector operator temporaries
+Animal/BeeHive	doWait__8TBeeHive	frame + FPR allocation
+Enemy/koopajr	makeKillerVelocity	frame + cross operand order
+MarioUtil/ShadowUtil	calcVtx	frame + regalloc
+GC2D/CardLoad	titleDraw	jump table vs compare chain; tried before
+Enemy/feetinv	FeetInvCalc	frame + float temporaries
+GC2D/Option	checkInput	discarded SMSGetMSound() call; no clean source shape
+Enemy/wireTrap	load__9TWireTrap	initWire set<f> wrappers regress load
+NPC/NpcNerve	TNerveNPCGraphWander	getCurGraphIndex stays inlined
+Enemy/bosseel	perform__8TBossEel	begin() wrapper no change
+Enemy/bosstelesa	generateSlotItem	extra (f32) recompute + FPR/stack only
+Animal/boid	calcBoids	by-value TVec3 operator temp copies (libs)
+GC2D/Talk2D2	perform__9TTalk2D2	join var register + switch pivot
+Player/MarioMove	checkCurrentPlane	dot operand scheduling + frame
+MoveBG/Item	appearWithTime	frame-only
+MoveBG/MapObjBall	kicked__11TResetFruit	frame-only
+Animal/BeeHive	calcRootMatrix	TQuat4::mul scheduling (libs)
+MoveBG/MapObjCorona	receiveMessage__12TBathtubGrip	regalloc + frame
+MoveBG/MapObjCorona	calcBathtubData	fmadds scheduling
+MoveBG/MapObjCorona	updatePosture_	fmadds scheduling
+MoveBG/MapObjSirena	generateItem__13TItemSlotDrum	&m in r25 + frame
+Map/MapCheck	intersectLine	frame + register shift only
+Enemy/Kumokun	decideTargetAtDir	TQuat4::setRotate shape + frame
+Enemy/enemy	calcEnemyRootMatrix	FPR regalloc across normalize
+Enemy/enemy	zigzagToCurPathNode	FPR allocation
+Enemy/bgtentacle	setAttackTarget	operator* temporaries + frame
+Enemy/BathtubKiller	ChaseStraight	getZDir scheduling (libs)
+Enemy/chuuhana	moveObject	dead isZeroXZ compare kept in ROM
+Enemy/chuuhana	behaveToWater	dead isZeroXZ compare kept in ROM
+Enemy/beam	calcVertices	frame + constant load order
+Enemy/BossHanachanSub	moveHead	double temp copy (RVO) not reproducible
+GC2D/ConsoleStr	processMiss	frame + scheduling
+GC2D/ConsoleStr	processShineGet	frame + scheduling
+GC2D/hx_wiper	Hxs2_Circle	frame + regalloc
+GC2D/Guide	linkSelect	regalloc + constant order
+Strategic/liveinterp	linGetSRT	frame + case layout
+GC2D/CardSave	initData	JUTTexture ctor this copy (libs) + regalloc
+GC2D/CardLoad	perform__9TCardLoad	frame + regalloc
+Camera/camerashake	execShake	frame-only
+Camera/CameraJetCoaster	ctrlJetCoasterCamera_	regalloc + frame
+Camera/CameraChange	execCameraModeChangeProc_	frame + register renaming
+Camera/CameraDemo	updateDemoCamera_	origin y/z kept in FPRs
+Map/BathWaterManager	throwMario	frame + register shift (90%)
+Map/MapMirror	perform__19TMirrorModelManager	TVec3() ctor at 2nd site + frame (91%)
+Enemy/wireTrap	checkHitActors	all bl match; by-value copies + frame (89%)
+Map/BathWaterManager	perform__17TBathWaterManager	scale/set scheduling + frame in fakeCalcPos
+MarioUtil/MtxUtil	setup__16TMultiMtxEffect	vtable order + frame
+Enemy/tinkoopa	init__10TTinKoopa	rodata layout + regalloc + frame
+Enemy/limitkoopa	setUpHitActors	frame + FPR scheduling
+Enemy/limitkoopajr	moveRun	squared() fmadds fusion (libs)
+Enemy/bosstelesa	TNerveBubbleLive	frame-only
+Enemy/bosstelesa	PrepareSlot	frame + setBckAnm register swap
+Enemy/bosstelesa	TNerveBossTelesaDie	frame + setBckAnm register swap
+Enemy/cannon	killerShoot	frame-only
+GC2D/Talk2D2	makeBoxLine	frame + renumbering
+Enemy/Koopa	KoopaNeckCallBack	needs real JGeometry matrix inlines
+Enemy/BossHanachanMain	perform__14TBossHanachan	frame 0x570 vs 0x3c0, ROM keeps helpers out of line; indexed loop worse
+Animal/AnimalBase	perform__11TAnimalBase	frame 0x130 vs 0x100 plus shared-anim loop regalloc
+Animal/BeeHive	getCenterOfGravity__9TBeeHiveCFv	ROM has separate i counter and extra branches; direct getBoid worse
+Camera/cameralib	CLBCalcNearNinePos	frame 0x218 vs 0x1f0 and stack slot layout; 87.1%
+Camera/cameragc	calcPosAndAt_	regalloc (zero shared with later bools) plus frame
+Camera/CameraBGCheck	calcInHouseNo_	ROM loop uses counter plus byte offset; index loop 76%
+Map/BathWaterManager	getGravityDir__12TBathtubDataCFf	ROM keeps up.y/z in f26/f27 across trig calls
+Map/BathWaterManager	calcBathtub__Q29TBathWater5TDrop	dead frame slots 0x70 plus f-reg numbering
+Map/BathWaterManager	render__22TBathWaterMeshRenderer	97.8%, frame plus regalloc only
+MarioUtil/MtxUtil	setup__16TMultiMtxEffect	TVec3 copy ctor not inlined in ReverseXZ branch
+Map/MapMakeData	updateTrans__17TMapCollisionBase	ROM hoists delta.y/z into f31/f30; const delta worse
+Enemy/TabePuku	swimTo__10TTabePuku	frame 0x98 larger plus TQuat4 inline depth
+Enemy/bossManta	updateAttractor__10TBossManta	ROM CSE of sqrt not reproduced
+Enemy/fireWanwan	restrict__12TTailRubber	length() inlined twice sharing one squared()
+Enemy/tinkoopa	init__10TTinKoopa	jointNameTable data layout difference
+Enemy/wireTrap	calcRootMatrix__9TWireTrap	frame plus quaternion multiply scheduling
+Enemy/amiNoko	calcRootMatrix__8TAmiNoko	r30/r31 swap this vs unk1CC
+Enemy/amiNoko	execute__24TNerveAmiNokoWalkOnFence	99.4%: frame +8 and one getPoint reg
+NPC/NpcBase	perform__11TBaseNPC	CLBSquared call hoisted; frame 0x1b0 vs 0x108
+GC2D/Guide	perform__6TGuide	register rotation plus 0x50 frame
+NPC/NpcCallback	NPCNeckCallBack	bool-to-r0 copy not reproducible
+GC2D/hx_wiper	Hxs_PenDraw	pen pointer r31 vs r26
+GC2D/GCConsole2	processAppearStar	frame 0x38 plus subf. reg
+GC2D/CardLoad	load__9TCardLoad	loop/texture reg swap plus frame
+GC2D/CardLoad	waitForChoice	frame and scheduling only
+Enemy/bossgesso	TBossGesso7perform	frame/stack offsets and bss offset shift
+Enemy/bossgesso	changeAttackMode	frame plus range-merged 3/4 compare in inlined copy
+Player/MarioParticle	TWarpInCallBack7execute	TVec3 operator* copy sequence differs
+Enemy/bgtentacle	TBGTentacleMtxCalc4calc	regalloc and stack slots only
+Enemy/bgtentacle	calcAttackGuideAnm	ROM keeps local_30.y/z in f30/f31
+Enemy/bgtentacle	TBGTakeHit7perform	one fewer saved GPR plus frame
+Enemy/gatekeeper	TNerveBGKDie7execute	getRumblePow call order in inlined deathRumble
+Enemy/koopajr	TKoopaJrSubmarine4init	joint table base held in register from start
+Enemy/bosseel	TOilBall10moveObject	frame plus scheduling
+Enemy/bosstelesa	TBossTelesa9flashItem	regalloc only
+Map/MapMakeData	setCheckData__17TMapCollisionBase	Vec-form + pad gives 100% standalone but inlined initAllCheckData drops to 78%
+MoveBG/ModelGate	perform__10TModelGate	frame-only 0x68, uneven slot offsets
+System/MenuDir	direct__13TMenuDirector	frame 0xa0 bigger plus this/rodata r30/r31 swap
+MarioUtil/MtxUtil	SMS_MakeJointsToArc	two extra FPR saves, f31/f24 regalloc
+MoveBG/MapObjCorona	calcRootMatrix__14TBathtubGrip	FPR alloc in inlined TPosition3f::concat
+Enemy/cannon	init__7TCannon	frame 0x28 plus TList iterator inlining
+Camera/sunmodel	perform__9TSunModel	frame 0x18 smaller plus dir.sub scheduling
+Camera/CameraNotice	getNoticeActor_	ROM sums before CLBSquared call
+Camera/CameraNormal	calcTowerCenterPos_	ROM re-emits lis/addi per case plus frame
+GC2D/GCConsole2	drawWaterBack	ROM extra frame bytes at bottom
+GC2D/GCConsole2	checkDolpic8	regalloc only
+GC2D/GCConsole2	countBlueCoin	regalloc, this copied to r31 early
+GC2D/SelectShine2	initData	frame plus r24-r28 shift and pool base
+GC2D/Guide	load__6TGuide	string pool base order, r4/r5 swap
+GC2D/hx_wiper	Hxs1_Test2	GPR/FPR order only
+Enemy/chuuhana	TNerveChuuHanaRoll	vel copied into two temps, fused fmadds in sqrt arg
+Enemy/yunbo	shotSeeds	dir 4 bytes higher, z kept in f31 across atan
+Animal/Bird	moveObject__11TAnimalBird	isChanged materialised as bool, frame 0x20
+Enemy/Kukku	calcRootMatrix__6TKukku	f25-f29 permutation plus frame
+Player/Tongue	findTarget	normalize after length CSE
+GC2D/ConsoleStr	perform__11TConsoleStr	extra saved r14 plus frame
+Enemy/pakkun	TNervePakkunStay	self/waitTime r29/r30 swap
+Enemy/tamaNoko	landEffect__9TTamaNoko	extra TVec3 copy from fabricated operator*
+Enemy/igaiga	setMeltAnm__7TIgaiga	extra operator* copy
+Enemy/igaiga	perform__16TGorogoroManager	bool ternary around contain plus frame
+Enemy/elecNokonoko	shoot__13TElecCarapace	this/zero r31/r30 swap
+Enemy/hamukuri	forceRoll__9THamuKuri	operator* copied one extra time
+Enemy/popo	walkBehavior__6TPopo	getPoint folds to r31+0x108
+MoveBG/MapObjMare	bind__10TMuddyBoat	frame 0x68 plus center.set scheduling
+MoveBG/MapObjBianco	control__14TBellWatermill	frame 0x60 plus sin/cos loads not hoisted
+MoveBG/MapObjLib	control__11TMapObjTurn	this r31 MtxPtr r30 swap
+MoveBG/MapObjBall	boundByActor__11TMapObjBall	extra getVelocity stack copy
+MoveBG/MapObjMamma	perform__23TMammaMirrorMapOperator	camPos kept as addi pointer
+Player/MarioSpecial	fenceMove	frame plus scheduling only
+Player/MarioMove	checkGraffito__6TMarioFv	this/isDirty r30/r31 swap
+Player/MarioMove	thinkWaterSurface	this r31 vs r29 plus frame
+Player/WaterGun	emit__12TNozzleDeform	vtable load order plus frame
+Player/WaterGun	emit__11TNozzleBase	same emitCommon ordering
+Player/MarioDraw	setAnimation__6TMarioFif	regalloc, 5 saved regs vs 4
+Enemy/bosswanwan	MsPerpendicFootToLineR	return slot r3 saved to stack, frame 0x10; shared MathUtil inline
+Enemy/bosswanwan	perform__9TBWPicket	frame-only, pad does not shift offsets
+Enemy/bgtentacle	moveNode__11TBGTentacle	frame 0xa0 plus length/normalize CSE
+Enemy/bossgesso	execute__18TNerveBGBeakDamage	frame 0x70 plus isThing range compare
+Enemy/BossHanachanMain	throwMario_	frame +16 plus slot permutation
+Enemy/fireWanwan	adjust__11TTailRubber	curr.mPos kept live in f1-f3
+Enemy/fireWanwan	init__18TFireWanwanTailHit	frame plus TQuat4 rotate depth
+Enemy/BathtubKiller	TNerveBathtubKillerStraight	moveStraight inline getZDir scheduling
+Enemy/BathtubKiller	makeInitialVelocity	setRotate f28-f31 regalloc
+Enemy/BathtubBinder	float_	frame -40 with set temps
+Enemy/limitkoopa	startHipDrop	frame +56 plus sqrt regalloc
+Enemy/TabePuku	updateTerrainCollsion	frame +56 plus scaleAdd regalloc
+GC2D/CardSave	waitForStop	this/result rank below hoisted constants, frame +8
+GC2D/CardLoad	waitForStart	same register-priority inversion
+GC2D/ConsoleStr	processGo	frame 0x48 plus int-to-float scheduling
+GC2D/ConsoleStr	startCloseWipe	frame 0x38 plus order diff
+GC2D/Talk2D2	setupTextBox	ROM third TColor temp (JUTColor copy ctor?)
+GC2D/Menu	TMenuPlane	unk28 reload after store
+Enemy/hinokuri2	Hino2HeadCallback	frame +0x28 and late constant loads
+Enemy/enemymanager	perform__13TEnemyManager	else-loop pointer walk, mObjNum reload
+Enemy/mameGesso	TNerveMameGessoGraphJumpWander	4-byte slot shift only
+Enemy/smallEnemy	changeMove	int-to-float slot layout plus frame
+Enemy/Kumokun	TNerveKumokunSearch	inline quaternion set ordering
+Enemy/wireTrap	TNerveWireTrapSearch	extra temp for calcMomentum
+Enemy/Amenbo	TNerveAmenboSearch	quaternion/MsRandF ordering plus frame
+Enemy/hanasambo	perform__10TSamboLeaf	constants reloaded, frame -8
+Enemy/BathtubKiller	perform__14TBathtubKiller	timer stores via address
+MoveBG/MapObjCorona	calcRootMatrix__8TBathtub	setQuat header inline
+Enemy/fruitsboat	init__11TFruitsBoat	frame 0x38 plus r31/r30 swap
+Enemy/BossHanachanMain	execWalk__13TBossHanachan	getPoint null-branch shape
+Enemy/Koopa	init__6TKoopa	nested cross expression plus frame
+Enemy/fireWanwan	bind__11TFireWanwan	frame 0x10 plus constant order
+Player/WaterGun	emit__14TNozzleTrigger	frame 168 bytes plus r30/r31 swap
+Player/WaterGun	TNozzleBase	ctor member-init/vtable order
+Player/MarioCollision	damageExec__6TMario	TVec3 copy ctor out of line plus frame
+Enemy/bosstelesa	genAttacker__11TBossTelesa	head load scheduling plus frame
+Enemy/bossManta	updateMantaEscape	vector kept in memory
+Enemy/bossgesso	lenFromToeToMario	fmadds fusion order
+NPC/NpcInitPrg	setIndividualDifference_	frame plus colour loop double load
+NPC/NpcEvent	ForceStartTalkExceptNpc	popped slice data word copy
+NPC/NpcEffect	setPollutionEffectMtxPtr_	clrlwi placement
+MSound/MSoundScene	frameLoop	sortMaxTrans address unfolded plus frame
+MSound/MSoundStruct	startSoundSetDyna	fmuls order in SMS_PORT block
+MoveBG/MapObjDolpic	hitByWater__14TMonumentShine	mPosition hoisted into f7-f9
+MoveBG/MapObjMonte	draw__11TSwingBoard	addr kept in r30 plus frame
+MarioUtil/DrawUtil	clash__19TTrembleModelEffect	extra operator+ copy (no NRV)
+Animal/AnimalBase	SMS_Eular2Quat	TQuat4 mul depth
+Map/MapCheck	checkWallList	0x80 frame gap from skewProduct temps
+Player/MarioParticle	execute__15TWarpInCallBack	scalar-first variants best 84.6
+Player/MarioSpecial	wireWait	no TVec3 * scalar sites
+Player/WaterGun	init__9TWaterGunFv	frame 0x398 vs 0x290 plus base pointer regalloc
+Player/WaterGun	animation__14TNozzleTriggerFi	frame plus register renaming
+Player/MarioCheckCol	hangPole__6TMarioFP9THitActor	frame plus float regalloc
+Player/MarioSpecial	pulling__6TMarioFv	length() fusion order
+Camera/CameraBGCheck	execWallCheck_	wall normal register reuse
+Camera/CameraNotice	calcNoticeTargetYrot_	frame plus eval order
+Enemy/bgtentacle	moveConstraint__11TBGTentacle	frame 0x58 plus slot/reg alloc
+Enemy/bgtentacle	__ct__11TBGTentacle	SMatrix34C ctor out of line in inlined TBGTakeHit ctor
+Enemy/bgtentacle	perform__12TBGAttackHit	mPosition not hoisted plus frame
+Enemy/koopajr	perform__8TKoopaJr	extra TDirectionCalc copy
+Enemy/tinkoopa	perform__10TTinKoopa	updateTimers address-taken decrement
+Enemy/Koopa	setUpHitActors__6TKoopa	frame 0xc0 plus flame FPR order
+Enemy/popo	explosion__5TPopoFv	frame 0x48 larger plus emitRequest scheduling
+Enemy/popo	PopoRollCallback	frame-only plus constant scheduling
+Enemy/igaiga	walkBehavior__9TGorogoroFif	frame 0x80 plus turnByEnemy shuffle
+Enemy/tamaNoko	requestShadow__10TTamaNokoFv	frame plus isAirborne hoist
+Enemy/namekuri	execute__18TNameIndParCallback	setGlobalScale reload quirk
+Enemy/killer	TNerveFlyEnemyChaseFly	frame 0x20 plus temp slot and f0/f1 swap
+Enemy/Kumokun	checkOnMovingRoof	local y/z in f30/f31; add(a,b) worse
+Enemy/poihana	init__8TPoiHana	initHitActor float order plus iterator temps
+Enemy/enemyMario	checkReturn	this/i/nodeNum permutation
+Enemy/Kukku	TNerveKukkuGraphWander	calcMomentum 2 copies vs 1
+Enemy/enemy	walkToCurPathNode	f30/f31 swap plus frame
+Enemy/fruitsboat	TNerveFruitsBoatGraphWander	frame plus null-check reg
+Enemy/hanasambo	init__10THanaSambo	frame plus param load order
+Enemy/poihana	TNervePoihanaTrapped	frame plus TMsRange scheduling
+Enemy/TabePuku	getTakingMtx	quaternion regalloc
+Enemy/wireTrap	TNerveWireTrapOnewayMove	extra calcMomentum copy
+Enemy/wireTrap	TNerveWireTrapReturnMove	extra calcMomentum copy
+Enemy/Amenbo	TNerveAmenboHitWater	frame plus reg shuffle
+Enemy/BossHanachanMain	execDamage	frame plus index reg plus unk58 fold
+Enemy/BossHanachanSub	BHSCalcCentrifugalForce	frame 0x40 plus float regs
+NPC/NpcManager	clipEnemies	frame 0x48 plus i/e swap
+NPC/NpcAnm	setNpcAnm_	regalloc
+Map/MapEventMare	initCommon__21TMareEventDepressWall	skipCount order plus dead b
+MarioUtil/DrawUtil	SMS_AddDamageFogEffect	target keeps two products unfolded
+Enemy/bosstelesa	TNerveBossTelesaHide	self/spine reg swap plus frame
+Enemy/bosstelesa	TNerveBossTelesaHideWait	diff slot 4 bytes off
+Enemy/bosswanwan	TNerveBWDie	mHitPoints reload, gpMarDirector order
+Enemy/bosseel	splitTears	register permutation plus frame
+Enemy/bosspakkun	TBPHeadHit	toMario.z in f31 plus frame
+Animal/Bird	receiveMessage__11TAnimalBird	TNerveBase ctor out of line in static init
+Animal/BeeHive	setSQ	needs JGRotation3 setSQ order edit
+MoveBG/MapObjBall	calcCurrentMtx__11TMapObjBall	two velocity copies plus fmadds order
+MoveBG/MapObjFlag	perform__18TMapObjFlagManager	s16 conversions before position load
+MoveBG/MapObjItem2	control__9TJumpBase	this/pool-base swap plus stack object
+MoveBG/MapObjInit	makeMActors__11TMapObjBase	dead unkC load plus frame
+MoveBG/MapObjCloud	control__10TRideCloud	mr/addi diff plus frame
+MoveBG/MapObjPinna	moveObject__8TAmiKing	isState chain shape
+MoveBG/MapObjBall	touchActor__14TBigWatermelon	frame +16 plus distance scheduling
+MoveBG/MapObjEx	makeObj__10TJointCoin	r31 vs r29 regalloc
+MoveBG/MapObjPlane	makeMountain	frame 56 plus add order
+MoveBG/MapObjInit	initMapObj__11TMapObjBase	J3DTexture::setResTIMG order (libs)
+Map/MapWarp	init__8TMapWarp	regalloc only
+Map/Map	update__4TMap	frame 0xa0 plus branch layout
+Player/MarioMove	thinkYoshiHeadCollision	frame plus fmadds order
+Player/Yoshi	thinkAnimation__6TYoshi	frame 0xe0 plus end ordering
+Camera/cameragc	perform__15CPolarSubCamera	one() out of line helps perform but hurts loadAfter (shared inline)
+Animal/Bird	isFindMario__11TAnimalBird	param address addi plus bool clrlwi
+Animal/Bird	TNerveAnimalBirdLanding	inlined isFindMario diff
+Animal/Bird	TNerveAnimalBirdComeback	inlined isFindMario diff
+Animal/Bird	TNerveAnimalBirdPreLanding	inlined isFindMario diff
+Animal/AnimalBase	resetRandomCurPathNode	temp shares slot in ROM
+Enemy/Kukku	TNerveKukkuFall	zero const order plus frame
+Enemy/Kukku	calcMomentum__6TKukku	TQuat4 rotate FPR numbering
+Enemy/Kukku	perform__10TKukkuBall	bind load order plus frame
+Enemy/Kumokun	rotateGoalDirToLocal	TQuat4 rotate FPR numbering
+Enemy/Kumokun	TNerveKumokunWait	GPR order only
+GC2D/hx_wiper	Hxs_Logo_MagDraw	FPR allocation and store order
+GC2D/Guide	resetObjects__6TGuideFv	frame plus r28/r30/r31 swap
+GC2D/CardSave	setMessageC	frame plus clrlwi hoisted
+GC2D/Option	movementOption	JUTRect ctor out of line
+GC2D/PauseMenu2	drawAppearPane	frame plus xoris scheduling
+GC2D/SelectMenu	perform__11TSelectGrad	loop var register split
+System/CardManager	filledInitData_	frame plus offset register
+System/EventWatcher	evGetTalkNPCName	push literal null test inline
+NPC/NpcAnm	npcRecoverFromSinking	result r30 this r31
+Enemy/hauntLeg	HauntLegCallback	r30/r31 swap; idiom worse
+Enemy/hanasambo	SamboHeadRollCallback	idiom worse; frame
+Enemy/gesso	GessoBodyCallback	rotation rematerialised; frame
+Enemy/namekuri	NameKuriAttackCallback	r30/r31 swap; idiom worse
+Enemy/pakkun	PakkunRootCallback	frame 0x20
+Enemy/chuuhana	ChuuHanaBodyCallback	4-byte frame
+Enemy/killer	KillerBodyCallback	8-byte frame
+Player/MarioDraw	MarioWaistCtrl	shared Mtx slot frame
+Enemy/enemymanager	copyAnmMtx	frame plus r27/r28
+Enemy/Amenbo	TNerveAmenboWalk	rodata reg plus frame
+Enemy/pakkun	perform__7TPakkun	this r29 vs r31
+Enemy/enemyAttachment	TEnemyPolluteModel	dead stack plus reg swap
+Enemy/fireWanwan	calcRootMatrix__11TFireWanwan	TQuat4 rotate depth
+Enemy/fireWanwan	TNerveFireWanwanFly	TQuat4 rotate depth
+Enemy/igaiga	init__9TGorogoro	this/mirror swap
+Enemy/hinokuri2	TNerveHino2JumpIn	frame plus p register
+Enemy/hinokuri2	TNerveHino2Turn	posDiff offset
+Enemy/rocket	bind__7TRocket	frame plus scheduling
+Enemy/enemyMario	emWaitingToInviteMario	frame plus scheduling
+Enemy/tinkoopa	emitPartsDisappearEffects	slot 4 bytes off
+Enemy/BathtubKiller	TNerveBathtubKillerWander	isAttackable locals stack order
+Enemy/BathtubKiller	TNerveBathtubKillerChase	isAttackable locals stack order
+Enemy/bosswanwan	TNerveBWStun	frame plus r28/r29 swap
+Enemy/bosstelesa	checkHitObject	frame plus mr/lwz order
+Enemy/bosseel	collideToMario	regalloc plus frame
+Enemy/bossManta	spawn__17TBossMantaManager	frame plus fmuls order
+Enemy/BossHanachanParts	initFootHitActor_	iterator temp plus regalloc
+Enemy/graph	calcSplineSpeed	frame 0x68 plus f0/f2
+Map/MapEventSink	loadAfter	ShadowMario register shuffle
+Enemy/effectObj	perform__14TEffectObjBase	r31 save with 0x20 frame
+NPC/NpcEffect	setHappyEffectMtxPtr_	getModel before clrlwi
+NPC/NpcEffect	setNoteEffectMtxPtr_	getModel before clrlwi
+GC2D/GCConsole2	startAppearBalloon	cmplw self-compare TODO
+Enemy/BathtubKiller	execute	r6 sweep: frame/regalloc after one look
+Enemy/BathtubKiller	execute	r6 sweep: frame/regalloc after one look
+Enemy/BathtubKiller	moveChasing	r6 sweep: frame/regalloc after one look
+MoveBG/MapObjMare	touchWater	r6 sweep: frame/regalloc after one look
+MoveBG/MapObjMare	draw	r6 sweep: frame/regalloc after one look
+NPC/NpcEffect	setSmokeEffectMtxPtr_	r6 sweep: frame/regalloc after one look
+NPC/NpcEffect	setHappyEffectMtxPtr_	r6 sweep: frame/regalloc after one look
+NPC/NpcEffect	setNoteEffectMtxPtr_	r6 sweep: frame/regalloc after one look
+Player/Yoshi	entry	r6 sweep: frame/regalloc after one look
+Player/Yoshi	appearFromEgg	r6 sweep: frame/regalloc after one look
+Player/Yoshi	getOff	r6 sweep: frame/regalloc after one look
+Player/Yoshi	getEmitPosDir	r6 sweep: frame/regalloc after one look
+GC2D/GCConsole2	startAppearBalloon	r6 sweep: frame/regalloc after one look
+GC2D/GCConsole2	startDisappearCoin	r6 sweep: frame/regalloc after one look
+Enemy/cannon	execute	r6 sweep: frame/regalloc after one look
+Enemy/cannon	execute	r6 sweep: frame/regalloc after one look
+Player/Tongue	calcAnim	r6 sweep: frame/regalloc after one look
+Player/Tongue	emit	r6 sweep: frame/regalloc after one look
+THPPlayer/THPAudioDecode	AudioDecoderForOnMemory	r6 sweep: frame/regalloc after one look
+Map/MapEventSink	finishControl	r6 sweep: frame/regalloc after one look
+Map/MapEventSink	loadAfter	r6 sweep: frame/regalloc after one look
+Enemy/chuuhana	willFall	r6 sweep: frame/regalloc after one look
+Map/PollutionManager	cleanedAll	r6 sweep: frame/regalloc after one look
+System/TalkCursor	associateNPC	r6 sweep: frame/regalloc after one look
+Enemy/effectObj	perform	r6 sweep: frame/regalloc after one look
+System/Application	mountStageArchive	r6 sweep: frame/regalloc after one look
+Enemy/killer	isFindMario	r6 sweep: frame/regalloc after one look
+Enemy/bosswanwan	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/bosswanwan	calc	r6 sweep: frame/regalloc/order after one look
+Enemy/bosswanwan	calcMatrix	r6 sweep: frame/regalloc/order after one look
+Enemy/bosswanwan	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/bosswanwan	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/bosswanwan	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/bosswanwan	receiveMessage	r6 sweep: frame/regalloc/order after one look
+System/EventWatcher	evGetTalkSelectedValue	r6 sweep: frame/regalloc/order after one look
+System/EventWatcher	evGetTalkMode	r6 sweep: frame/regalloc/order after one look
+System/EventWatcher	evGetRestTime	r6 sweep: frame/regalloc/order after one look
+System/EventWatcher	evStartMareBottleDemo	r6 sweep: frame/regalloc/order after one look
+System/EventWatcher	dispatchBuiltin	r6 sweep: frame/regalloc/order after one look
+Animal/BeeHive	controlCollision	r6 sweep: frame/regalloc/order after one look
+Animal/BeeHive	load	r6 sweep: frame/regalloc/order after one look
+Enemy/popo	calcRootMatrix	r6 sweep: frame/regalloc/order after one look
+Enemy/fireWanwan	perform	r6 sweep: frame/regalloc/order after one look
+Enemy/fireWanwan	updatePollute	r6 sweep: frame/regalloc/order after one look
+Player/ModelWaterManager	calcVMMtxGround	r6 sweep: frame/regalloc/order after one look
+Player/ModelWaterManager	calcWorldMinMax	r6 sweep: frame/regalloc/order after one look
+Player/ModelWaterManager	calcVMMtxWall	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjSirena	touchActor	r6 sweep: frame/regalloc/order after one look
+Enemy/BossHanachanSub	setDegreeZAndRevisionPosXZ	r6 sweep: frame/regalloc/order after one look
+Enemy/BossHanachanSub	BHSCalcRevisionDistXZByRotateZ	r6 sweep: frame/regalloc/order after one look
+Enemy/coasterkiller	perform	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjMamma	release	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjMamma	SandCastleCallBack	r6 sweep: frame/regalloc/order after one look
+Enemy/smallEnemy	isFindMario	r6 sweep: frame/regalloc/order after one look
+MarioUtil/LightUtil	loadAfter	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjGeneral	appearing	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjGeneral	perform	r6 sweep: frame/regalloc/order after one look
+Enemy/koopajr	calcTurnDirection	r6 sweep: frame/regalloc/order after one look
+Enemy/koopajr	sub	r6 sweep: frame/regalloc/order after one look
+Enemy/gesso	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/gesso	getNowGravity	r6 sweep: frame/regalloc/order after one look
+GC2D/CardSave	perform	r6 sweep: frame/regalloc/order after one look
+Enemy/bosstelesa	reset	r6 sweep: frame/regalloc/order after one look
+Enemy/bosstelesa	rouletteStart	r6 sweep: frame/regalloc/order after one look
+Enemy/bosstelesa	slotFall	r6 sweep: frame/regalloc/order after one look
+Enemy/bosstelesa	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/bosstelesa	initMapObj	r6 sweep: frame/regalloc/order after one look
+Player/MarioAutodemo	warpIn	r6 sweep: frame/regalloc/order after one look
+Player/MarioRun	doRunningAnimation	r6 sweep: frame/regalloc/order after one look
+Player/MarioRun	doSliding	r6 sweep: frame/regalloc/order after one look
+System/MSoundMainSide	proc	r6 sweep: frame/regalloc/order after one look
+System/MSoundMainSide	setBgmVolumeForce	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjBianco	bind	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjBianco	control	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjBianco	touchWall	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjInit	initMActor	r6 sweep: frame/regalloc/order after one look
+Enemy/gatekeeper	launchNamekuri	r6 sweep: frame/regalloc/order after one look
+System/MarDirectorEvent	findNearestTalkNPC	r6 sweep: frame/regalloc/order after one look
+System/MarDirectorEvent	setNextStage	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjBase	startAnim	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjBase	startControlAnim	r6 sweep: frame/regalloc/order after one look
+Map/BathWaterManager	setLookDir	r6 sweep: frame/regalloc/order after one look
+Strategic/spcinterp	TSpcInterp	r6 sweep: frame/regalloc/order after one look
+GC2D/ScrnFader	load	r6 sweep: frame/regalloc/order after one look
+Map/MapCheck	checkRoofList	r6 sweep: frame/regalloc/order after one look
+GC2D/Option	isChangedSetting	r6 sweep: frame/regalloc/order after one look
+Enemy/tinkoopa	emitPartsTrackEffects	r6 sweep: frame/regalloc/order after one look
+Enemy/igaiga	setBehavior	r6 sweep: frame/regalloc/order after one look
+Enemy/igaiga	RollEnemyBodyCallback	r6 sweep: frame/regalloc/order after one look
+Enemy/igaiga	walkBehavior	r6 sweep: frame/regalloc/order after one look
+Enemy/igaiga	walkBehavior	r6 sweep: frame/regalloc/order after one look
+Enemy/pakkun	PakkunSeedCallback	r6 sweep: frame/regalloc/order after one look
+Enemy/pakkun	init	r6 sweep: frame/regalloc/order after one look
+Enemy/pakkun	rebirth	r6 sweep: frame/regalloc/order after one look
+Enemy/bossgesso	calc	r6 sweep: frame/regalloc/order after one look
+Enemy/bossgesso	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/bossgesso	stopIfRoll	r6 sweep: frame/regalloc/order after one look
+Enemy/hamukuri	generateBody	r6 sweep: frame/regalloc/order after one look
+Enemy/hamukuri	isHitValid	r6 sweep: frame/regalloc/order after one look
+Enemy/hamukuri	isReachedToGoal	r6 sweep: frame/regalloc/order after one look
+Enemy/hamukuri	isReachedToGoal	r6 sweep: frame/regalloc/order after one look
+Enemy/limitkoopa	attack_	r6 sweep: frame/regalloc/order after one look
+Enemy/limitkoopa	perform	r6 sweep: frame/regalloc/order after one look
+GC2D/Guide	setPaneAlpha	r6 sweep: frame/regalloc/order after one look
+GC2D/Guide	placeMario	r6 sweep: frame/regalloc/order after one look
+NPC/NpcWalkTurn	execWalk	r6 sweep: frame/regalloc/order after one look
+Enemy/rocket	setDeadAnm	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjRailBlock	calcRootMatrix	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjRailBlock	setGroundCollision	r6 sweep: frame/regalloc/order after one look
+GC2D/MovieRumble	init	r6 sweep: frame/regalloc/order after one look
+GC2D/MovieRumble	checkRumbleOff	r6 sweep: frame/regalloc/order after one look
+Player/WaterGun	perform	r6 sweep: frame/regalloc/order after one look
+Map/Map	initStageCommon	r6 sweep: frame/regalloc/order after one look
+Player/MarioCheckCol	hitNormal	r6 sweep: frame/regalloc/order after one look
+MSound/MSModBgm	modBgm	r6 sweep: frame/regalloc/order after one look
+Enemy/telesa	isReachedToGoal	r6 sweep: frame/regalloc/order after one look
+NPC/NpcCollision	setVariableDamageRadius_	r6 sweep: frame/regalloc/order after one look
+Enemy/tobiPuku	TobiPukuRollCallback	r6 sweep: frame/regalloc/order after one look
+Enemy/tobiPuku	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/tobiPuku	execute	r6 sweep: frame/regalloc/order after one look
+Enemy/tobiPuku	hitWall	r6 sweep: frame/regalloc/order after one look
+Enemy/tobiPuku	forceLaunch	r6 sweep: frame/regalloc/order after one look
+Player/MarioDraw	MarioFootDirRCtrl	r6 sweep: frame/regalloc/order after one look
+Player/MarioDraw	MarioFootDirLCtrl	r6 sweep: frame/regalloc/order after one look
+Player/MarioDraw	MarioFootPosRCtrl	r6 sweep: frame/regalloc/order after one look
+Player/MarioDraw	MarioFootPosLCtrl	r6 sweep: frame/regalloc/order after one look
+Enemy/BossHanachanEffect	emitParticle_	r6 sweep: frame/regalloc/order after one look
+Player/MarioEffect	setJumpIntoWaterEffectSmall	r6 sweep: frame/regalloc/order after one look
+Player/MarioEffect	setJumpIntoWaterEffect	r6 sweep: frame/regalloc/order after one look
+Enemy/bosseel	collideToMario	r6 sweep: frame/regalloc/order after one look
+Enemy/bosseel	calcRootMatrix	r6 sweep: frame/regalloc/order after one look
+MSound/MSound	getDistPowFromCamera	r6 sweep: frame/regalloc/order after one look
+Enemy/graph	calcSplineSpeed	r6 sweep: frame/regalloc/order after one look
+Enemy/graph	perform	r6 sweep: frame/regalloc/order after one look
+Enemy/hinokuri2	perform	r6 sweep: frame/regalloc/order after one look
+Enemy/hinokuri2	execute	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjLib	emitAndSRT	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjLib	emitAndRotateScale	r6 sweep: frame/regalloc/order after one look
+Player/MarioSpecial	getOnWirePosAngle	r6 sweep: frame/regalloc/order after one look
+Animal/AnimalManager	clipEnemies	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjWater	perform	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjCorona	receiveMessage	r6 sweep: frame/regalloc/order after one look
+NPC/NpcChange	isNerveCanGoToTalk	r6 sweep: frame/regalloc/order after one look
+Camera/sunmodel	CLBScreenFPosToSPos	r6 sweep: frame/regalloc/order after one look
+Enemy/Kumokun	moveObject	r6 sweep: frame/regalloc/order after one look
+Enemy/Kukku	setDeadAnm	r6 sweep: frame/regalloc/order after one look
+Enemy/tamaNoko	perform	r6 sweep: frame/regalloc/order after one look
+Enemy/tamaNoko	initSetEnemies	r6 sweep: frame/regalloc/order after one look
+Enemy/tamaNoko	isReachedToGoal	r6 sweep: frame/regalloc/order after one look
+Player/MarioPhysics	keepDistance	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjTown	control	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjTown	load	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjTown	calc	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjTown	control	r6 sweep: frame/regalloc/order after one look
+Enemy/Koopa	control	r6 sweep: frame/regalloc/order after one look
+Enemy/Koopa	attack_	r6 sweep: frame/regalloc/order after one look
+Enemy/Koopa	perform	r6 sweep: frame/regalloc/order after one look
+Enemy/BossHanachanParts	initFootHitActor_	r6 sweep: frame/regalloc/order after one look
+Enemy/BossHanachanParts	isCurBckAlreadyEnd_	r6 sweep: frame/regalloc/order after one look
+Enemy/bossManta	spawn	r6 sweep: frame/regalloc/order after one look
+Enemy/bossManta	loadAfter	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjBall	kicked	r6 sweep: frame/regalloc/order after one look
+MoveBG/MapObjBall	checkWallCollision	r6 sweep: frame/regalloc/order after one look
+Enemy/BossHanachanMain	checkFallDecideAndSetup	r6 sweep: frame/regalloc/order after one look
+Enemy/BossHanachanMain	CalcRevisionPosByRotateZ	r6 sweep: frame/regalloc/order after one look
+Map/MapMirror	perform	r6 sweep: frame/regalloc/order after one look
+Map/MapMirror	scaleAdd	r6 sweep: frame/regalloc/order after one look
+Enemy/launcher	init	r6 sweep: frame/regalloc/order after one look
+Enemy/limitkoopajr	init	r6 sweep: frame/regalloc/order after one look
+Enemy/emario	init	r6 sweep: frame/regalloc/order after one look
+Enemy/TabePuku	calcRootMatrix	r6 sweep: frame/regalloc/order after one look
+System/MarDirectorDirect	decideNextStage	r6 sweep: frame/regalloc/order after one look
+Map/PollutionPos	getEdgeDegree	r6 sweep: frame/regalloc/order after one look
+Player/MarioParticle	initParticle	r6 sweep: frame/regalloc/order after one look
+GC2D/CardSave	waitForChoice	r7 near-match sweep: regalloc/frame/order
+GC2D/CardSave	waitForChoiceBM	r7 near-match sweep: regalloc/frame/order
+GC2D/CardSave	execMovement_	r7 near-match sweep: regalloc/frame/order
+Enemy/bossManta	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/bossManta	init	r7 near-match sweep: regalloc/frame/order
+Player/ModelWaterManager	drawShineShadowVolume	r7 near-match sweep: regalloc/frame/order
+Player/ModelWaterManager	calcDrawVtx	r7 near-match sweep: regalloc/frame/order
+Player/ModelWaterManager	makeEmit	r7 near-match sweep: regalloc/frame/order
+Enemy/tinkoopa	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/tinkoopa	reset	r7 near-match sweep: regalloc/frame/order
+Enemy/tinkoopa	hitParts	r7 near-match sweep: regalloc/frame/order
+System/Application	gameLoop	r7 near-match sweep: regalloc/frame/order
+System/Application	initialize_nlogoAfter	r7 near-match sweep: regalloc/frame/order
+Camera/CameraNormal	ctrlNormalOrTowerCamera_	r7 near-match sweep: regalloc/frame/order
+Enemy/smallEnemy	moveObject	r7 near-match sweep: regalloc/frame/order
+Enemy/smallEnemy	reset	r7 near-match sweep: regalloc/frame/order
+Enemy/fireWanwan	moveObject	r7 near-match sweep: regalloc/frame/order
+Enemy/fireWanwan	bindBody	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjPlane	calcNrm	r7 near-match sweep: regalloc/frame/order
+M3DUtil/M3UJoint	M3UMtxCalcBlendAux	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjTown	touchPlayer	r7 near-match sweep: regalloc/frame/order
+GC2D/SelectShine2	move	r7 near-match sweep: regalloc/frame/order
+Enemy/cannon	checkHit	r7 near-match sweep: regalloc/frame/order
+System/MSoundMainSide	setMSoundEnterStage	r7 near-match sweep: regalloc/frame/order
+MarioUtil/EffectUtil	SMS_EmitSinkInPollutionEffect	r7 near-match sweep: regalloc/frame/order
+Strategic/ObjHitCheck	clearHitNum	r7 near-match sweep: regalloc/frame/order
+NPC/NpcWalkTurn	execUTurn	r7 near-match sweep: regalloc/frame/order
+GC2D/CardLoad	selectFunction	r7 near-match sweep: regalloc/frame/order
+GC2D/CardLoad	selectBookmark	r7 near-match sweep: regalloc/frame/order
+GC2D/CardLoad	waitForAnyKeyBM	r7 near-match sweep: regalloc/frame/order
+GC2D/CardLoad	drawMessageBM	r7 near-match sweep: regalloc/frame/order
+Enemy/bossgesso	init	r7 near-match sweep: regalloc/frame/order
+Enemy/bossgesso	receiveMessage	r7 near-match sweep: regalloc/frame/order
+Enemy/bossgesso	perform	r7 near-match sweep: regalloc/frame/order
+Enemy/Kumokun	bind	r7 near-match sweep: regalloc/frame/order
+Enemy/Kumokun	initAttachPlane	r7 near-match sweep: regalloc/frame/order
+Enemy/Kumokun	checkOnMovingWall	r7 near-match sweep: regalloc/frame/order
+Enemy/Kumokun	init	r7 near-match sweep: regalloc/frame/order
+Camera/CameraChange	changeCamModeSub_	r7 near-match sweep: regalloc/frame/order
+M3DUtil/MActorData	init	r7 near-match sweep: regalloc/frame/order
+M3DUtil/MActorData	addFileTable	r7 near-match sweep: regalloc/frame/order
+MarioUtil/MtxUtil	calc	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjMonte	drawRopeBetweenBoards	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjMonte	control	r7 near-match sweep: regalloc/frame/order
+GC2D/PauseMenu2	perform	r7 near-match sweep: regalloc/frame/order
+MarioUtil/MathUtil	MsGetRotFromZaxis	r7 near-match sweep: regalloc/frame/order
+MarioUtil/MathUtil	matan	r7 near-match sweep: regalloc/frame/order
+System/CardManager	getBookmarkInfos_	r7 near-match sweep: regalloc/frame/order
+System/CardManager	readBlock_	r7 near-match sweep: regalloc/frame/order
+Player/MarioCap	TMarioCap	r7 near-match sweep: regalloc/frame/order
+Enemy/hauntLeg	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/graph	TSplineRail	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjFence	goOnRail	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjLib	makeMtxRotByAxis	r7 near-match sweep: regalloc/frame/order
+System/EventWatcher	evWarpFrontToMario	r7 near-match sweep: regalloc/frame/order
+Strategic/MirrorActor	checkIsInMirror	r7 near-match sweep: regalloc/frame/order
+Enemy/bosswanwan	init	r7 near-match sweep: regalloc/frame/order
+Enemy/bosswanwan	perform	r7 near-match sweep: regalloc/frame/order
+Enemy/bosswanwan	control	r7 near-match sweep: regalloc/frame/order
+Enemy/bosswanwan	perform	r7 near-match sweep: regalloc/frame/order
+Enemy/bosswanwan	slideToCurPathNode	r7 near-match sweep: regalloc/frame/order
+Enemy/bosswanwan	emitEffects	r7 near-match sweep: regalloc/frame/order
+Enemy/enemyMario	consider	r7 near-match sweep: regalloc/frame/order
+Enemy/enemyMario	findRunAwayNearestNode	r7 near-match sweep: regalloc/frame/order
+Enemy/enemyMario	perform	r7 near-match sweep: regalloc/frame/order
+Enemy/enemyMario	emReplay	r7 near-match sweep: regalloc/frame/order
+Enemy/enemyMario	drawHPMeter	r7 near-match sweep: regalloc/frame/order
+MarioUtil/ShadowUtil	drawShadowGD	r7 near-match sweep: regalloc/frame/order
+MarioUtil/ShadowUtil	calc	r7 near-match sweep: regalloc/frame/order
+MarioUtil/ShadowUtil	entryDrawShadow	r7 near-match sweep: regalloc/frame/order
+Enemy/hanasambo	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/hanasambo	execute	r7 near-match sweep: regalloc/frame/order
+Animal/BeeHive	receiveMessage	r7 near-match sweep: regalloc/frame/order
+Animal/BeeHive	execute	r7 near-match sweep: regalloc/frame/order
+Player/WaterGun	animation	r7 near-match sweep: regalloc/frame/order
+Player/WaterGun	movement	r7 near-match sweep: regalloc/frame/order
+Enemy/koopajr	makeRoundVelocity	r7 near-match sweep: regalloc/frame/order
+Enemy/koopajr	makeRelativeAngle	r7 near-match sweep: regalloc/frame/order
+Camera/lensglow	perform	r7 near-match sweep: regalloc/frame/order
+Enemy/popo	init	r7 near-match sweep: regalloc/frame/order
+Enemy/popo	execute	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjManager	newUniqueObjByName	r7 near-match sweep: regalloc/frame/order
+Camera/cameralib	CLBIsPointInCube	r7 near-match sweep: regalloc/frame/order
+Camera/cameralib	CLBCalcPointInCubeRatio	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjMare	control	r7 near-match sweep: regalloc/frame/order
+Enemy/BathtubKiller	isAboided	r7 near-match sweep: regalloc/frame/order
+Animal/AnimalNerve	execute	r7 near-match sweep: regalloc/frame/order
+System/MarDirectorInitECT	initECDisp	r7 near-match sweep: regalloc/frame/order
+NPC/NpcParts	partsPerform	r7 near-match sweep: regalloc/frame/order
+GC2D/GCConsole2	startCameraDemo	r7 near-match sweep: regalloc/frame/order
+GC2D/GCConsole2	loadAfter	r7 near-match sweep: regalloc/frame/order
+GC2D/GCConsole2	drawWater	r7 near-match sweep: regalloc/frame/order
+GC2D/GCConsole2	load	r7 near-match sweep: regalloc/frame/order
+GC2D/GCConsole2	endCameraDemo	r7 near-match sweep: regalloc/frame/order
+GC2D/SelectMenu	perform	r7 near-match sweep: regalloc/frame/order
+GC2D/SelectMenu	initData	r7 near-match sweep: regalloc/frame/order
+GC2D/Guide	resetScore	r7 near-match sweep: regalloc/frame/order
+GC2D/Guide	changeBotStatus	r7 near-match sweep: regalloc/frame/order
+System/MarDirectorSetupObjects	setupObjects	r7 near-match sweep: regalloc/frame/order
+MSound/MSound	setParameterSeqSync	r7 near-match sweep: regalloc/frame/order
+MSound/MSound	startMarioVoice	r7 near-match sweep: regalloc/frame/order
+Camera/cameragc	calcSlopeAngleX_	r7 near-match sweep: regalloc/frame/order
+Camera/cameragc	CPolarSubCamera	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjTrap	control	r7 near-match sweep: regalloc/frame/order
+Player/MarioPhysics	checkGroundAtJumping	r7 near-match sweep: regalloc/frame/order
+Map/MapWire	init	r7 near-match sweep: regalloc/frame/order
+NPC/NpcCollision	execNpcObjCollision_	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjBall	touchWall	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjBase	perform	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjBase	setGroundCollision	r7 near-match sweep: regalloc/frame/order
+Enemy/igaiga	execute	r7 near-match sweep: regalloc/frame/order
+MSound/MSoundSE	startSoundActorInner	r7 near-match sweep: regalloc/frame/order
+Enemy/bgtentacle	moveRequest	r7 near-match sweep: regalloc/frame/order
+Enemy/conductor	isBossDefeated	r7 near-match sweep: regalloc/frame/order
+Enemy/effectObj	moveObject	r7 near-match sweep: regalloc/frame/order
+Map/MapEventDolpic	load	r7 near-match sweep: regalloc/frame/order
+Enemy/bosstelesa	moveObject	r7 near-match sweep: regalloc/frame/order
+Enemy/bosstelesa	moveObject	r7 near-match sweep: regalloc/frame/order
+Enemy/bosstelesa	calcRootMatrix	r7 near-match sweep: regalloc/frame/order
+Enemy/bosstelesa	init	r7 near-match sweep: regalloc/frame/order
+System/MarNameRefGen_MapObj	getNameRef_MapObj	r7 near-match sweep: regalloc/frame/order
+Enemy/Koopa	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/Koopa	getNeckFocus	r7 near-match sweep: regalloc/frame/order
+Enemy/Koopa	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/Koopa	execute	r7 near-match sweep: regalloc/frame/order
+Player/MarioCheckCol	checkCollision	r7 near-match sweep: regalloc/frame/order
+Map/BathWaterManager	render	r7 near-match sweep: regalloc/frame/order
+Player/MarioRun	running	r7 near-match sweep: regalloc/frame/order
+Player/MarioRun	doSurfing	r7 near-match sweep: regalloc/frame/order
+Player/MarioRun	walkEnd	r7 near-match sweep: regalloc/frame/order
+GC2D/SelectDir	rsetup	r7 near-match sweep: regalloc/frame/order
+Enemy/bosspakkun	gotHipDropDamage	r7 near-match sweep: regalloc/frame/order
+Enemy/bosspakkun	execute	r7 near-match sweep: regalloc/frame/order
+System/MenuDir	rsetup	r7 near-match sweep: regalloc/frame/order
+Enemy/gatekeeper	calc	r7 near-match sweep: regalloc/frame/order
+Enemy/gatekeeper	init	r7 near-match sweep: regalloc/frame/order
+System/MarDirectorDirect	nextStateInitialize	r7 near-match sweep: regalloc/frame/order
+Map/MapEventMare	bumpUpZ	r7 near-match sweep: regalloc/frame/order
+Map/MapEventMare	bumpUpX	r7 near-match sweep: regalloc/frame/order
+Enemy/tamaNoko	walkBehavior	r7 near-match sweep: regalloc/frame/order
+Camera/CameraMultiPlayer	ctrlMultiPlayerCamera_	r7 near-match sweep: regalloc/frame/order
+Enemy/TabePuku	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/pakkun	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/BossHanachanParts	considerSetAnm_	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjMamma	controlGoTarget	r7 near-match sweep: regalloc/frame/order
+Player/MarioMove	setStatusToJumping	r7 near-match sweep: regalloc/frame/order
+Player/MarioMove	checkController	r7 near-match sweep: regalloc/frame/order
+Player/MarioMove	gunExec	r7 near-match sweep: regalloc/frame/order
+Player/MarioDraw	initModel	r7 near-match sweep: regalloc/frame/order
+Player/MarioDraw	calcAnim	r7 near-match sweep: regalloc/frame/order
+Player/MarioDraw	considerWaist	r7 near-match sweep: regalloc/frame/order
+Player/Yoshi	calcAnim	r7 near-match sweep: regalloc/frame/order
+Player/Yoshi	movement	r7 near-match sweep: regalloc/frame/order
+Player/Yoshi	init	r7 near-match sweep: regalloc/frame/order
+Enemy/amiNoko	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/amiNoko	execute	r7 near-match sweep: regalloc/frame/order
+Enemy/amiNoko	calcDirection	r7 near-match sweep: regalloc/frame/order
+Enemy/bosseel	init	r7 near-match sweep: regalloc/frame/order
+Enemy/bosseel	init	r7 near-match sweep: regalloc/frame/order
+Enemy/BossHanachanMain	init	r7 near-match sweep: regalloc/frame/order
+Enemy/BossHanachanMain	execSlip	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjCorona	control	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjCorona	allowsTumble	r7 near-match sweep: regalloc/frame/order
+MoveBG/MapObjCorona	getNextJuncture	r7 near-match sweep: regalloc/frame/order
+System/GCLogoDir	setup	r7 near-match sweep: regalloc/frame/order
+System/GCLogoDir	direct_nlogo	r7 near-match sweep: regalloc/frame/order
+System/GCLogoDir	direct_dolby	r7 near-match sweep: regalloc/frame/order
+Enemy/rocket	calcRootMatrix	r7 near-match sweep: regalloc/frame/order
+NPC/NpcChange	changeNerveProc_	r7 near-match sweep: regalloc/frame/order
+Enemy/telesa	execute	r7 near-match sweep: regalloc/frame/order
+GC2D/Option	TOptionRumbleUnit	r7 near-match sweep: regalloc/frame/order
+Enemy/seal	init	r7 near-match sweep: regalloc/frame/order
+Player/MarioJump	diving	r7 near-match sweep: regalloc/frame/order
+Enemy/elecNokonoko	execute	r7 near-match sweep: regalloc/frame/order
+NPC/NpcAnm	npcWetting	r7 near-match sweep: regalloc/frame/order
+Enemy/hamukuri	initSetEnemies	r7 near-match sweep: regalloc/frame/order
+Player/MarioSpecial	specMain	r7 near-match sweep: regalloc/frame/order
+Enemy/smallEnemy	expandCollision	r8: only reg/frame/offset noise (filter)
+Enemy/smallEnemy	execute	r8: only reg/frame/offset noise (filter)
+Enemy/smallEnemy	execute	r8: only reg/frame/offset noise (filter)
+Enemy/smallEnemy	genEventCoin	r8: only reg/frame/offset noise (filter)
+Enemy/igaiga	generateByGateKeeper	r8: only reg/frame/offset noise (filter)
+Enemy/igaiga	moveObject	r8: only reg/frame/offset noise (filter)
+Enemy/igaiga	behaveToWater	r8: only reg/frame/offset noise (filter)
+Enemy/igaiga	initSetEnemies	r8: only reg/frame/offset noise (filter)
+MoveBG/MapObjBall	rebound	r8: only reg/frame/offset noise (filter)
+MoveBG/MapObjBall	rebound	r8: only reg/frame/offset noise (filter)
+MoveBG/MapObjMare	moveByWater	r8: only reg/frame/offset noise (filter)
+MoveBG/MapObjMare	initMapObj	r8: only reg/frame/offset noise (filter)
+MoveBG/MapObjMare	calc	r8: only reg/frame/offset noise (filter)
+Enemy/bossgesso	bind	r8: only reg/frame/offset noise (filter)
+Enemy/bossgesso	TBossGessoParams	r8: only reg/frame/offset noise (filter)
+Enemy/popo	PopoPossessedCallback	r8: only reg/frame/offset noise (filter)
+Enemy/popo	possessedIn	r8: only reg/frame/offset noise (filter)
+Map/MapWire	getPosInWire	r8: only reg/frame/offset noise (filter)
+Map/MapWire	setFootPointsAtHanged	r8: only reg/frame/offset noise (filter)
+System/MovieDirector	rsetup	r8: only reg/frame/offset noise (filter)
+System/MovieDirector	direct	r8: only reg/frame/offset noise (filter)
+NPC/NpcEffect	emitParticle_	r8: only reg/frame/offset noise (filter)
+Strategic/MirrorActor	perform	r8: only reg/frame/offset noise (filter)
+MarioUtil/PacketUtil	ShapePacketCallBackFunc	r8: only reg/frame/offset noise (filter)
+Enemy/telesa	initAttacker	r8: only reg/frame/offset noise (filter)
+Enemy/telesa	calcRootMatrix	r8: only reg/frame/offset noise (filter)
+Enemy/bombhei	execute	r8: only reg/frame/offset noise (filter)
+MSound/MSHandle	calcDolby	r8: only reg/frame/offset noise (filter)
+MoveBG/MapObjBianco	touchWater	r8: only reg/frame/offset noise (filter)
+Animal/fishoid	calcRootMatrix	r8: only reg/frame/offset noise (filter)
+Enemy/hanasambo	dropLeaf	r8: only reg/frame/offset noise (filter)
+Enemy/bossManta	calcRootMatrix	r8: only reg/frame/offset noise or tried
+Enemy/bossManta	drawMantaShadow	r8: only reg/frame/offset noise or tried
+Enemy/bossManta	update	r8: only reg/frame/offset noise or tried
+Enemy/bossManta	collidedWithWater	r8: only reg/frame/offset noise or tried
+Enemy/bossManta	adapt	r8: only reg/frame/offset noise or tried
+Enemy/bossManta	update	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjCorona	getNextGrip	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjCorona	getNearGrip	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjCorona	perform	r8: only reg/frame/offset noise or tried
+Player/MarioJump	jumpMain	r8: only reg/frame/offset noise or tried
+Player/MarioJump	hipAttacking	r8: only reg/frame/offset noise or tried
+System/EventWatcher	evSetTalkMsgID	r8: only reg/frame/offset noise or tried
+System/EventWatcher	evIsNearSameActors	r8: only reg/frame/offset noise or tried
+System/EventWatcher	evIsNearActors	r8: only reg/frame/offset noise or tried
+Enemy/Kumokun	calcRootMatrix	r8: only reg/frame/offset noise or tried
+Enemy/Kumokun	checkOnMovingFloor	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjDolpic	ring	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjDolpic	initMapObj	r8: only reg/frame/offset noise or tried
+Enemy/bgtentacle	calcVelocity	r8: only reg/frame/offset noise or tried
+Enemy/enemy	doShortCut	r8: only reg/frame/offset noise or tried
+Enemy/enemy	goToDirLimitedNextGraphNode	r8: only reg/frame/offset noise or tried
+MarioUtil/ScreenUtil	perform	r8: only reg/frame/offset noise or tried
+NPC/NpcChange	setPosAndInitAfterSinkBottom	r8: only reg/frame/offset noise or tried
+Player/Tongue	init	r8: only reg/frame/offset noise or tried
+MoveBG/Item	touchFruit	r8: only reg/frame/offset noise or tried
+Player/MarioMove	checkSink	r8: only reg/frame/offset noise or tried
+Enemy/mameGesso	calcObjCollision	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjItem2	control	r8: only reg/frame/offset noise or tried
+Enemy/hinokuri2	init	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	pauseOut	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	drawJuice	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startAppearTelop	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startInsertLife	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startAppearLife	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startAppearTank	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startDisappearTank	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startDisappearStar	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startAppearStar	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	setTimer	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	startDownLeftBot	r8: only reg/frame/offset noise or tried
+Enemy/enemyMario	emWalkAround	r8: only reg/frame/offset noise or tried
+Enemy/enemyMario	checkController	r8: only reg/frame/offset noise or tried
+Enemy/enemyMario	emRunAwayToNearestNode	r8: only reg/frame/offset noise or tried
+GC2D/Talk2D2	load	r8: only reg/frame/offset noise or tried
+GC2D/Talk2D2	loadAfter	r8: only reg/frame/offset noise or tried
+GC2D/PauseMenu2	disappearWindow	r8: only reg/frame/offset noise or tried
+GC2D/PauseMenu2	appearWindow	r8: only reg/frame/offset noise or tried
+Player/ModelWaterManager	perform	r8: only reg/frame/offset noise or tried
+Player/ModelWaterManager	drawMirror	r8: only reg/frame/offset noise or tried
+Enemy/bosseel	execute	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjRailBlock	control	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjRailBlock	moveToNextNode	r8: only reg/frame/offset noise or tried
+GC2D/ConsoleStr	load	r8: only reg/frame/offset noise or tried
+NPC/NpcInitPrg	init	r8: only reg/frame/offset noise or tried
+Camera/cameralib	CLBCalc2DFPos	r8: only reg/frame/offset noise or tried
+Enemy/hamukuri	execute	r8: only reg/frame/offset noise or tried
+Enemy/hamukuri	walkBehavior	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjRicco	loadAfter	r8: only reg/frame/offset noise or tried
+Enemy/poihana	walkBehavior	r8: only reg/frame/offset noise or tried
+MSound/MSound	fadeOutAllSound	r8: only reg/frame/offset noise or tried
+Enemy/BossHanachanSub	TSphereLink	r8: only reg/frame/offset noise or tried
+MarioUtil/ShadowUtil	drawShadow	r8: only reg/frame/offset noise or tried
+GC2D/hx_wiper	Hx_Test5	r8: only reg/frame/offset noise or tried
+GC2D/hx_wiper	Hx_Test4	r8: only reg/frame/offset noise or tried
+GC2D/hx_wiper	Hxs_GameOver	r8: only reg/frame/offset noise or tried
+Enemy/bosspakkun	perform	r8: only reg/frame/offset noise or tried
+Enemy/bosspakkun	perform	r8: only reg/frame/offset noise or tried
+Enemy/bosspakkun	calcHeadDir	r8: only reg/frame/offset noise or tried
+Enemy/limitkoopa	execute	r8: only reg/frame/offset noise or tried
+Enemy/limitkoopa	loadAfter	r8: only reg/frame/offset noise or tried
+Enemy/limitkoopa	load	r8: only reg/frame/offset noise or tried
+Map/PollutionCount	drawJointObjStamp	r8: only reg/frame/offset noise or tried
+Map/PollutionCount	calcViewMtx	r8: only reg/frame/offset noise or tried
+Animal/boid	calcForces	r8: only reg/frame/offset noise or tried
+Animal/boid	calcGoalForce	r8: only reg/frame/offset noise or tried
+GC2D/BoundPane	update	r8: only reg/frame/offset noise or tried
+Enemy/elecNokonoko	sendMessage	r8: only reg/frame/offset noise or tried
+Enemy/tinkoopa	checkOrder	r8: only reg/frame/offset noise or tried
+Enemy/tinkoopa	makeLaunchSchedule	r8: only reg/frame/offset noise or tried
+Player/MarioWait	waitingCommonEvents	r8: only reg/frame/offset noise or tried
+Enemy/namekuri	execute	r8: only reg/frame/offset noise or tried
+Player/MarioPhysics	checkDescent	r8: only reg/frame/offset noise or tried
+Strategic/ObjHitCheck	checkWater	r8: only reg/frame/offset noise or tried
+Map/MapWireManager	getPosInWire	r8: only reg/frame/offset noise or tried
+TRK_MINNOW_DOLPHIN/debugger/embedded/MetroTRK/Portable/support	TRKSuppAccessFile	r8: only reg/frame/offset noise or tried
+Map/MapStaticObject	init	r8: only reg/frame/offset noise or tried
+Player/MarioParticle	surfingEffect	r8: only reg/frame/offset noise or tried
+Map/MapEventMare	bumpDownX	r8: only reg/frame/offset noise or tried
+Map/MapEventMare	bumpDownZ	r8: only reg/frame/offset noise or tried
+Map/MapEventMare	rising	r8: only reg/frame/offset noise or tried
+Map/MapEventMare	loadAfter	r8: only reg/frame/offset noise or tried
+GC2D/Option	update	r8: only reg/frame/offset noise or tried
+GC2D/Option	update	r8: only reg/frame/offset noise or tried
+GC2D/Option	initSurroundAnm	r8: only reg/frame/offset noise or tried
+GC2D/Option	TOptionSoundUnit	r8: only reg/frame/offset noise or tried
+GC2D/Option	initSteleoAnm	r8: only reg/frame/offset noise or tried
+GC2D/Option	adjustView	r8: only reg/frame/offset noise or tried
+Enemy/conductor	perform	r8: only reg/frame/offset noise or tried
+Enemy/conductor	genEnemyFromPollution	r8: only reg/frame/offset noise or tried
+Enemy/conductor	makeOneEnemyAppear	r8: only reg/frame/offset noise or tried
+System/DrawSyncManager	TDrawSyncTokenRange,	r8: only reg/frame/offset noise or tried
+System/MarDirectorDirect	direct	r8: only reg/frame/offset noise or tried
+System/MarDirectorDirect	changeState	r8: only reg/frame/offset noise or tried
+MarioUtil/DrawUtil	SetViewFrustumClipCheck	r8: only reg/frame/offset noise or tried
+MarioUtil/DrawUtil	tremble	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjFence	initMapObj	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjFence	control	r8: only reg/frame/offset noise or tried
+Enemy/effectObj	reset	r8: only reg/frame/offset noise or tried
+System/MarDirectorSetupObjects	decideMarioPosIdx	r8: only reg/frame/offset noise or tried
+Enemy/bosstelesa	checkHit	r8: only reg/frame/offset noise or tried
+System/CardManager	cmdLoop	r8: only reg/frame/offset noise or tried
+Enemy/graph	traceSpline	r8: only reg/frame/offset noise or tried
+Enemy/graph	getEscapeDirLimited	r8: only reg/frame/offset noise or tried
+Enemy/wireBinder	bind	r8: only reg/frame/offset noise or tried
+System/MarioGamePad	updateMeaning	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjFlag	draw	r8: only reg/frame/offset noise or tried
+Camera/CameraBGCheck	isNeedGroundCheck_	r8: only reg/frame/offset noise or tried
+GC2D/MessageLoader	parseBlock	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	execute	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	execute	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	execute	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	checkWalls	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	bindPoint	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	initEscapeNextGraphNode	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	setQuat	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	emitEffects	r8: only reg/frame/offset noise or tried
+Enemy/fireWanwan	bindOne	r8: only reg/frame/offset noise or tried
+Enemy/killer	genEventCoin	r8: only reg/frame/offset noise or tried
+Enemy/killer	execute	r8: only reg/frame/offset noise or tried
+Enemy/killer	calcChaseParam	r8: only reg/frame/offset noise or tried
+Enemy/enemymanager	performShared	r8: only reg/frame/offset noise or tried
+Enemy/enemymanager	createEnemies	r8: only reg/frame/offset noise or tried
+Enemy/Koopa	getFlameDirRate	r8: only reg/frame/offset noise or tried
+Enemy/Koopa	load	r8: only reg/frame/offset noise or tried
+Enemy/Koopa	getTargetDir	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjGeneral	waitingToAppear	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjGeneral	bind	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjGeneral	thrown	r8: only reg/frame/offset noise or tried
+Player/Yoshi	doSearch	r8: only reg/frame/offset noise or tried
+Camera/sunmgr	load	r8: only reg/frame/offset noise or tried
+Player/MarioRun	slideProcess	r8: only reg/frame/offset noise or tried
+Player/MarioRun	doRunning	r8: only reg/frame/offset noise or tried
+Animal/BeeHive	setRotate	r8: only reg/frame/offset noise or tried
+System/MarDirectorInitECT	initECTGft	r8: only reg/frame/offset noise or tried
+MSound/MSoundScene	sortMaxTrans	r8: only reg/frame/offset noise or tried
+MoveBG/MapObjSirena	partsRollCallback	r8: only reg/frame/offset noise or tried
+System/EmitterViewObj	emitWithRotate	r8: only reg/frame/offset noise or tried
+Map/Map	initMare	r8: only reg/frame/offset noise or tried
+NPC/NpcNerve	execute	r8: only reg/frame/offset noise or tried
+GC2D/GCConsole2	countShine	96.5: regalloc r5/r6 + frame
+GC2D/GCConsole2	perform__11TGCConsole2	97.8: global regalloc shift + frame
+GC2D/Talk2D2	setTagParam	99.6: regalloc + frame
+Enemy/Kukku	dropCoins	91.4: TQuat4 rotate reload order + frame
+Enemy/BossHanachanMain	throwMario_	in-place neg plus +16 frame
+Enemy/BossHanachanMain	execWalk__13TBossHanachan	frame-only after getPoint fix
+Enemy/BossHanachanMain	perform__13TBossHanachan	96.4: lwzx loop unroll form, scheduling
+Enemy/feetinv	FeetInvCalc	90.4: regalloc across sqrt diamonds, frame
+Animal/Bird	WalkOnGround	TQuat4 rotate regalloc (header)
+Animal/Bird	doLanding	rotate regalloc + 16 unknown frame bytes
+Animal/AnimalBase	execWalk	rotate regalloc, f29-f31 swap
+Animal/AnimalBase	getRotationFlyToDir	99.9: rot slot 4 bytes lower
+Enemy/Kazekun	doAttackPose	TQuat4 rotate scheduling + frame
+Player/ModelWaterManager	move__18TModelWaterManager	94.9: squared() fusion + prologue hoisting
+Player/Tongue	movement__12TYoshiTongue	98.6: squared() fusion + frame
+Player/MarioDraw	calcBaseMtx	96.9: cross product order, regalloc, frame
+JSystem/JDrama/JDRCamera	perform__Q26JDrama12TPolarCamera	74: FPR alloc of inlined concat blocks
+JSystem/JDrama/JDRSmJ3DAct	perform__Q26JDrama9TSmJ3DAct	83: FPR numbering shifted by one + frame
+JSystem/JParticle/JPAMath	JPAVecToRotaMtx	87: oneMinusCos placement + FPR + frame
+JSystem/JParticle/JPAEmitter	createParticle__14JPABaseEmitter	97: info obj field address hoisting
+Enemy/Koopa	KoopaNeckCallBack	84.5: concat schedule with scalarised rot mtx; normalize unfused
+Enemy/koopajr	calcRootMatrix__17TKoopaJrSubmarine	96.3: in-place mul schedule
+Camera/CameraInbetween	execCameraInbetween	flip blocker: sdata2 constant order
+Map/PollutionEvent	loadAfter__14TPollutionTest	flip blocker: weak dtor/perform position
+GC2D/MessageUtil	SMSGetMessageData	flip blocker: weak JSUMemoryInputStream getters emitted
+Enemy/coasterkiller	moveCoaster__13TCoasterEnemy	needs TVec3 copy ctor without Vec* casts
+Enemy/BathtubKiller	makeQuat__14TBathtubKiller	needs TVec3 copy ctor fix
+Enemy/hauntLeg	calcRootMatrix__9THauntLeg	needs TVec3 copy ctor fix (99.6 measured)
+Enemy/namekuri	calcRootMatrix__9TNameKuri	needs TVec3 copy ctor fix (99.6 measured)
+Enemy/wireTrap	checkHitActors	calcMomentum NRVO shape
+Enemy/walker	bind__7TWalker	99.1: cross reload + frame
+Enemy/spider	bind__7TSpider	99.6: clrlwi reg + dead frame slots
+Enemy/bossgesso	doAttackSingle	99.8: frame only
+MoveBG/MapObjBall	calcCurrentMtx	fusion fixed; ROM 2nd dead getVelocity copy
+Player/ModelWaterManager	move__18TModelWaterManager	fusion fixed; regalloc/CSE remain
+Enemy/bosstelesa	moveObject__11TBossTelesa	fusion fixed; 2 lfs-order diffs
+Map/MapCheck	intersectLine	regalloc only
+Enemy/graph	getNearestPosOnGraphLink	97.1: bool reg + nodes add/lwz
+Camera/lensflare	perform__10TLensFlare	91.4: frame + gpCamera reload
+Enemy/enemyMario	initEnemyValues	98.5: const reg placement + frame
+Enemy/enemyMario	emReplayJumpToNearestNode	97.0: regalloc + hoist
+Enemy/bossManta	updateAttractor__10TBossManta	98.7: f24/f25 swap + frame
+Enemy/wireTrap	calcRootMatrix__9TWireTrap	96.2: quat scheduling + dead temp slot
+Enemy/fruitsboat	moveObject__11TFruitsBoat	98.5: const reg, offset reuse, frame
+Enemy/bosseel	moveObject__8TOilBall	95.8: load order + frame
+Map/MapCheck	checkWallList	0xe0 frame gap + FPR permutation
+Camera/CameraBGCheck	calcInHouseNo_	97.8: dead loop counter residue
+Camera/cameralib	CLBCalcNearNinePos	94.2: local load CSE across stores + 2 dead slots
+Camera/cameragc	calcPosAndAt_	95.8: bool consts via mr/addi, extsh+clrlslwi, frame
+NPC/NpcParts	__ct__9TNpcParts	-1 default folded + frame
+GC2D/SelectShine2	perform__19TSelectShineManager	extra const& copies + frame
+Enemy/bosswanwan	bind__9TBWBinder	PerpendicFoot inline + frame
+Enemy/bosswanwan	execute__19TNerveBWGraphWander	regalloc + bool landing
+Enemy/bosstelesa	generateSlotItem	reg swaps + frame
+GC2D/CardLoad	titleDraw	jump table cases 5-7 == default
+Enemy/Kumokun	bind__8TKumokun	0x18 stack too large after copy fix
+Enemy/Kumokun	TNerveKumokunWait	regalloc + extra f27
+Enemy/fireWanwan	bindBody__11TFireWanwan	lower local order
+Enemy/fireWanwan	restrict__11TTailRubber	sqrt inlined twice
+GC2D/SelectShine2	perform__19TSelectShineManager	mPos copy + out-of-line add
+Enemy/koopajr	calcRootMatrix__17TKoopaJrSubmarine	quat mul scheduling
+Enemy/BossHanachanMain	perform__13TBossHanachan	frame 0x118 short
+MoveBG/Item	appearWithTime__6TShine	frame 0x80 vs 0x60, this r30
+Animal/BeeHive	calcRootMatrix__8TBeeHive	32B fewer dead slots in ROM
+MoveBG/MapObjCorona	receiveMessage__12TBathtubGrip	frame + nonvolatile order + per-case reloads
+Enemy/bosstelesa	flashItem__11TBossTelesa	regalloc only
+GC2D/ConsoleStr	processMiss	frame +0x10 + emitter centre scheduling
+GC2D/ConsoleStr	processShineGet	same as processMiss
+MoveBG/MapObjBall	kicked__11TResetFruit	ROM keeps materialised vel copy
+Map/BathWaterManager	throwMario	95.2: dead stack slots + set scheduling
+Enemy/TabePuku	swimTo__9TTabePuku	93.8: frame 0x98 larger + setRotate scheduling
+Enemy/Kukku	dropCoins__6TKukkuFv	99.4: frame + constant register order
+Enemy/Koopa	KoopaNeckCallBack	88.3: frame bigger + concat/quat allocation
+Enemy/Kazekun	doAttackPose	86.7 after copy fix: frame + getAroundQuat load order
+Enemy/fireWanwan	restrict__11TTailRubber	86.8: sqrt inlined twice sharing one squared
+Enemy/BathtubKiller	makeQuat__14TBathtubKiller	90.4: frame + args in f24/f25
+Enemy/hanasambo	checkGenCoin	ROM calls TVec3::add out of line; wrappers still inline
+Map/MapMirror	perform__19TMirrorModelManager	huge; TVec3 ctor out of line before set + frame
+Map/MapCheck	bgIntersectLine	frame 0x50 + local layout
+Map/MapMakeList	addCheckDataToGrid	hoist worse; frame + conversion temp layout
+GC2D/Option	checkInput__14TOptionControl	stopSound inlined one level deeper in ROM; frame
+NPC/NpcBase	perform__8TBaseNPC	r31 unfolded + scheduling + frame
+GC2D/Talk2D2	perform__8TTalk2D2	closed in r31 + erase flag + frame
+GC2D/Guide	perform__6TGuide	startMoveCursor2 order + r29/r31
+Camera/CameraNormal	calcTowerCenterPos_	table base per case + frame
+Animal/AnimalBase	SMS_Eular2Quat	FP order; inlined into execWalk
+MoveBG/MapObjCorona	calcRootMatrix__8TBathtub	setQuat scheduling + frame
+Enemy/BathtubKiller	TNerveBathtubKillerStraight	moveStraight frame + getZDir
+Enemy/limitkoopa	startHipDrop	99.6 w/o pad; frame 64 bytes + slot offsets
+Enemy/fireWanwan	restrict__11TTailRubber	sq recipe worse (ROM keeps inv_sqrt inline)
+Enemy/koopajr	makeKillerVelocity	sq recipe worse
+Enemy/koopajr	makeRoundVelocity	sq recipe worse
+Enemy/BathtubKiller	makeInitialVelocity	sq recipe worse
+Map/BathWaterManager	perform__17TBathWaterManager	sq recipe in fakeCalcPos worse
+JSystem/JParticle/JPAField	JPAAirField7affect	vec slot + f4/f5
+JSystem/JParticle/JPAField	JPAConvectionField7affect	frame + reg swaps
+JSystem/JParticle/JPADrawVisitor	JPADrawExecStripe4exec	frame + regalloc
+JSystem/JParticle/JPADrawVisitor	JPADrawExecStripeCross4exec	regalloc only
+JSystem/JDrama/JDRFrmGXSet	TFrmGXSet7perform	hidden GXRenderModeObj temps
+JSystem/JAudio/JAInterface/JAIGFrameSe	checkNextFrameSe	regalloc only
+Enemy/yunbo	shotSeeds	TQuat4::mul set() form (2026-10-16) dropped 98.6->96.0; re-tune rotation.mul(spin, tilt) site
+Animal/AnimalBase	SMS_Eular2Quat	TQuat4::mul set() form dropped 91.9->91.4
+Enemy/bosstelesa	flashItem__	coin: ROM wants addi flag ptr before lwz 0xf0(base); ours lwzu; no local flag, f2 local (loses reloads) all worse
+Enemy/enemymanager	TEnemyManager::perform	else-loop: ROM keeps strength-reduced slwi/addi 4 induction; getObj(i); stmt gives srwi/mtctr loop, worse
+Enemy/hanasambo	checkGenCoin	88.1->94.7 via 3 chained wrappers around pos += offset (TVec3::add out of line); left: frame 0x120 vs 0xf8, FPR const order
+Enemy/chuuhana	moveObject	dead fcmpo/cror kept in ROM; return-expr helper, bare call, if(zero) variants all drop it
+MoveBG/MapObjBall	kicked__11TResetFruit	vel=assign/TVec3(getVelocity())/by-value copy wrapper: ROM temp->vel copy (6 insns) not reproduced; NRVO elides
+MarioUtil/DrawUtil	SMS_AddDamageFogEffect	by-value inline helper (target-base)*s still constant-folds; ROM does runtime fsubs
+Player/MarioDraw	MarioHeadCtrl	npcFocalPoint named vs inline-in-operator-minus vs assign: ROM copy of focal point sits after pos setup; ours hoists it
+MoveBG/MapObjMonte	TSwingBoard::draw	top declared before bottom now matches stack order; remaining: ROM frame 0x38 bigger, ptr &mInitialPosition.z in r30, dead slots 0x08-0x2f
+GC2D/SelectShine2	perform__19TSelectShineManager	add() wrapped 2-3 inline levels: worse (inlined/regalloc), operator+ form kept
+GC2D/Talk2D2	makeBoxLine	ROM u16 code=(s8)c has cmplwi 0x80/blt/mr r3,r3 before beq; code=code / (u16)ch variants no effect
+Strategic/liveinterp	linGetSRT	outer case order rot,pos,scale matches ROM block order (kept, 0 gain); remaining: lfs scheduling vs slice ctor stores
+Camera/CameraNormal	calcTowerCenterPos_	file-scope table no change; ours hoists data.0 base before switch, ROM re-materialises per case (static-local symbol)
+Enemy/tobiPuku	TTobiPuku::hitWall	dot via TVec3::dot (cast/ref) changes loads but not the ROM's reload of normal.x/velocity.x after bounce
+Enemy/popo	walkBehavior__6TPopo	dead mVelocity copy local before unk1B8 += is eliminated by compiler; ROM copy source unknown
+Enemy/bgtentacle	setAttackTarget	ROM keeps param copy of first operator* result (0x124->0xcc); iVar9*v form and by-value BGTMul helper unchanged
+Enemy/BossHanachanMain	execDamage__13TBossHanachan	index fixed via named locals; loop reg (r3/r4) only
+Enemy/smallEnemy	changeMove__11TSmallEnemy	tail fixed; int->float fsubs scheduling only
+Map/MapMirror	perform__19TMirrorModelManager	ROM calls TVec3() ctor out of line then set<f> with f29-31 held; by-value plane ctor/maker fn and wrapper-struct ctor chains tried: worse or no change
+MoveBG/MapObjRailBlock	TNormalLift::setGroundCollision	ROM calls SMatrix34C() ctor out of line in inlined TRailMapObj::setGroundCollision; 1-3 static inline wrappers around the qualified call break the inline (33 diffs)
+Animal/BeeHive	controlCollision__	r16: dead 'idx+1 cmpw' not reproducible via local/++idx/empty-if (all dropped); leave
+Enemy/rocket	setDeadAnm__	r16: by-value dead-copy helper changes stores not loads; non-const dir no effect
+MSound/MSound	__ct__6MSound	r16: needs ~JAIBasic decl removed from shared header (not editable by worker)
+MoveBG/Item	TShine::appearWithTime	r9: this/param regalloc swap (r30/r31); reorder x/yDelta worse
+Camera/CameraNormal	calcTowerCenterPos_	r9: table base hoist unchanged
+MoveBG/MapObjMonte	TSwingBoard::draw	r9: ROM keeps &mInitialPosition.z in r30 + frame 0x58; top/bottom order no effect
+MoveBG/MapObjMamma	TMammaMirrorMapOperator::perform	r9: ROM frame +0x18 and camPos in r28 before dist
+GC2D/Guide	setPaneAlpha	r9: scheduling only

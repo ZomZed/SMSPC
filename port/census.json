@@ -1,0 +1,4087 @@
+[
+ {
+  "name": "main.cpp",
+  "src": "src/main.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JSupport/JSUOutputStream.cpp",
+  "src": "libs/JSystem/src/JSupport/JSUOutputStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JSupport/JSUInputStream.cpp",
+  "src": "libs/JSystem/src/JSupport/JSUInputStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JSupport/JSUList.cpp",
+  "src": "libs/JSystem/src/JSupport/JSUList.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JSupport/JSUMemoryStream.cpp",
+  "src": "libs/JSystem/src/JSupport/JSUMemoryStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JSupport/JSUFileStream.cpp",
+  "src": "libs/JSystem/src/JSupport/JSUFileStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JGadget/std-list.cpp",
+  "src": "libs/JSystem/src/JGadget/std-list.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JGadget/std-vector.cpp",
+  "src": "libs/JSystem/src/JGadget/std-vector.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JGadget/linklist.cpp",
+  "src": "libs/JSystem/src/JGadget/linklist.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JGadget/singlelinklist.cpp",
+  "src": "libs/JSystem/src/JGadget/singlelinklist.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRArchivePri.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRArchivePri.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRAramArchive.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRAramArchive.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRAramHeap.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRAramHeap.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRAram.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRAram.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRArchivePub.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRArchivePub.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRCompArchive.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRCompArchive.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRDisposer.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRDisposer.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRDvdArchive.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRDvdArchive.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRDvdFile.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRDvdFile.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRExpHeap.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRExpHeap.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRFileCache.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRFileCache.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRFileFinder.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRFileFinder.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRFileLoader.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRFileLoader.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRHeap.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRHeap.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRMemArchive.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRMemArchive.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRSolidHeap.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRSolidHeap.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRStdHeap.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRStdHeap.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRThread.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRThread.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRDvdRipper.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRDvdRipper.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRDvdAramRipper.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRDvdAramRipper.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRDecomp.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRDecomp.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRAramBlock.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRAramBlock.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRAramPiece.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRAramPiece.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JKernel/JKRAramStream.cpp",
+  "src": "libs/JSystem/src/JKernel/JKRAramStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTException.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTException.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTDirectPrint.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTDirectPrint.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTDbPrint.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTDbPrint.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTFont.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTFont.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTGamePad.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTGamePad.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTNameTab.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTNameTab.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTPalette.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTPalette.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTRect.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTRect.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTResource.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTResource.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTTexture.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTTexture.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTAssert.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTAssert.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTVideo.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTVideo.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTResFont.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTResFont.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTRomFont.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTRomFont.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTConsole.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTConsole.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JUtility/JUTDirectFile.cpp",
+  "src": "libs/JSystem/src/JUtility/JUTDirectFile.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRActor.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRActor.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRCamera.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRCamera.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRCharacter.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRCharacter.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRDirector.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRDirector.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRDisplay.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRDisplay.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRDrawBufObj.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRDrawBufObj.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRDStage.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRDStage.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRDStageGroup.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRDStageGroup.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDREfbCtrl.cpp",
+  "src": "libs/JSystem/src/JDrama/JDREfbCtrl.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDREfbSetting.cpp",
+  "src": "libs/JSystem/src/JDrama/JDREfbSetting.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRFrmGXSet.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRFrmGXSet.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRGraphics.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRGraphics.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRLighting.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRLighting.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRNameRef.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRNameRef.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRNameRefGen.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRNameRefGen.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRPlacement.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRPlacement.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRRenderMode.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRRenderMode.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRResolution.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRResolution.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRScreen.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRScreen.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRSmJ3DAct.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRSmJ3DAct.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRSmJ3DScn.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRSmJ3DScn.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRVideo.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRVideo.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRViewConnecter.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRViewConnecter.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRViewObj.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRViewObj.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JDrama/JDRViewport.cpp",
+  "src": "libs/JSystem/src/JDrama/JDRViewport.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JADebug/JADHioNode.cpp",
+  "src": "libs/JSystem/src/JAudio/JADebug/JADHioNode.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JALibrary/JALCalc.cpp",
+  "src": "libs/JSystem/src/JAudio/JALibrary/JALCalc.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JALibrary/JALModSe.cpp",
+  "src": "libs/JSystem/src/JAudio/JALibrary/JALModSe.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIAsnData.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIAsnData.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIAnimation.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIAnimation.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIBasic.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIBasic.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIConst.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIConst.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIDebug.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIDebug.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIData.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIData.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIEntry.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIEntry.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIEntrySe.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIEntrySe.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIEntrySequence.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIEntrySequence.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIEntryStream.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIEntryStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIGFrameSe.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIGFrameSe.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIGFrameSequence.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIGFrameSequence.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIGFrameStream.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIGFrameStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAIGlobalParameter.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAIGlobalParameter.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAISound.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAISound.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JAInterface/JAISystemInterface.cpp",
+  "src": "libs/JSystem/src/JAudio/JAInterface/JAISystemInterface.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASBank.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASBank.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASBankMgr.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASBankMgr.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASBasicBank.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASBasicBank.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASBasicInst.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASBasicInst.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASBasicWaveBank.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASBasicWaveBank.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASBNKParser.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASBNKParser.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASDrumSet.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASDrumSet.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASInstEffect.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASInstEffect.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASInstRand.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASInstRand.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASInstSense.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASInstSense.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASSimpleWaveBank.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASSimpleWaveBank.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASWaveArcLoader.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASWaveArcLoader.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASWaveBank.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASWaveBank.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASWaveBankMgr.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASWaveBankMgr.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASWSParser.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASWSParser.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASAudioThread.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASAudioThread.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASChAllocQueue.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASChAllocQueue.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASChannel.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASChannel.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASDriverTables.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASDriverTables.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASChannelMgr.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASChannelMgr.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASChGlobal.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASChGlobal.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASDriverIF.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASDriverIF.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASDSPBuf.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASDSPBuf.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASDSPChannel.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASDSPChannel.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASDSPInterface.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASDSPInterface.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASOscillator.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASOscillator.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASAiCtrl.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASAiCtrl.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASCalc.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASCalc.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASCallback.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASCallback.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASCmdStack.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASCmdStack.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASDvdThread.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASDvdThread.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASHardStream.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASHardStream.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASHeapCtrl.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASHeapCtrl.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASRate.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASRate.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASKernelDebug.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASKernelDebug.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASProbe.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASProbe.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASSystemHeap.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASSystemHeap.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASVload.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASVload.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASNoteMgr.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASNoteMgr.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASOuterParam.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASOuterParam.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASPlayer_impl.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASPlayer_impl.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASRegisterParam.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASRegisterParam.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASSeqCtrl.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASSeqCtrl.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASTrack.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASTrack.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASTrackInterrupt.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASTrackInterrupt.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASTrackMgr.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASTrackMgr.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASTrackPort.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASTrackPort.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JAudio/JASystem/JASSeqParser.cpp",
+  "src": "libs/JSystem/src/JAudio/JASystem/JASSeqParser.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DPane.cpp",
+  "src": "libs/JSystem/src/J2D/J2DPane.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DPicture.cpp",
+  "src": "libs/JSystem/src/J2D/J2DPicture.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DPrint.cpp",
+  "src": "libs/JSystem/src/J2D/J2DPrint.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DScreen.cpp",
+  "src": "libs/JSystem/src/J2D/J2DScreen.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DTextBox.cpp",
+  "src": "libs/JSystem/src/J2D/J2DTextBox.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DWindow.cpp",
+  "src": "libs/JSystem/src/J2D/J2DWindow.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DGrafContext.cpp",
+  "src": "libs/JSystem/src/J2D/J2DGrafContext.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J2D/J2DOrthoGraph.cpp",
+  "src": "libs/JSystem/src/J2D/J2DOrthoGraph.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DTransform.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DTransform.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DMaterial.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DMaterial.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DShape.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DShape.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DSys.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DSys.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DVertex.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DVertex.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DPacket.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DPacket.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DTevs.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DTevs.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphBase/J3DDrawBuffer.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphBase/J3DDrawBuffer.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphAnimator/J3DCluster.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphAnimator/J3DCluster.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphAnimator/J3DJoint.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphAnimator/J3DJoint.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphAnimator/J3DModel.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphAnimator/J3DModel.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphAnimator/J3DNode.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphAnimator/J3DNode.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphAnimator/J3DAnimation.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphAnimator/J3DAnimation.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphAnimator/J3DMaterialAnm.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphAnimator/J3DMaterialAnm.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphAnimator/J3DMaterialAttach.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphAnimator/J3DMaterialAttach.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphLoader/J3DClusterLoader.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphLoader/J3DClusterLoader.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphLoader/J3DJointFactory.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphLoader/J3DJointFactory.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphLoader/J3DMaterialFactory.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphLoader/J3DMaterialFactory.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphLoader/J3DModelLoader.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphLoader/J3DModelLoader.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphLoader/J3DShapeFactory.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphLoader/J3DShapeFactory.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphLoader/J3DAnmLoader.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphLoader/J3DAnmLoader.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/J3D/J3DGraphLoader/J3DMaterialFactory_v21.cpp",
+  "src": "libs/JSystem/src/J3D/J3DGraphLoader/J3DMaterialFactory_v21.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAEmitter.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAEmitter.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAEmitterManager.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAEmitterManager.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAField.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAField.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAMath.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAMath.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAParticle.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAParticle.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPADrawSetupTev.cpp",
+  "src": "libs/JSystem/src/JParticle/JPADrawSetupTev.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPADraw.cpp",
+  "src": "libs/JSystem/src/JParticle/JPADraw.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPADrawVisitor.cpp",
+  "src": "libs/JSystem/src/JParticle/JPADrawVisitor.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAExTexShape.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAExTexShape.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPADataBlock.cpp",
+  "src": "libs/JSystem/src/JParticle/JPADataBlock.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAEmitterLoader.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAEmitterLoader.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPABaseShape.cpp",
+  "src": "libs/JSystem/src/JParticle/JPABaseShape.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAExtraShape.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAExtraShape.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPAResourceManager.cpp",
+  "src": "libs/JSystem/src/JParticle/JPAResourceManager.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPASweepShape.cpp",
+  "src": "libs/JSystem/src/JParticle/JPASweepShape.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JParticle/JPATexture.cpp",
+  "src": "libs/JSystem/src/JParticle/JPATexture.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JStage/JSGAmbientLight.cpp",
+  "src": "libs/JSystem/src/JStage/JSGAmbientLight.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JStage/JSGCamera.cpp",
+  "src": "libs/JSystem/src/JStage/JSGCamera.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JStage/JSGActor.cpp",
+  "src": "libs/JSystem/src/JStage/JSGActor.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JStage/JSGLight.cpp",
+  "src": "libs/JSystem/src/JStage/JSGLight.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JStage/JSGObject.cpp",
+  "src": "libs/JSystem/src/JStage/JSGObject.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JStage/JSGSystem.cpp",
+  "src": "libs/JSystem/src/JStage/JSGSystem.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JMath.cpp",
+  "src": "libs/JSystem/src/JMath.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/JRenderer.cpp",
+  "src": "libs/JSystem/src/JRenderer.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/random.cpp",
+  "src": "libs/JSystem/src/random.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/dspproc.c",
+  "src": "libs/JSystem/src/dspproc.c",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/dsptask.c",
+  "src": "libs/JSystem/src/dsptask.c",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/osdsp.c",
+  "src": "libs/JSystem/src/osdsp.c",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "JSystem/osdsp_task.c",
+  "src": "libs/JSystem/src/osdsp_task.c",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/DLUtil.cpp",
+  "src": "src/MarioUtil/DLUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/DrawUtil.cpp",
+  "src": "src/MarioUtil/DrawUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/LightUtil.cpp",
+  "src": "src/MarioUtil/LightUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/MathUtil.cpp",
+  "src": "src/MarioUtil/MathUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/MtxUtil.cpp",
+  "src": "src/MarioUtil/MtxUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/ScreenUtil.cpp",
+  "src": "src/MarioUtil/ScreenUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/ShadowUtil.cpp",
+  "src": "src/MarioUtil/ShadowUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/gd-reinit-gx.cpp",
+  "src": "src/MarioUtil/gd-reinit-gx.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/EffectUtil.cpp",
+  "src": "src/MarioUtil/EffectUtil.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/ModelUtil.cpp",
+  "src": "src/MarioUtil/ModelUtil.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/RumbleMgr.cpp",
+  "src": "src/MarioUtil/RumbleMgr.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/RumbleData.cpp",
+  "src": "src/MarioUtil/RumbleData.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/RumbleType.cpp",
+  "src": "src/MarioUtil/RumbleType.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/PacketUtil.cpp",
+  "src": "src/MarioUtil/PacketUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/GDUtil.cpp",
+  "src": "src/MarioUtil/GDUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/TexUtil.cpp",
+  "src": "src/MarioUtil/TexUtil.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/MapUtil.cpp",
+  "src": "src/MarioUtil/MapUtil.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MarioUtil/ToolData.cpp",
+  "src": "src/MarioUtil/ToolData.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/M3UJoint.cpp",
+  "src": "src/M3DUtil/M3UJoint.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/M3UModel.cpp",
+  "src": "src/M3DUtil/M3UModel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/MActor.cpp",
+  "src": "src/M3DUtil/MActor.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/MActorAnm.cpp",
+  "src": "src/M3DUtil/MActorAnm.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/MActorData.cpp",
+  "src": "src/M3DUtil/MActorData.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/SDLModel.cpp",
+  "src": "src/M3DUtil/SDLModel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/MActorUtil.cpp",
+  "src": "src/M3DUtil/MActorUtil.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/SampleCtrlNode.cpp",
+  "src": "src/M3DUtil/SampleCtrlNode.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/SampleCtrlModel.cpp",
+  "src": "src/M3DUtil/SampleCtrlModel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/MotionBlendCtrl.cpp",
+  "src": "src/M3DUtil/MotionBlendCtrl.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "M3DUtil/LodAnm.cpp",
+  "src": "src/M3DUtil/LodAnm.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/BaseParam.cpp",
+  "src": "src/System/BaseParam.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/EmitterViewObj.cpp",
+  "src": "src/System/EmitterViewObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/EventWatcher.cpp",
+  "src": "src/System/EventWatcher.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/FlagManager.cpp",
+  "src": "src/System/FlagManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/GCLogoDir.cpp",
+  "src": "src/System/GCLogoDir.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/J3DSysFlag.cpp",
+  "src": "src/System/J3DSysFlag.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirector.cpp",
+  "src": "src/System/MarDirector.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorDirect.cpp",
+  "src": "src/System/MarDirectorDirect.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorEvent.cpp",
+  "src": "src/System/MarDirectorEvent.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorInitECT.cpp",
+  "src": "src/System/MarDirectorInitECT.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorPreEntry.cpp",
+  "src": "src/System/MarDirectorPreEntry.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorSetup2.cpp",
+  "src": "src/System/MarDirectorSetup2.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/marerr.cpp",
+  "src": "src/System/marerr.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarNameRefGen.cpp",
+  "src": "src/System/MarNameRefGen.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MenuDir.cpp",
+  "src": "src/System/MenuDir.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/Params.cpp",
+  "src": "src/System/Params.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/ParamInst.cpp",
+  "src": "src/System/ParamInst.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/PerformList.cpp",
+  "src": "src/System/PerformList.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/RenderModeObj.cpp",
+  "src": "src/System/RenderModeObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/SnapTimeObj.cpp",
+  "src": "src/System/SnapTimeObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/TalkCursor.cpp",
+  "src": "src/System/TalkCursor.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/TexCache.cpp",
+  "src": "src/System/TexCache.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/ZBufferCatch.cpp",
+  "src": "src/System/ZBufferCatch.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/Application.cpp",
+  "src": "src/System/Application.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/ScenarioArchiveName.cpp",
+  "src": "src/System/ScenarioArchiveName.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarioGamePad.cpp",
+  "src": "src/System/MarioGamePad.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/StageEventInfo.cpp",
+  "src": "src/System/StageEventInfo.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/StageUtil.cpp",
+  "src": "src/System/StageUtil.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/Resolution.cpp",
+  "src": "src/System/Resolution.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/PositionHolder.cpp",
+  "src": "src/System/PositionHolder.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/ProcessMeter.cpp",
+  "src": "src/System/ProcessMeter.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/TimeRec.cpp",
+  "src": "src/System/TimeRec.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/DrawSyncManager.cpp",
+  "src": "src/System/DrawSyncManager.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/THPRender.cpp",
+  "src": "src/System/THPRender.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarNameRefGen_BossEnemy.cpp",
+  "src": "src/System/MarNameRefGen_BossEnemy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarNameRefGen_Enemy.cpp",
+  "src": "src/System/MarNameRefGen_Enemy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarNameRefGen_Map.cpp",
+  "src": "src/System/MarNameRefGen_Map.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarNameRefGen_MapObj.cpp",
+  "src": "src/System/MarNameRefGen_MapObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarNameRefGen_NPC.cpp",
+  "src": "src/System/MarNameRefGen_NPC.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/CardManager.cpp",
+  "src": "src/System/CardManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorLoadResource.cpp",
+  "src": "src/System/MarDirectorLoadResource.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MovieDirector.cpp",
+  "src": "src/System/MovieDirector.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorCreateObjects.cpp",
+  "src": "src/System/MarDirectorCreateObjects.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MarDirectorSetupObjects.cpp",
+  "src": "src/System/MarDirectorSetupObjects.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/MSoundMainSide.cpp",
+  "src": "src/System/MSoundMainSide.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "System/TargetArrow.cpp",
+  "src": "src/System/TargetArrow.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/liveactor.cpp",
+  "src": "src/Strategic/liveactor.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/liveinterp.cpp",
+  "src": "src/Strategic/liveinterp.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/livemanager.cpp",
+  "src": "src/Strategic/livemanager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/ObjHitCheck.cpp",
+  "src": "src/Strategic/ObjHitCheck.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/objmanager.cpp",
+  "src": "src/Strategic/objmanager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/ObjModel.cpp",
+  "src": "src/Strategic/ObjModel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/spcinterp.cpp",
+  "src": "src/Strategic/spcinterp.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/Strategy.cpp",
+  "src": "src/Strategic/Strategy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/question.cpp",
+  "src": "src/Strategic/question.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/smplcharacter.cpp",
+  "src": "src/Strategic/smplcharacter.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/HitActor.cpp",
+  "src": "src/Strategic/HitActor.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/binder.cpp",
+  "src": "src/Strategic/binder.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/SharedParts.cpp",
+  "src": "src/Strategic/SharedParts.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Strategic/MirrorActor.cpp",
+  "src": "src/Strategic/MirrorActor.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/Atom.cpp",
+  "src": "src/Player/Atom.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioAction.cpp",
+  "src": "src/Player/MarioAction.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioAutodemo.cpp",
+  "src": "src/Player/MarioAutodemo.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioBlend.cpp",
+  "src": "src/Player/MarioBlend.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioCap.cpp",
+  "src": "src/Player/MarioCap.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioCollision.cpp",
+  "src": "src/Player/MarioCollision.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioDraw.cpp",
+  "src": "src/Player/MarioDraw.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioJump.cpp",
+  "src": "src/Player/MarioJump.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioMain.cpp",
+  "src": "src/Player/MarioMain.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioMove.cpp",
+  "src": "src/Player/MarioMove.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioPhysics.cpp",
+  "src": "src/Player/MarioPhysics.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioRecord.cpp",
+  "src": "src/Player/MarioRecord.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioRun.cpp",
+  "src": "src/Player/MarioRun.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioSpecial.cpp",
+  "src": "src/Player/MarioSpecial.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioUpper.cpp",
+  "src": "src/Player/MarioUpper.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioParticle.cpp",
+  "src": "src/Player/MarioParticle.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioWait.cpp",
+  "src": "src/Player/MarioWait.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/SplashManager.cpp",
+  "src": "src/Player/SplashManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/Tongue.cpp",
+  "src": "src/Player/Tongue.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/WaterGun.cpp",
+  "src": "src/Player/WaterGun.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/Yoshi.cpp",
+  "src": "src/Player/Yoshi.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioEffect.cpp",
+  "src": "src/Player/MarioEffect.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioSwim.cpp",
+  "src": "src/Player/MarioSwim.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioAccess.cpp",
+  "src": "src/Player/MarioAccess.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioInit.cpp",
+  "src": "src/Player/MarioInit.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/ModelWaterManager.cpp",
+  "src": "src/Player/ModelWaterManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioPositionObj.cpp",
+  "src": "src/Player/MarioPositionObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioCheckCol.cpp",
+  "src": "src/Player/MarioCheckCol.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioReceiveMsg.cpp",
+  "src": "src/Player/MarioReceiveMsg.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Player/MarioSound.cpp",
+  "src": "src/Player/MarioSound.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcAnm.cpp",
+  "src": "src/NPC/NpcAnm.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcBase.cpp",
+  "src": "src/NPC/NpcBase.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcCallback.cpp",
+  "src": "src/NPC/NpcCallback.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcManager.cpp",
+  "src": "src/NPC/NpcManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcNerve.cpp",
+  "src": "src/NPC/NpcNerve.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcSave.cpp",
+  "src": "src/NPC/NpcSave.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcEvent.cpp",
+  "src": "src/NPC/NpcEvent.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcInitData.cpp",
+  "src": "src/NPC/NpcInitData.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcInitPrg.cpp",
+  "src": "src/NPC/NpcInitPrg.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcInbetween.cpp",
+  "src": "src/NPC/NpcInbetween.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcParts.cpp",
+  "src": "src/NPC/NpcParts.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcColor.cpp",
+  "src": "src/NPC/NpcColor.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcSound.cpp",
+  "src": "src/NPC/NpcSound.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcChange.cpp",
+  "src": "src/NPC/NpcChange.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcThrow.cpp",
+  "src": "src/NPC/NpcThrow.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcTrample.cpp",
+  "src": "src/NPC/NpcTrample.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcEffect.cpp",
+  "src": "src/NPC/NpcEffect.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcInitAnmData.cpp",
+  "src": "src/NPC/NpcInitAnmData.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcInitActionData.cpp",
+  "src": "src/NPC/NpcInitActionData.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcCoin.cpp",
+  "src": "src/NPC/NpcCoin.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcBalloon.cpp",
+  "src": "src/NPC/NpcBalloon.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcWalkTurn.cpp",
+  "src": "src/NPC/NpcWalkTurn.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "NPC/NpcCollision.cpp",
+  "src": "src/NPC/NpcCollision.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MAnmSound.cpp",
+  "src": "src/MSound/MAnmSound.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSound.cpp",
+  "src": "src/MSound/MSound.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSoundBGM.cpp",
+  "src": "src/MSound/MSoundBGM.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSoundDebug.cpp",
+  "src": "src/MSound/MSoundDebug.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSoundScene.cpp",
+  "src": "src/MSound/MSoundScene.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSoundSE.cpp",
+  "src": "src/MSound/MSoundSE.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSoundStruct.cpp",
+  "src": "src/MSound/MSoundStruct.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSHandle.cpp",
+  "src": "src/MSound/MSHandle.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MSound/MSModBgm.cpp",
+  "src": "src/MSound/MSModBgm.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/WoodBarrel.cpp",
+  "src": "src/MoveBG/WoodBarrel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjBase.cpp",
+  "src": "src/MoveBG/MapObjBase.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjInit.cpp",
+  "src": "src/MoveBG/MapObjInit.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjGeneral.cpp",
+  "src": "src/MoveBG/MapObjGeneral.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjManager.cpp",
+  "src": "src/MoveBG/MapObjManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjLib.cpp",
+  "src": "src/MoveBG/MapObjLib.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/Item.cpp",
+  "src": "src/MoveBG/Item.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/ItemManager.cpp",
+  "src": "src/MoveBG/ItemManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjTown.cpp",
+  "src": "src/MoveBG/MapObjTown.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjBlock.cpp",
+  "src": "src/MoveBG/MapObjBlock.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjBianco.cpp",
+  "src": "src/MoveBG/MapObjBianco.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjSirena.cpp",
+  "src": "src/MoveBG/MapObjSirena.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjRicco.cpp",
+  "src": "src/MoveBG/MapObjRicco.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjMamma.cpp",
+  "src": "src/MoveBG/MapObjMamma.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjPinna.cpp",
+  "src": "src/MoveBG/MapObjPinna.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjSample.cpp",
+  "src": "src/MoveBG/MapObjSample.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjMare.cpp",
+  "src": "src/MoveBG/MapObjMare.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjFlag.cpp",
+  "src": "src/MoveBG/MapObjFlag.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjWave.cpp",
+  "src": "src/MoveBG/MapObjWave.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjFloat.cpp",
+  "src": "src/MoveBG/MapObjFloat.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjPlane.cpp",
+  "src": "src/MoveBG/MapObjPlane.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjCloud.cpp",
+  "src": "src/MoveBG/MapObjCloud.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjBall.cpp",
+  "src": "src/MoveBG/MapObjBall.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjAirport.cpp",
+  "src": "src/MoveBG/MapObjAirport.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjDolpic.cpp",
+  "src": "src/MoveBG/MapObjDolpic.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjPollution.cpp",
+  "src": "src/MoveBG/MapObjPollution.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjGrass.cpp",
+  "src": "src/MoveBG/MapObjGrass.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjPole.cpp",
+  "src": "src/MoveBG/MapObjPole.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjWater.cpp",
+  "src": "src/MoveBG/MapObjWater.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/ModelGate.cpp",
+  "src": "src/MoveBG/ModelGate.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjFence.cpp",
+  "src": "src/MoveBG/MapObjFence.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjOption.cpp",
+  "src": "src/MoveBG/MapObjOption.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjRailBlock.cpp",
+  "src": "src/MoveBG/MapObjRailBlock.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjMonte.cpp",
+  "src": "src/MoveBG/MapObjMonte.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjTree.cpp",
+  "src": "src/MoveBG/MapObjTree.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjTumblePole.cpp",
+  "src": "src/MoveBG/MapObjTumblePole.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjEx.cpp",
+  "src": "src/MoveBG/MapObjEx.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/Pool.cpp",
+  "src": "src/MoveBG/Pool.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjCorona.cpp",
+  "src": "src/MoveBG/MapObjCorona.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjItem2.cpp",
+  "src": "src/MoveBG/MapObjItem2.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjHide.cpp",
+  "src": "src/MoveBG/MapObjHide.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "MoveBG/MapObjTrap.cpp",
+  "src": "src/MoveBG/MapObjTrap.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/JointModel.cpp",
+  "src": "src/Map/JointModel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/JointModelManager.cpp",
+  "src": "src/Map/JointModelManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/JointObj.cpp",
+  "src": "src/Map/JointObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/Map.cpp",
+  "src": "src/Map/Map.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapArea.cpp",
+  "src": "src/Map/MapArea.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapCheck.cpp",
+  "src": "src/Map/MapCheck.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapCollisionData.cpp",
+  "src": "src/Map/MapCollisionData.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapCollisionEntry.cpp",
+  "src": "src/Map/MapCollisionEntry.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapCollisionManager.cpp",
+  "src": "src/Map/MapCollisionManager.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapDraw.cpp",
+  "src": "src/Map/MapDraw.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapEvent.cpp",
+  "src": "src/Map/MapEvent.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapEventSink.cpp",
+  "src": "src/Map/MapEventSink.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapMakeData.cpp",
+  "src": "src/Map/MapMakeData.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapMakeList.cpp",
+  "src": "src/Map/MapMakeList.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapMirror.cpp",
+  "src": "src/Map/MapMirror.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapModel.cpp",
+  "src": "src/Map/MapModel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapWarp.cpp",
+  "src": "src/Map/MapWarp.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapStaticObject.cpp",
+  "src": "src/Map/MapStaticObject.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapWire.cpp",
+  "src": "src/Map/MapWire.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapWireManager.cpp",
+  "src": "src/Map/MapWireManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapXlu.cpp",
+  "src": "src/Map/MapXlu.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/PollutionAction.cpp",
+  "src": "src/Map/PollutionAction.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/PollutionCount.cpp",
+  "src": "src/Map/PollutionCount.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/PollutionManager.cpp",
+  "src": "src/Map/PollutionManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/PollutionObj.cpp",
+  "src": "src/Map/PollutionObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/PollutionPos.cpp",
+  "src": "src/Map/PollutionPos.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/Shimmer.cpp",
+  "src": "src/Map/Shimmer.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/Sky.cpp",
+  "src": "src/Map/Sky.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapEventSirena.cpp",
+  "src": "src/Map/MapEventSirena.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/PollutionLayer.cpp",
+  "src": "src/Map/PollutionLayer.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/PollutionEvent.cpp",
+  "src": "src/Map/PollutionEvent.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapCollisionPlane.cpp",
+  "src": "src/Map/MapCollisionPlane.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MarineSnow.cpp",
+  "src": "src/Map/MarineSnow.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapData.cpp",
+  "src": "src/Map/MapData.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapEventDolpic.cpp",
+  "src": "src/Map/MapEventDolpic.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/MapEventMare.cpp",
+  "src": "src/Map/MapEventMare.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/BathWaterManager.cpp",
+  "src": "src/Map/BathWaterManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Map/StickyStainManager.cpp",
+  "src": "src/Map/StickyStainManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/ChangeValue.cpp",
+  "src": "src/GC2D/ChangeValue.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/Coord2D.cpp",
+  "src": "src/GC2D/Coord2D.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/ExPane.cpp",
+  "src": "src/GC2D/ExPane.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/Menu.cpp",
+  "src": "src/GC2D/Menu.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/ScrnFader.cpp",
+  "src": "src/GC2D/ScrnFader.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/GCConsole2.cpp",
+  "src": "src/GC2D/GCConsole2.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/Talk2D2.cpp",
+  "src": "src/GC2D/Talk2D2.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/BoundPane.cpp",
+  "src": "src/GC2D/BoundPane.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/PauseMenu2.cpp",
+  "src": "src/GC2D/PauseMenu2.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/MessageLoader.cpp",
+  "src": "src/GC2D/MessageLoader.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/HelpActor.cpp",
+  "src": "src/GC2D/HelpActor.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/MessageUtil.cpp",
+  "src": "src/GC2D/MessageUtil.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/CardSave.cpp",
+  "src": "src/GC2D/CardSave.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/CardLoad.cpp",
+  "src": "src/GC2D/CardLoad.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/ConsoleStr.cpp",
+  "src": "src/GC2D/ConsoleStr.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/SelectMenu.cpp",
+  "src": "src/GC2D/SelectMenu.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/SelectDir.cpp",
+  "src": "src/GC2D/SelectDir.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/SelectShine2.cpp",
+  "src": "src/GC2D/SelectShine2.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/BlendPane.cpp",
+  "src": "src/GC2D/BlendPane.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/Guide.cpp",
+  "src": "src/GC2D/Guide.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/SunGlass.cpp",
+  "src": "src/GC2D/SunGlass.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/ShineFader.cpp",
+  "src": "src/GC2D/ShineFader.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/ProgSelect.cpp",
+  "src": "src/GC2D/ProgSelect.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/hx_wiper.c",
+  "src": "src/GC2D/hx_wiper.c",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/MovieSubtitle.cpp",
+  "src": "src/GC2D/MovieSubtitle.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/Option.cpp",
+  "src": "src/GC2D/Option.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "GC2D/MovieRumble.cpp",
+  "src": "src/GC2D/MovieRumble.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/conductor.cpp",
+  "src": "src/Enemy/conductor.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/effectObj.cpp",
+  "src": "src/Enemy/effectObj.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/emario.cpp",
+  "src": "src/Enemy/emario.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/enemy.cpp",
+  "src": "src/Enemy/enemy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/enemyAttachment.cpp",
+  "src": "src/Enemy/enemyAttachment.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/enemyinterp.cpp",
+  "src": "src/Enemy/enemyinterp.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/enemymanager.cpp",
+  "src": "src/Enemy/enemymanager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/enemyMario.cpp",
+  "src": "src/Enemy/enemyMario.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/feetinv.cpp",
+  "src": "src/Enemy/feetinv.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/gesso.cpp",
+  "src": "src/Enemy/gesso.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/graph.cpp",
+  "src": "src/Enemy/graph.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/hamukuri.cpp",
+  "src": "src/Enemy/hamukuri.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/hinokuri2.cpp",
+  "src": "src/Enemy/hinokuri2.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/mameGesso.cpp",
+  "src": "src/Enemy/mameGesso.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/namekuri.cpp",
+  "src": "src/Enemy/namekuri.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/pakkun.cpp",
+  "src": "src/Enemy/pakkun.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/smallEnemy.cpp",
+  "src": "src/Enemy/smallEnemy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/spider.cpp",
+  "src": "src/Enemy/spider.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/spline.cpp",
+  "src": "src/Enemy/spline.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/typicalenemy.cpp",
+  "src": "src/Enemy/typicalenemy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/walker.cpp",
+  "src": "src/Enemy/walker.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/walkerEnemy.cpp",
+  "src": "src/Enemy/walkerEnemy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bossgesso.cpp",
+  "src": "src/Enemy/bossgesso.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/elecNokonoko.cpp",
+  "src": "src/Enemy/elecNokonoko.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/telesa.cpp",
+  "src": "src/Enemy/telesa.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/fireWanwan.cpp",
+  "src": "src/Enemy/fireWanwan.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/enemytable.cpp",
+  "src": "src/Enemy/enemytable.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/generator.cpp",
+  "src": "src/Enemy/generator.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bosspakkun.cpp",
+  "src": "src/Enemy/bosspakkun.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/tobiPuku.cpp",
+  "src": "src/Enemy/tobiPuku.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/tinkoopa.cpp",
+  "src": "src/Enemy/tinkoopa.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/launcher.cpp",
+  "src": "src/Enemy/launcher.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bosswanwan.cpp",
+  "src": "src/Enemy/bosswanwan.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/chuuhana.cpp",
+  "src": "src/Enemy/chuuhana.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/igaiga.cpp",
+  "src": "src/Enemy/igaiga.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/poihana.cpp",
+  "src": "src/Enemy/poihana.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/tamaNoko.cpp",
+  "src": "src/Enemy/tamaNoko.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bosstelesa.cpp",
+  "src": "src/Enemy/bosstelesa.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/riccohook.cpp",
+  "src": "src/Enemy/riccohook.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bombhei.cpp",
+  "src": "src/Enemy/bombhei.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/cannon.cpp",
+  "src": "src/Enemy/cannon.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bosseel.cpp",
+  "src": "src/Enemy/bosseel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/killer.cpp",
+  "src": "src/Enemy/killer.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/beam.cpp",
+  "src": "src/Enemy/beam.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/hanasambo.cpp",
+  "src": "src/Enemy/hanasambo.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/popo.cpp",
+  "src": "src/Enemy/popo.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/SleepBossHanachan.cpp",
+  "src": "src/Enemy/SleepBossHanachan.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/DemoBossHanachanBase.cpp",
+  "src": "src/Enemy/DemoBossHanachanBase.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/fruitsboat.cpp",
+  "src": "src/Enemy/fruitsboat.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BossHanachanSub.cpp",
+  "src": "src/Enemy/BossHanachanSub.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BossHanachanMain.cpp",
+  "src": "src/Enemy/BossHanachanMain.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BossHanachanNerve.cpp",
+  "src": "src/Enemy/BossHanachanNerve.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BossHanachanAnm.cpp",
+  "src": "src/Enemy/BossHanachanAnm.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BossHanachanParts.cpp",
+  "src": "src/Enemy/BossHanachanParts.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BossHanachanSave.cpp",
+  "src": "src/Enemy/BossHanachanSave.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/amiNoko.cpp",
+  "src": "src/Enemy/amiNoko.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/gatekeeper.cpp",
+  "src": "src/Enemy/gatekeeper.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BossHanachanEffect.cpp",
+  "src": "src/Enemy/BossHanachanEffect.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/egggen.cpp",
+  "src": "src/Enemy/egggen.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/seal.cpp",
+  "src": "src/Enemy/seal.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bgpoldrop.cpp",
+  "src": "src/Enemy/bgpoldrop.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bgtentacle.cpp",
+  "src": "src/Enemy/bgtentacle.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/effectEnemy.cpp",
+  "src": "src/Enemy/effectEnemy.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/hauntLeg.cpp",
+  "src": "src/Enemy/hauntLeg.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/areacylinder.cpp",
+  "src": "src/Enemy/areacylinder.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/wireTrap.cpp",
+  "src": "src/Enemy/wireTrap.cpp",
+  "pch": true,
+  "status": "fail",
+  "error": "src/Enemy/wireTrap.cpp:594:7: error: declaration conflicts with target of using declaration already in scope",
+  "errors": [
+   "src/Enemy/wireTrap.cpp:594:7: error: declaration conflicts with target of using declaration already in scope"
+  ],
+  "cmd": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe --target=x86_64-pc-windows-msvc -fsyntax-only -fno-exceptions -fno-rtti -fsigned-char -ferror-limit=3 -w -Wno-everything -include port/include/port_compat.h -x c++ -std=gnu++17 -I port/include -I include -I libs/dolphin/include -I libs/JSystem/include -I libs/THPPlayer/include -I libs/PowerPC_EABI_Support/include -I libs/TRK_MINNOW_DOLPHIN/include -I libs/OdemuExi2/include -D BUILD_VERSION=2 -D VERSION_GMSE01 -D VERSION_GMSP01 -D LINK_ALL_SOURCE=1 -D PORT_SKIP_CUTSCENES=1 -D NDEBUG=1 -include include/SMS.pch src/Enemy/wireTrap.cpp"
+ },
+ {
+  "name": "Enemy/BossHanachanSound.cpp",
+  "src": "src/Enemy/BossHanachanSound.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/rocket.cpp",
+  "src": "src/Enemy/rocket.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/Kazekun.cpp",
+  "src": "src/Enemy/Kazekun.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/bossManta.cpp",
+  "src": "src/Enemy/bossManta.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/wireBinder.cpp",
+  "src": "src/Enemy/wireBinder.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/yunbo.cpp",
+  "src": "src/Enemy/yunbo.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/koopajr.cpp",
+  "src": "src/Enemy/koopajr.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/Kumokun.cpp",
+  "src": "src/Enemy/Kumokun.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/Koopa.cpp",
+  "src": "src/Enemy/Koopa.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/Kukku.cpp",
+  "src": "src/Enemy/Kukku.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/Amenbo.cpp",
+  "src": "src/Enemy/Amenbo.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BathtubPeach.cpp",
+  "src": "src/Enemy/BathtubPeach.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BathtubKiller.cpp",
+  "src": "src/Enemy/BathtubKiller.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/coasterkiller.cpp",
+  "src": "src/Enemy/coasterkiller.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/DebuTelesa.cpp",
+  "src": "src/Enemy/DebuTelesa.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/TabePuku.cpp",
+  "src": "src/Enemy/TabePuku.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/BathtubBinder.cpp",
+  "src": "src/Enemy/BathtubBinder.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/limitkoopa.cpp",
+  "src": "src/Enemy/limitkoopa.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Enemy/limitkoopajr.cpp",
+  "src": "src/Enemy/limitkoopajr.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraBGCheck.cpp",
+  "src": "src/Camera/CameraBGCheck.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraChange.cpp",
+  "src": "src/Camera/CameraChange.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraCodeControl.cpp",
+  "src": "src/Camera/CameraCodeControl.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/cameragc.cpp",
+  "src": "src/Camera/cameragc.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraHeightPan.cpp",
+  "src": "src/Camera/CameraHeightPan.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraInbetween.cpp",
+  "src": "src/Camera/CameraInbetween.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraKindParam.cpp",
+  "src": "src/Camera/CameraKindParam.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/cameralib.cpp",
+  "src": "src/Camera/cameralib.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraMarioData.cpp",
+  "src": "src/Camera/CameraMarioData.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraNotice.cpp",
+  "src": "src/Camera/CameraNotice.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraNormal.cpp",
+  "src": "src/Camera/CameraNormal.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/camerasave.cpp",
+  "src": "src/Camera/camerasave.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/camerashake.cpp",
+  "src": "src/Camera/camerashake.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraTalk.cpp",
+  "src": "src/Camera/CameraTalk.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/lensflare.cpp",
+  "src": "src/Camera/lensflare.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/lensglow.cpp",
+  "src": "src/Camera/lensglow.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/sunmgr.cpp",
+  "src": "src/Camera/sunmgr.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/sunmodel.cpp",
+  "src": "src/Camera/sunmodel.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CubeManagerBase.cpp",
+  "src": "src/Camera/CubeManagerBase.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraMapTool.cpp",
+  "src": "src/Camera/CameraMapTool.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CubeMapTool.cpp",
+  "src": "src/Camera/CubeMapTool.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraMultiPlayer.cpp",
+  "src": "src/Camera/CameraMultiPlayer.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraJetCoaster.cpp",
+  "src": "src/Camera/CameraJetCoaster.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraBck.cpp",
+  "src": "src/Camera/CameraBck.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraOption.cpp",
+  "src": "src/Camera/CameraOption.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraDemo.cpp",
+  "src": "src/Camera/CameraDemo.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraWarp.cpp",
+  "src": "src/Camera/CameraWarp.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraMode.cpp",
+  "src": "src/Camera/CameraMode.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CameraSecureView.cpp",
+  "src": "src/Camera/CameraSecureView.cpp",
+  "pch": false,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Camera/CamShakeDefine.cpp",
+  "src": "src/Camera/CamShakeDefine.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/boid.cpp",
+  "src": "src/Animal/boid.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/fishoid.cpp",
+  "src": "src/Animal/fishoid.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/AnimalBase.cpp",
+  "src": "src/Animal/AnimalBase.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/AnimalManager.cpp",
+  "src": "src/Animal/AnimalManager.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/AnimalSave.cpp",
+  "src": "src/Animal/AnimalSave.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/AnimalNerve.cpp",
+  "src": "src/Animal/AnimalNerve.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/Bird.cpp",
+  "src": "src/Animal/Bird.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/BeeHive.cpp",
+  "src": "src/Animal/BeeHive.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ },
+ {
+  "name": "Animal/Butterfly.cpp",
+  "src": "src/Animal/Butterfly.cpp",
+  "pch": true,
+  "status": "ok",
+  "error": ""
+ }
+]

@@ -1,0 +1,424 @@
+--- a/lib/gfx/tex_copy_conv.cpp
++++ b/lib/gfx/tex_copy_conv.cpp
+@@ -10,6 +10,10 @@
+ #include "../gx/gx_fmt.hpp"
+ 
+ #include <absl/container/flat_hash_map.h>
++
++#include <chrono> // aurora_msaa_depth.patch
++#include <cstring>
++#include <thread>
+ 
+ #include "texture_convert.hpp"
+ 
+@@ -349,6 +353,13 @@
+ static wgpu::BindGroupLayout g_depthSnapshotBindGroupLayoutMS;
+ static wgpu::RenderPipeline g_depthSnapshotPipeline;
+ static wgpu::RenderPipeline g_depthSnapshotPipelineMS;
++// SMS PC port patch (aurora_msaa_depth.patch): depth copies from a multisampled EFB.
++static wgpu::BindGroupLayout g_depthBindGroupLayoutMS;
++static absl::flat_hash_map<GXTexFmt, wgpu::RenderPipeline> g_depthPipelinesMS;
++static wgpu::BindGroupLayout g_colorSample0Layout; // sample-0 colour snapshot
++static wgpu::ComputePipeline g_colorSample0Compute;
++static wgpu::Buffer g_colorSample0Buffer;
++static wgpu::RenderPipeline create_render_pipeline_retry(const wgpu::RenderPipelineDescriptor& descriptor);
+ 
+ static wgpu::BindGroupLayout create_depth_snapshot_layout(bool multisampled, const char* label) {
+   const std::array entries{
+@@ -412,7 +423,7 @@
+           },
+       .fragment = &fragmentState,
+   };
+-  return g_device.CreateRenderPipeline(&pipelineDescriptor);
++  return create_render_pipeline_retry(pipelineDescriptor); // aurora_msaa_depth.patch (was CreateRenderPipeline)
+ }
+ 
+ static wgpu::RenderPipeline create_pipeline(const ConvPipeline& conv, const std::string_view shaderPreamble,
+@@ -461,7 +472,7 @@
+           },
+       .fragment = &fragmentState,
+   };
+-  return g_device.CreateRenderPipeline(&pipelineDescriptor);
++  return create_render_pipeline_retry(pipelineDescriptor); // aurora_msaa_depth.patch (was CreateRenderPipeline)
+ }
+ 
+ bool needs_conversion(const GXTexFmt fmt) { return g_pipelines.contains(fmt); }
+@@ -544,6 +555,24 @@
+         Log.fatal("Output format mismatch for {}", conv.fmt);
+       }
+     }
++    // SMS PC port patch (aurora_msaa_depth.patch): with MSAA the EFB depth is
++    // multisampled; depth copies from it read sample 0 of each pixel.
++    if (webgpu::g_graphicsConfig.msaaSamples > 1) {
++      auto msEntries = depthBindGroupLayoutEntries;
++      msEntries[0].texture.multisampled = true;
++      const wgpu::BindGroupLayoutDescriptor msDescriptor{
++          .label = "TexCopyConv Depth MS Bind Group Layout",
++          .entryCount = msEntries.size(),
++          .entries = msEntries.data(),
++      };
++      g_depthBindGroupLayoutMS = g_device.CreateBindGroupLayout(&msDescriptor);
++      std::string msPreamble = DepthShaderPreamble;
++      constexpr std::string_view single = "texture_depth_2d;";
++      msPreamble.replace(msPreamble.find(single), single.size(), "texture_depth_multisampled_2d;");
++      for (const auto& conv : DepthConvPipelines) {
++        g_depthPipelinesMS[conv.fmt] = create_pipeline(conv, msPreamble, g_depthBindGroupLayoutMS);
++      }
++    }
+     g_depthSnapshotBindGroupLayout = create_depth_snapshot_layout(false, "Depth Snapshot Bind Group Layout");
+     g_depthSnapshotBindGroupLayoutMS = create_depth_snapshot_layout(true, "Depth Snapshot MS Bind Group Layout");
+     g_depthSnapshotPipeline =
+@@ -578,6 +607,11 @@
+   g_depthSnapshotBindGroupLayoutMS = {};
+   g_depthSnapshotPipeline = {};
+   g_depthSnapshotPipelineMS = {};
++  g_depthBindGroupLayoutMS = {};
++  g_depthPipelinesMS.clear();
++  g_colorSample0Compute = {};
++  g_colorSample0Buffer = {};
++  g_colorSample0Layout = {};
+ }
+ 
+ static void execute(const wgpu::CommandEncoder& cmd, const ConvRequest& req, const wgpu::RenderPipeline& pipeline) {
+@@ -603,7 +637,7 @@
+         },
+     };
+     const wgpu::BindGroupDescriptor bindGroupDescriptor{
+-        .layout = g_depthBindGroupLayout,
++        .layout = req.srcSamples > 1 ? g_depthBindGroupLayoutMS : g_depthBindGroupLayout, // aurora_msaa_depth.patch
+         .entryCount = bindGroupEntries.size(),
+         .entries = bindGroupEntries.data(),
+     };
+@@ -656,6 +690,14 @@
+ }
+ 
+ void run(const wgpu::CommandEncoder& cmd, const ConvRequest& req) {
++  if (req.srcSamples > 1 && gx::is_depth_format(req.fmt)) { // aurora_msaa_depth.patch
++    const auto ms = g_depthPipelinesMS.find(req.fmt);
++    if (ms == g_depthPipelinesMS.end()) {
++      Log.fatal("No multisampled depth copy pipeline for format {}", static_cast<int>(req.fmt));
++    }
++    execute(cmd, req, ms->second);
++    return;
++  }
+   const auto it = g_pipelines.find(req.fmt);
+   if (it == g_pipelines.end()) {
+     Log.fatal("No copy conversion pipeline for format {}", static_cast<int>(req.fmt));
+@@ -664,6 +706,180 @@
+ }
+ 
+ void blit(const wgpu::CommandEncoder& cmd, const ConvRequest& req) { execute(cmd, req, g_blitPipeline); }
++
++// SMS PC port patch (aurora_msaa_depth.patch): D3D12 on AMD can fail CreateGraphicsPipelineState
++// with E_OUTOFMEMORY (Dawn: an Internal error) for the multisampled-texture pipelines, mostly on
++// first compile with other GPU work going on; an uncaptured error is fatal. Capture it, retry
++// with back-off, and return null after 5 failures (the caller skips its work).
++static wgpu::RenderPipeline create_render_pipeline_retry(const wgpu::RenderPipelineDescriptor& descriptor) {
++  for (int attempt = 0;; ++attempt) {
++    g_device.PushErrorScope(wgpu::ErrorFilter::OutOfMemory);
++    g_device.PushErrorScope(wgpu::ErrorFilter::Internal);
++    auto pipeline = g_device.CreateRenderPipeline(&descriptor);
++    wgpu::ErrorType errorType = wgpu::ErrorType::NoError;
++    std::string errorMessage;
++    for (int scope = 0; scope < 2; ++scope) {
++      const auto future = g_device.PopErrorScope(
++          wgpu::CallbackMode::WaitAnyOnly,
++          [&](wgpu::PopErrorScopeStatus status, wgpu::ErrorType type, wgpu::StringView message) {
++            if (status == wgpu::PopErrorScopeStatus::Success && type != wgpu::ErrorType::NoError &&
++                errorType == wgpu::ErrorType::NoError) {
++              errorType = type;
++              errorMessage = std::string{std::string_view{message}};
++            }
++          });
++      webgpu::g_instance.WaitAny(future, UINT64_MAX);
++    }
++    if (errorType == wgpu::ErrorType::NoError) {
++      return pipeline;
++    }
++    if (attempt >= 4) {
++      Log.error("Pipeline '{}' failed after {} attempts: {}", std::string_view{descriptor.label}, attempt + 1,
++                errorMessage);
++      return {};
++    }
++    Log.warn("Pipeline '{}' creation failed (attempt {}), retrying: {}", std::string_view{descriptor.label},
++             attempt + 1, errorMessage);
++    std::this_thread::sleep_for(std::chrono::milliseconds(20 << attempt));
++  }
++}
++
++// SMS PC port patch (aurora_msaa_depth.patch): sample-0 colour snapshot of a multisampled EFB.
++// A compute pass (a render pipeline reading a multisampled float texture failed
++// CreateGraphicsPipelineState with E_OUTOFMEMORY on every attempt on AMD/D3D12) packs sample 0
++// of each pixel into a buffer in the snapshot's byte order; the buffer is then copied into it.
++static constexpr std::string_view ColorSample0Shader = R"(
++struct P { size: vec2u, bgra: u32, rowWords: u32 };
++@group(0) @binding(0) var src: texture_multisampled_2d<f32>;
++@group(0) @binding(1) var<storage, read_write> outp: array<u32>;
++@group(0) @binding(2) var<uniform> p: P;
++
++@compute @workgroup_size(8, 8, 1)
++fn cs_main(@builtin(global_invocation_id) id: vec3u) {
++    if (id.x >= p.size.x || id.y >= p.size.y) { return; }
++    var c = textureLoad(src, vec2i(id.xy), 0);
++    if (p.bgra != 0u) { c = c.bgra; }
++    let b = vec4u(round(clamp(c, vec4f(0.0), vec4f(1.0)) * 255.0));
++    outp[id.y * p.rowWords + id.x] = b.x | (b.y << 8u) | (b.z << 16u) | (b.w << 24u);
++}
++)"sv;
++
++void snapshot_color_sample0(const wgpu::CommandEncoder& cmd, const wgpu::TextureView& srcColor,
++                            const wgpu::Texture& dst, wgpu::TextureFormat format, uint32_t width,
++                            uint32_t height) {
++  const bool bgra = format == wgpu::TextureFormat::BGRA8Unorm || format == wgpu::TextureFormat::BGRA8UnormSrgb;
++  if (!bgra && format != wgpu::TextureFormat::RGBA8Unorm && format != wgpu::TextureFormat::RGBA8UnormSrgb) {
++    Log.warn("sample-0 snapshot: unsupported format {}", static_cast<int>(format));
++    return;
++  }
++  if (!g_colorSample0Layout) {
++    const std::array entries{
++        wgpu::BindGroupLayoutEntry{
++            .binding = 0,
++            .visibility = wgpu::ShaderStage::Compute,
++            .texture =
++                wgpu::TextureBindingLayout{
++                    .sampleType = wgpu::TextureSampleType::UnfilterableFloat,
++                    .viewDimension = wgpu::TextureViewDimension::e2D,
++                    .multisampled = true,
++                },
++        },
++        wgpu::BindGroupLayoutEntry{
++            .binding = 1,
++            .visibility = wgpu::ShaderStage::Compute,
++            .buffer = wgpu::BufferBindingLayout{.type = wgpu::BufferBindingType::Storage},
++        },
++        wgpu::BindGroupLayoutEntry{
++            .binding = 2,
++            .visibility = wgpu::ShaderStage::Compute,
++            .buffer = wgpu::BufferBindingLayout{.type = wgpu::BufferBindingType::Uniform},
++        },
++    };
++    const wgpu::BindGroupLayoutDescriptor descriptor{
++        .label = "Colour Sample0 Bind Group Layout",
++        .entryCount = entries.size(),
++        .entries = entries.data(),
++    };
++    g_colorSample0Layout = g_device.CreateBindGroupLayout(&descriptor);
++    const std::string source{ColorSample0Shader};
++    const wgpu::ShaderSourceWGSL wgslSource{wgpu::ShaderSourceWGSL::Init{.code = source.c_str()}};
++    const wgpu::ShaderModuleDescriptor moduleDescriptor{.nextInChain = &wgslSource, .label = "Colour Sample0"};
++    const wgpu::PipelineLayoutDescriptor layoutDescriptor{
++        .bindGroupLayoutCount = 1,
++        .bindGroupLayouts = &g_colorSample0Layout,
++    };
++    const wgpu::ComputePipelineDescriptor pipelineDescriptor{
++        .label = "Colour Sample0",
++        .layout = g_device.CreatePipelineLayout(&layoutDescriptor),
++        .compute = wgpu::ComputeState{.module = g_device.CreateShaderModule(&moduleDescriptor), .entryPoint = "cs_main"},
++    };
++    g_device.PushErrorScope(wgpu::ErrorFilter::OutOfMemory);
++    g_device.PushErrorScope(wgpu::ErrorFilter::Internal);
++    g_colorSample0Compute = g_device.CreateComputePipeline(&pipelineDescriptor);
++    bool failed = false;
++    for (int scope = 0; scope < 2; ++scope) {
++      const auto future = g_device.PopErrorScope(
++          wgpu::CallbackMode::WaitAnyOnly, [&](wgpu::PopErrorScopeStatus status, wgpu::ErrorType type, wgpu::StringView message) {
++            if (status == wgpu::PopErrorScopeStatus::Success && type != wgpu::ErrorType::NoError) {
++              failed = true;
++              Log.error("sample-0 snapshot pipeline failed: {}", std::string_view{message});
++            }
++          });
++      webgpu::g_instance.WaitAny(future, UINT64_MAX);
++    }
++    if (failed) {
++      g_colorSample0Compute = {};
++    }
++  }
++  if (!g_colorSample0Compute || width == 0 || height == 0) {
++    return;
++  }
++  const uint32_t bytesPerRow = (width * 4 + 255) & ~255u;
++  const uint64_t size = static_cast<uint64_t>(bytesPerRow) * height;
++  if (!g_colorSample0Buffer || g_colorSample0Buffer.GetSize() < size) {
++    const wgpu::BufferDescriptor bufferDescriptor{
++        .label = "Colour Sample0 Buffer",
++        .usage = wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopySrc,
++        .size = size,
++    };
++    g_colorSample0Buffer = g_device.CreateBuffer(&bufferDescriptor);
++  }
++  const uint32_t params[4] = {width, height, bgra ? 1u : 0u, bytesPerRow / 4};
++  const wgpu::BufferDescriptor uniformDescriptor{
++      .label = "Colour Sample0 Params",
++      .usage = wgpu::BufferUsage::Uniform,
++      .size = sizeof(params),
++      .mappedAtCreation = true,
++  };
++  const auto uniform = g_device.CreateBuffer(&uniformDescriptor);
++  std::memcpy(uniform.GetMappedRange(0, sizeof(params)), params, sizeof(params));
++  uniform.Unmap();
++  const std::array bindGroupEntries{
++      wgpu::BindGroupEntry{.binding = 0, .textureView = srcColor},
++      wgpu::BindGroupEntry{.binding = 1, .buffer = g_colorSample0Buffer, .size = size},
++      wgpu::BindGroupEntry{.binding = 2, .buffer = uniform, .size = sizeof(params)},
++  };
++  const wgpu::BindGroupDescriptor bindGroupDescriptor{
++      .layout = g_colorSample0Layout,
++      .entryCount = bindGroupEntries.size(),
++      .entries = bindGroupEntries.data(),
++  };
++  const auto bindGroup = g_device.CreateBindGroup(&bindGroupDescriptor);
++  {
++    const auto pass = cmd.BeginComputePass();
++    pass.SetPipeline(g_colorSample0Compute);
++    pass.SetBindGroup(0, bindGroup);
++    pass.DispatchWorkgroups((width + 7) / 8, (height + 7) / 8);
++    pass.End();
++  }
++  const wgpu::TexelCopyBufferInfo src{
++      .layout = {.offset = 0, .bytesPerRow = bytesPerRow, .rowsPerImage = height},
++      .buffer = g_colorSample0Buffer,
++  };
++  const wgpu::TexelCopyTextureInfo dstInfo{.texture = dst};
++  const wgpu::Extent3D extent{width, height, 1};
++  cmd.CopyBufferToTexture(&src, &dstInfo, &extent);
++}
+ 
+ bool snapshot_depth_supported() noexcept { return static_cast<bool>(g_depthSnapshotPipeline); }
+ 
+--- a/lib/gfx/tex_copy_conv.hpp
++++ b/lib/gfx/tex_copy_conv.hpp
+@@ -33,6 +33,7 @@
+   Range uniformRange;        // Uniforms
+   TextureHandle dst;         // Destination texture
+   SampleFilter sampleFilter = SampleFilter::Nearest;
++  uint32_t srcSamples = 1; // SMS PC port patch (aurora_msaa_depth.patch): depth source sample count
+ };
+ 
+ bool needs_conversion(GXTexFmt fmt);
+@@ -42,6 +43,12 @@
+ void run(const wgpu::CommandEncoder& cmd, const ConvRequest& req);
+ void blit(const wgpu::CommandEncoder& cmd, const ConvRequest& req);
+ 
++// SMS PC port patch (aurora_msaa_depth.patch): copies sample 0 of a multisampled colour view
++// into a single-sample (RGBA8/BGRA8) texture of the same format and size.
++void snapshot_color_sample0(const wgpu::CommandEncoder& cmd, const wgpu::TextureView& srcColor,
++                            const wgpu::Texture& dst, wgpu::TextureFormat format, uint32_t width,
++                            uint32_t height);
++
+ bool snapshot_depth_supported() noexcept;
+ void snapshot_depth(const wgpu::CommandEncoder& cmd, const wgpu::TextureView& srcDepth, uint32_t msaaSamples,
+                     const wgpu::TextureView& dst);
+--- a/lib/gfx/encoding.cpp
++++ b/lib/gfx/encoding.cpp
+@@ -260,9 +260,8 @@
+     const bool needsScaling = dstSize.width != static_cast<uint32_t>(passInfo.resolveRect.width) ||
+                               dstSize.height != static_cast<uint32_t>(passInfo.resolveRect.height);
+     const bool isDepth = gx::is_depth_format(passInfo.resolveFormat);
+-    if (isDepth && passInfo.msaaSamples > 1) {
+-      Log.fatal("Depth tex copies from multisampled EFB targets are not supported");
+-    }
++    // SMS PC port patch (aurora_msaa_depth.patch): depth copies from a multisampled EFB
++    // use the multisampled depth conversion pipelines (tex_copy_conv::initialize).
+     const tex_copy_conv::ConvRequest convReq{
+         .fmt = passInfo.resolveFormat,
+         .srcFmt = passInfo.resolveSourceFormat,
+@@ -270,6 +269,7 @@
+         .uniformRange = passInfo.resolveUniformRange,
+         .dst = passInfo.resolveTarget,
+         .sampleFilter = needsScaling ? tex_copy_conv::SampleFilter::Linear : tex_copy_conv::SampleFilter::Nearest,
++        .srcSamples = isDepth ? passInfo.msaaSamples : 1u,
+     };
+     const bool needsOpaqueAlpha = !isDepth && !gx::efb_has_alpha(convReq.srcFmt);
+     const bool sameFormat =
+@@ -301,7 +301,12 @@
+     }
+   }
+ 
+-  if (passInfo.snapshotColorDst) {
++  if (passInfo.snapshotColorDst && passInfo.snapshotColorSample0) {
++    // SMS PC port patch (aurora_msaa_depth.patch): sample 0 of the multisampled scene colour.
++    const auto& scene = passInfo.colorAttachments[SceneColorAttachmentIndex];
++    tex_copy_conv::snapshot_color_sample0(cmd, scene.view, passInfo.snapshotColorDst, scene.format,
++                                          scene.size.width, scene.size.height);
++  } else if (passInfo.snapshotColorDst) {
+     const webgpu::gpu_prof::Zone zone{cmd, "Pass snapshot"};
+     const wgpu::TexelCopyTextureInfo src{
+         .texture = passInfo.copySourceTexture,
+--- a/include/aurora/gfx.hpp
++++ b/include/aurora/gfx.hpp
+@@ -145,6 +145,10 @@
+   bool color = true;
+   bool depth = false;
+   bool normal = false;
++  // SMS PC port patch (aurora_msaa_depth.patch): with a multisampled EFB, the colour snapshot
++  // is sample 0 of each pixel instead of the resolve (one sample per pixel, as the GameCube's
++  // pixel counters and copies see it). No effect without MSAA.
++  bool colorSample0 = false;
+ };
+ 
+ struct ResolvedTargets {
+--- a/lib/gfx/frame_packet.hpp
++++ b/lib/gfx/frame_packet.hpp
+@@ -92,6 +92,7 @@
+   Range resolveUniformRange;
+   uint32_t resolveVFilter = 0; // SMS PC port patch (aurora_copy_filter.patch): non-zero forces the filtered blit
+   wgpu::Texture snapshotColorDst;
++  bool snapshotColorSample0 = false; // SMS PC port patch (aurora_msaa_depth.patch)
+   wgpu::TextureView snapshotDepthDst;
+   wgpu::Texture snapshotNormalDst;
+   float clearDepthValue = 1.f;
+--- a/lib/gfx/recording.cpp
++++ b/lib/gfx/recording.cpp
+@@ -1050,6 +1050,7 @@
+     auto& entry = acquire_pass_snapshot(width, height, desc.color, wantDepth, wantNormal);
+     if (desc.color) {
+       prevPass.snapshotColorDst = entry.color.texture;
++      prevPass.snapshotColorSample0 = desc.colorSample0 && prevPass.msaaSamples > 1; // aurora_msaa_depth.patch
+       out.colorTexture = entry.color.texture;
+       out.color = entry.color.view;
+       out.colorFormat = entry.color.format;
+--- a/lib/gfx/depth_peek.cpp
++++ b/lib/gfx/depth_peek.cpp
+@@ -132,6 +132,12 @@
+   source += ShaderPreamble;
+   source += gx::UseReversedZ ? ReversedZBody : ForwardZBody;
+   source += ShaderMain;
++  // SMS PC port patch (aurora_msaa_depth.patch): with MSAA, read sample 0 of the
++  // multisampled EFB depth.
++  if (webgpu::g_graphicsConfig.msaaSamples > 1) {
++    constexpr std::string_view single = "texture_depth_2d;";
++    source.replace(source.find(single), single.size(), "texture_depth_multisampled_2d;");
++  }
+   return source;
+ }
+ 
+@@ -164,7 +170,7 @@
+ }
+ 
+ wgpu::BindGroupLayout create_bind_group_layout(const char* label) {
+-  constexpr std::array entries{
++  const std::array entries{
+       wgpu::BindGroupLayoutEntry{
+           .binding = 0,
+           .visibility = wgpu::ShaderStage::Compute,
+@@ -172,6 +178,7 @@
+               wgpu::TextureBindingLayout{
+                   .sampleType = wgpu::TextureSampleType::Depth,
+                   .viewDimension = wgpu::TextureViewDimension::e2D,
++                  .multisampled = webgpu::g_graphicsConfig.msaaSamples > 1, // aurora_msaa_depth.patch
+               },
+       },
+       wgpu::BindGroupLayoutEntry{
+@@ -361,8 +368,10 @@
+   if (!depthView || dstSize.x == 0 || dstSize.y == 0 || sourceSize.width == 0 || sourceSize.height == 0) {
+     return;
+   }
+-  if (msaaSamples > 1) {
+-    Log.fatal("Depth Peek from multisampled EFB targets is not supported");
++  // SMS PC port patch (aurora_msaa_depth.patch): the pipeline is built for the configured
++  // MSAA sample count (see build_shader_source).
++  if (msaaSamples != std::max<uint32_t>(webgpu::g_graphicsConfig.msaaSamples, 1)) {
++    return;
+   }
+ 
+   const Params params = make_params(sourceSize, dstSize);

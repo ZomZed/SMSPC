@@ -1,0 +1,58 @@
+# IDE folders
+.idea/
+.vs/
+.vscode/
+.zed/
+.claude/
+
+# Caches
+__pycache__
+.mypy_cache
+.cache/
+
+# Original files
+orig/*/*
+!orig/*/.gitkeep
+*.dol
+*.rel
+*.elf
+*.o
+*.map
+*.MAP
+
+# Build files
+build/
+.ninja_*
+build.ninja
+
+# decompctx output
+ctx.*
+*.ctx
+
+# Generated configs
+objdiff.json
+compile_commands.json
+
+# Miscellaneous
+/*.txt
+*.exe
+tools/mwcc_compiler
+
+# PC port: build output, disc-derived files and test artifacts (never commit these)
+port/build*/
+port/qa_*/
+port/data/
+port/res/*.ico
+port/res/*.png
+port/res/discord/
+bug_reports/
+*.pdb
+*.dll
+*.lib
+*.res
+*.szs
+*.arc
+*.iso
+*.rvz
+*.wia
+*.gcm

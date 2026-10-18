@@ -1,0 +1,3 @@
+// Program icon (Windows Explorer, taskbar, window title bar via SDL). Built by port/tools/make_icon.py
+// from the game's HUD Shine sprite.
+1 ICON "shine.ico"

@@ -1,0 +1,17 @@
+# SMS port: larger per-frame vertex/index buffers. Above 30 fps a display frame drawn over a
+# logic frame in one Aurora frame holds two scenes; Pinna Park overflowed the 5 MiB vertex buffer
+# (ByteBuffer::resize abort on the mapped staging range). Apply in port_deps/aurora, then rebuild
+# aurora_gx / aurora_core (port/AURORA.md).
+--- a/lib/gfx/resources.hpp
++++ b/lib/gfx/resources.hpp
+@@ -5,8 +5,8 @@
+ namespace aurora::gfx {
+ inline constexpr bool UseTextureBuffer = true;
+ inline constexpr uint64_t UniformBufferSize = 25165824; // 24 MiB
+-inline constexpr uint64_t VertexBufferSize = 5242880;   // 5 MiB
+-inline constexpr uint64_t IndexBufferSize = 2097152;    // 2 MiB
++inline constexpr uint64_t VertexBufferSize = 12582912;  // 12 MiB (SMS port: was 5 MiB; a display frame drawn over a logic frame holds two scenes)
++inline constexpr uint64_t IndexBufferSize = 5242880;    // 5 MiB (SMS port: was 2 MiB, same reason)
+ inline constexpr uint64_t StorageBufferSize = 8388608;  // 8 MiB
+ inline constexpr uint64_t TextureUploadSize = 25165824; // 24 MiB
+

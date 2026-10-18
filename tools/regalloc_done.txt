@@ -1,0 +1,1247 @@
+GC2D/CardLoad	TCardLoad::waitForChoice(TEProgress, TEProgress, int)	98.4/337 -> 98.4/337	1 compiles	no gain
+Enemy/wireTrap	TWireTrap::calcRootMatrix()	96.2/156 -> 96.3/111	30 compiles	KEPT
+Camera/camerashake	TCameraShake::execShake(const JGeometry::TVec3<float>&, JGeometry::TVec3<float>*, JGeometry::TVec3<float>*)	95.9/176 -> 95.9/176	30 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::setupCollisions_()	95.2/107 -> 95.2/107	30 compiles	no gain
+MoveBG/ModelGate	TModelGate::perform(unsigned long, JDrama::TGraphics*)	98.0/152 -> 98.0/152	30 compiles	no gain
+GC2D/SelectShine2	TSelectShineManager::initData(unsigned char*, unsigned char, unsigned char, JPAEmitterManager*)	96.0/121 -> 96.0/121	30 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::drawWaterBack()	97.5/182 -> 97.5/182	30 compiles	no gain
+Enemy/bossgesso	TBossGesso::perform(unsigned long, JDrama::TGraphics*)	97.9/98 -> 97.9/98	23 compiles	no gain
+MoveBG/MapObjLib	TMapObjTurn::control()	96.2/189 -> 96.2/189	30 compiles	no gain
+System/MenuDir	TMenuDirector::direct()	97.5/111 -> 97.5/111	5 compiles	no gain
+Enemy/koopajr	TKoopaJrSubmarine::makeKillerVelocity(TBathtubKiller*, JGeometry::TVec3<float>)	97.0/141 -> 97.0/141	30 compiles	no gain
+Enemy/BathtubKiller	TNerveBathtubKillerChaseStraight::execute(TSpineBase<TLiveActor>*) const	95.1/77 -> 95.1/77	1 compiles	no gain
+Enemy/yunbo	TYumbo::shotSeeds()	96.0/113 -> 96.0/113	30 compiles	no gain
+Enemy/bgtentacle	TBGTentacle::setAttackTarget()	95.5/77 -> 95.5/77	14 compiles	no gain
+Player/MarioMove	TMario::checkGraffito()	96.8/146 -> 96.8/146	5 compiles	no gain
+GC2D/CardSave	TCardSave::waitForChoice(TEProgress, TEProgress, signed char)	99.3/515 -> 99.3/515	1 compiles	no gain
+GC2D/CardLoad	TCardLoad::waitForChoiceBM(TEProgress, TEProgress, int)	98.9/250 -> 98.9/250	1 compiles	no gain
+Enemy/igaiga	TGorogoroManager::perform(unsigned long, JDrama::TGraphics*)	96.1/98 -> 96.1/98	8 compiles	no gain
+GC2D/CardSave	TCardSave::waitForChoiceBM(TEProgress, TEProgress, signed char)	99.3/477 -> 99.3/477	1 compiles	no gain
+GC2D/CardLoad	TCardLoad::selectFunction()	99.3/362 -> 99.3/362	14 compiles	no gain
+Enemy/tamaNoko	TTamaNokoFlower::perform(unsigned long, JDrama::TGraphics*)	95.0/115 -> 95.0/115	3 compiles	no gain
+Enemy/popo	TPopo::walkBehavior(int, float)	96.4/88 -> 96.4/88	30 compiles	no gain
+Enemy/BathtubBinder	TBathtubBinder::float_(TLiveActor*)	96.1/99 -> 96.1/99	30 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::checkDolpic8()	97.3/83 -> 97.5/64	25 compiles	KEPT
+NPC/NpcInitPrg	TBaseNPC::setIndividualDifference_(JSUMemoryInputStream&)	98.1/186 -> 98.2/177	30 compiles	KEPT
+Player/MarioDraw	TMario::initModel()	98.9/228 -> 98.9/228	30 compiles	no gain
+GC2D/CardSave	TCardSave::waitForStop(TEProgress)	98.2/286 -> 98.2/286	1 compiles	no gain
+Enemy/Kumokun	TNerveKumokunWait::execute(TSpineBase<TLiveActor>*) const	95.9/77 -> 95.9/77	6 compiles	no gain
+Enemy/pakkun	TNervePakkunStay::execute(TSpineBase<TLiveActor>*) const	98.5/297 -> 98.5/297	30 compiles	no gain
+Enemy/Kumokun	TKumokun::bind()	97.7/199 -> 99.4/180	30 compiles	KEPT
+GC2D/CardLoad	TCardLoad::waitForStart(TEProgress)	98.3/187 -> 98.3/187	1 compiles	no gain
+GC2D/CardSave	TCardSave::execMovement_()	99.7/716 -> 99.7/716	3 compiles	no gain
+GC2D/ConsoleStr	TConsoleStr::perform(unsigned long, JDrama::TGraphics*)	97.8/150 -> 97.8/150	11 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::countBlueCoin()	96.6/130 -> 96.6/130	26 compiles	no gain
+Animal/Bird	TAnimalBird::doLanding(bool)	95.9/91 -> 95.9/91	30 compiles	no gain
+Enemy/cannon	TCannon::init(TLiveManager*)	97.4/72 -> 97.4/68	30 compiles	KEPT
+Player/MarioMove	TMario::thinkWaterSurface()	98.2/160 -> 98.2/160	30 compiles	no gain
+GC2D/CardLoad	TCardLoad::selectBookmark(TEProgress, TEProgress, bool)	99.0/287 -> 99.0/287	1 compiles	no gain
+GC2D/ConsoleStr	TConsoleStr::processGo(float)	97.7/125 -> 97.7/125	0 compiles	no gain
+Enemy/mameGesso	TNerveMameGessoGraphJumpWander::execute(TSpineBase<TLiveActor>*) const	97.7/46 -> 97.7/46	30 compiles	no gain
+Enemy/fruitsboat	TFruitsBoat::init(TLiveManager*)	96.9/120 -> 96.9/120	12 compiles	no gain
+Enemy/fireWanwan	TFireWanwanTailHit::init()	97.0/92 -> 97.0/92	30 compiles	no gain
+Enemy/bosseel	TOilBall::moveObject()	95.8/73 -> 95.8/73	30 compiles	no gain
+Player/WaterGun	TNozzleTrigger::emit(int)	95.3/66 -> 95.3/66	30 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::changeMove()	96.7/72 -> 96.7/72	16 compiles	no gain
+Map/BathWaterManager	TBathWaterManager::throwMario(float)	95.2/72 -> 95.2/72	30 compiles	no gain
+GC2D/Guide	TGuide::load(JSUMemoryInputStream&)	98.4/37 -> 98.4/37	30 compiles	no gain
+Player/MarioMove	TMario::setStatusToJumping(unsigned long, unsigned long)	98.8/58 -> 98.8/58	11 compiles	no gain
+Enemy/Kazekun	TKazekun::flyAroundMario()	96.2/135 -> 96.2/135	30 compiles	no gain
+Enemy/TabePuku	TNerveTabePukuDrag::execute(TSpineBase<TLiveActor>*) const	96.0/58 -> 96.0/58	1 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::genAttacker()	96.1/84 -> 96.1/84	30 compiles	no gain
+Enemy/elecNokonoko	TElecCarapace::shoot()	95.5/61 -> 95.5/61	22 compiles	no gain
+Player/MarioSpecial	TMario::wireRolling()	98.2/53 -> 98.2/53	30 compiles	no gain
+Player/MarioCollision	TMario::damageExec(THitActor*, int, int, int, float, int, float, short)	97.7/64 -> 97.7/64	30 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::rouletteStart()	95.3/68 -> 95.3/68	30 compiles	no gain
+Enemy/BossHanachanEffect	TBossHanachan::emitParticle_()	96.9/103 -> 96.9/103	12 compiles	no gain
+Enemy/Koopa	TKoopa::init(TLiveManager*)	97.0/70 -> 97.0/70	30 compiles	no gain
+GC2D/ConsoleStr	TConsoleStr::startCloseWipe(bool)	97.8/119 -> 97.8/119	10 compiles	no gain
+Player/MarioSpecial	TMario::wireHanging()	97.9/72 -> 97.9/72	8 compiles	no gain
+Enemy/bosswanwan	TBWBinder::bind(TLiveActor*)	98.8/288 -> 98.8/288	30 compiles	no gain
+System/MarDirectorSetupObjects	TMarDirector::setupObjects()	99.6/527 -> 99.6/527	30 compiles	no gain
+MSound/MSoundScene	MSSceneSE::frameLoop(unsigned long, Vec*, unsigned char)	97.0/61 -> 97.0/61	20 compiles	no gain
+Enemy/bosstelesa	TNerveBossTelesaPrepareSlot::execute(TSpineBase<TLiveActor>*) const	98.1/30 -> 98.1/30	20 compiles	no gain
+Enemy/killer	TNerveFlyEnemyChaseFly::execute(TSpineBase<TLiveActor>*) const	97.7/94 -> 97.7/94	30 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::bindBody(JGeometry::TVec3<float>*, JGeometry::TVec3<float>*, const JGeometry::TVec3<float>&)	96.6/105 -> 99.3/101	30 compiles	KEPT
+Enemy/Amenbo	TNerveAmenboSearch::execute(TSpineBase<TLiveActor>*) const	97.8/85 -> 97.8/85	1 compiles	no gain
+Enemy/popo	TPopo::calcRootMatrix()	97.6/115 -> 97.6/115	30 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowManager::drawShadowGD(unsigned long, JDrama::TGraphics*)	98.8/48 -> 98.8/48	30 compiles	no gain
+Enemy/bgtentacle	TBGTentacle::TBGTentacle(TBossGesso*, int, int)	97.9/83 -> 97.9/83	4 compiles	no gain
+Enemy/bosswanwan	TBossWanwan::init(TLiveManager*)	98.5/94 -> 98.5/94	30 compiles	no gain
+NPC/NpcAnm	TBaseNPC::setNpcAnm_(EnumNpcAnmKind, EnumNpcStopMotionBlendOnOff)	97.5/85 -> 97.5/85	1 compiles	no gain
+GC2D/Guide	TGuide::resetScore()	98.8/23 -> 98.8/23	30 compiles	no gain
+Map/MapEventMare	TMareEventDepressWall::initCommon()	97.6/27 -> 97.6/27	30 compiles	no gain
+Enemy/bgtentacle	TBGTentacleMtxCalc::calc(unsigned short)	98.6/179 -> 98.6/179	30 compiles	no gain
+Player/MarioSpecial	TMario::wireSWait()	97.0/69 -> 97.0/69	9 compiles	no gain
+Enemy/bossManta	TNerveMantaMove::execute(TSpineBase<TLiveActor>*) const	98.9/161 -> 98.9/161	30 compiles	no gain
+MoveBG/MapObjItem2	TJumpBase::control()	98.0/113 -> 98.0/113	1 compiles	no gain
+Player/MarioSpecial	TMario::wireWait()	97.6/63 -> 97.6/63	19 compiles	no gain
+GC2D/CardLoad	TCardLoad::waitForAnyKeyBM(TEProgress)	98.8/181 -> 98.8/181	1 compiles	no gain
+Player/WaterGun	TWaterGun::init()	98.5/54 -> 98.5/54	30 compiles	no gain
+Enemy/Koopa	TKoopa::setUpHitActors()	97.8/59 -> 97.8/59	25 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::moveObject()	98.9/62 -> 98.9/62	30 compiles	no gain
+Enemy/Kumokun	TNerveKumokunSearch::execute(TSpineBase<TLiveActor>*) const	98.3/74 -> 98.3/74	1 compiles	no gain
+Enemy/Amenbo	TNerveAmenboHitWater::execute(TSpineBase<TLiveActor>*) const	96.2/63 -> 96.2/63	1 compiles	no gain
+System/EventWatcher	evWarpFrontToMario(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.0/57 -> 99.0/57	13 compiles	no gain
+System/EventWatcher	evStartMareBottleDemo(TSpcTypedInterp<TEventWatcher>*, unsigned long)	98.1/5 -> 98.1/5	15 compiles	no gain
+System/EventWatcher	evSetTalkMsgID(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.3/35 -> 99.3/35	13 compiles	no gain
+System/EventWatcher	evIsNearSameActors(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/56 -> 99.8/56	30 compiles	no gain
+System/EventWatcher	evIsNearActors(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/45 -> 99.8/45	30 compiles	no gain
+System/EventWatcher	evGetTalkNPC(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.0/14 -> 99.0/14	2 compiles	no gain
+System/EventWatcher	evSetNextStage(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.7/34 -> 99.7/34	19 compiles	no gain
+System/EventWatcher	evStartAppearJetBalloon(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/32 -> 99.8/32	13 compiles	no gain
+System/EventWatcher	evInsertTimer(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/32 -> 99.8/32	13 compiles	no gain
+System/EventWatcher	evGetNPCType(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/30 -> 99.8/30	14 compiles	no gain
+System/EventWatcher	evAppearMushroom1up(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/28 -> 99.8/28	2 compiles	no gain
+System/EventWatcher	evWarpMario(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/26 -> 99.9/26	30 compiles	no gain
+System/EventWatcher	evIsOnLiveActorFlag(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/25 -> 99.8/25	29 compiles	no gain
+System/EventWatcher	evStartTimer(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/23 -> 99.8/23	2 compiles	no gain
+System/EventWatcher	evSetTimeLimit(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/22 -> 99.8/22	2 compiles	no gain
+System/EventWatcher	evStartEventSE(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/21 -> 99.8/21	1 compiles	no gain
+System/EventWatcher	evRegisterMovie(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/20 -> 99.8/20	2 compiles	no gain
+System/EventWatcher	evIsWaterMelonIsReached(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/19 -> 99.8/19	30 compiles	no gain
+System/EventWatcher	evInvalidatePad(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/19 -> 99.8/19	2 compiles	no gain
+System/EventWatcher	evIsInsideCube(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/18 -> 99.8/18	13 compiles	no gain
+System/EventWatcher	evAppear8RedCoinsAndTimer(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/17 -> 99.9/17	22 compiles	no gain
+System/EventWatcher	evEggYoshiStartFruit(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/17 -> 99.9/17	2 compiles	no gain
+System/EventWatcher	evSetGraffitoMultiplied(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/13 -> 99.9/13	5 compiles	no gain
+System/EventWatcher	evSetPollutionIncreaseCount(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/10 -> 99.8/10	2 compiles	no gain
+System/EventWatcher	evSetAttentionTime(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/10 -> 99.8/10	2 compiles	no gain
+System/EventWatcher	evSetFlagNPCCanTaken(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/8 -> 99.9/8	15 compiles	no gain
+System/EventWatcher	evSetHide4LiveActor(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/8 -> 99.9/8	13 compiles	no gain
+System/EventWatcher	evSetDead4LiveActor(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/8 -> 99.9/8	12 compiles	no gain
+System/EventWatcher	evIsTalkModeNow(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/5 -> 99.9/5	2 compiles	no gain
+System/EventWatcher	evLaunchEventClearDemo(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/5 -> 99.9/5	2 compiles	no gain
+Enemy/hinokuri2	THino2Mask::perform(unsigned long, JDrama::TGraphics*)	98.4/29 -> 98.4/29	17 compiles	no gain
+Enemy/hinokuri2	TNerveHino2JumpIn::execute(TSpineBase<TLiveActor>*) const	96.7/32 -> 96.7/32	12 compiles	no gain
+Enemy/hinokuri2	TNerveHino2Turn::execute(TSpineBase<TLiveActor>*) const	98.7/41 -> 98.7/41	30 compiles	no gain
+Enemy/hinokuri2	TNerveHino2Landing::execute(TSpineBase<TLiveActor>*) const	97.6/9 -> 97.6/9	30 compiles	no gain
+Enemy/hinokuri2	THinokuri2::init(TLiveManager*)	99.8/54 -> 99.8/54	30 compiles	no gain
+Enemy/hinokuri2	TNerveHino2GraphWander::execute(TSpineBase<TLiveActor>*) const	99.9/32 -> 99.9/32	20 compiles	no gain
+Enemy/hinokuri2	THino2MtxCalc::calc(unsigned short)	99.8/41 -> 99.8/41	8 compiles	no gain
+Enemy/hinokuri2	THinokuri2::moveObject()	99.9/29 -> 99.9/29	30 compiles	no gain
+Enemy/hinokuri2	THinokuri2::receiveMessageLv1(THitActor*, unsigned long)	99.8/14 -> 99.8/14	3 compiles	no gain
+Enemy/hinokuri2	TNerveHino2PrePol::execute(TSpineBase<TLiveActor>*) const	99.8/18 -> 99.8/18	9 compiles	no gain
+Enemy/hinokuri2	TNerveHino2Pollute::execute(TSpineBase<TLiveActor>*) const	99.9/26 -> 99.9/26	10 compiles	no gain
+Enemy/hinokuri2	TNerveHino2Die::execute(TSpineBase<TLiveActor>*) const	99.8/23 -> 99.8/23	5 compiles	no gain
+Enemy/hinokuri2	TNerveHino2Burst::execute(TSpineBase<TLiveActor>*) const	99.9/17 -> 99.9/17	1 compiles	no gain
+Enemy/hinokuri2	THinokuri2::perform(unsigned long, JDrama::TGraphics*)	99.9/16 -> 99.9/16	2 compiles	no gain
+Enemy/hinokuri2	THinokuri2::changeBck(int)	99.9/10 -> 99.9/10	17 compiles	no gain
+Enemy/hinokuri2	THinokuri2::receiveMessageLv2(THitActor*, unsigned long)	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/enemyMario	TEnemyMario::emWaitingToInviteMario()	96.0/21 -> 96.0/21	30 compiles	no gain
+Enemy/enemyMario	TEnemyMario::findRunAwayNearestNode()	98.8/84 -> 98.9/75	30 compiles	KEPT
+Enemy/enemyMario	TEnemyMario::perform(unsigned long, JDrama::TGraphics*)	99.5/46 -> 99.6/41	11 compiles	KEPT
+Enemy/enemyMario	TEnemyMario::emReplay()	99.0/16 -> 99.0/16	21 compiles	no gain
+Enemy/enemyMario	TEnemyMario::drawHPMeter(float(*)[4])	99.2/59 -> 99.2/59	30 compiles	no gain
+Enemy/enemyMario	TEnemyMario::checkController(JDrama::TGraphics*)	99.8/36 -> 99.8/36	30 compiles	no gain
+Enemy/enemyMario	TEnemyMario::emRunAwayToNearestNode()	99.8/57 -> 99.8/57	4 compiles	no gain
+Enemy/enemyMario	TEnemyMario::initModel()	99.9/36 -> 99.9/36	30 compiles	no gain
+Enemy/enemyMario	TEnemyMario::startMonteReplay(unsigned long)	99.8/19 -> 99.8/19	30 compiles	no gain
+Enemy/enemyMario	TEnemyMario::tryTake()	99.8/10 -> 99.8/10	7 compiles	no gain
+Enemy/enemyMario	TEnemyMario::emWaiting()	99.9/10 -> 99.9/10	1 compiles	no gain
+Animal/BeeHive	TNerveBeeHiveWait::execute(TSpineBase<TLiveActor>*) const	98.5/26 -> 98.5/26	1 compiles	no gain
+Animal/BeeHive	TBeeHive::bind()	99.7/45 -> 99.7/45	19 compiles	no gain
+Animal/BeeHive	TNerveBeeHiveAttack::execute(TSpineBase<TLiveActor>*) const	99.8/41 -> 99.8/41	1 compiles	no gain
+Animal/BeeHive	TNerveBeeHiveBreak::execute(TSpineBase<TLiveActor>*) const	99.8/31 -> 99.8/31	1 compiles	no gain
+Animal/BeeHive	TNerveBeeHiveMarioWaterIn::execute(TSpineBase<TLiveActor>*) const	99.9/23 -> 99.9/23	1 compiles	no gain
+Animal/BeeHive	TNerveBeeHiveReset::execute(TSpineBase<TLiveActor>*) const	99.9/8 -> 99.9/8	1 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::waitingToAppear()	99.2/20 -> 99.2/20	3 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::bind()	99.7/56 -> 99.7/56	13 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::thrown()	99.5/27 -> 99.5/27	30 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::recover()	99.5/15 -> 99.5/15	2 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::receiveMessage(THitActor*, unsigned long)	99.9/18 -> 99.9/18	1 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::checkWallCollision(JGeometry::TVec3<float>*)	99.7/17 -> 99.7/17	3 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::calcRootMatrix()	99.9/16 -> 99.9/16	21 compiles	no gain
+MoveBG/MapObjGeneral	TMapObjGeneral::calcVelocity()	100.0/6 -> 100.0/6	1 compiles	no gain
+NPC/NpcEvent	evCheckMonteClear(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/26 -> 99.8/26	30 compiles	no gain
+NPC/NpcEvent	evGetFruitNum(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/14 -> 99.9/14	30 compiles	no gain
+NPC/NpcEvent	evSetFruitType(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/12 -> 99.9/12	30 compiles	no gain
+NPC/NpcEvent	evGetAddressFromViewObjName(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.9/11 -> 99.9/11	4 compiles	no gain
+NPC/NpcEvent	evIsGameModeNormal(TSpcTypedInterp<TEventWatcher>*, unsigned long)	99.8/10 -> 99.8/10	2 compiles	no gain
+NPC/NpcEvent	TNpcEvent::reviveOneSunflower()	99.9/6 -> 99.9/6	30 compiles	no gain
+Map/BathWaterManager	draw_mist(unsigned short, unsigned short, unsigned short, unsigned short, void*)	99.9/9 -> 99.9/9	30 compiles	no gain
+Map/BathWaterManager	TBathWaterMeshRenderer::makeNormalMap()	99.7/6 -> 99.7/6	29 compiles	no gain
+Map/BathWaterManager	TBathWaterManager::loadAfter()	99.9/8 -> 99.9/8	1 compiles	no gain
+Enemy/Kazekun	SMS_CalcToDirMatrix(JGeometry::TPosition3<JGeometry::TMatrix34<JGeometry::SMatrix34C<float>>>&, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&)	97.5/81 -> 97.5/81	27 compiles	no gain
+Enemy/Kazekun	TNerveKazekunAttack::execute(TSpineBase<TLiveActor>*) const	99.6/126 -> 99.6/126	10 compiles	no gain
+Enemy/Kazekun	TNerveKazekunPreAttack::execute(TSpineBase<TLiveActor>*) const	99.9/19 -> 99.9/19	3 compiles	no gain
+Enemy/Kazekun	TNerveKazekunHitWater::execute(TSpineBase<TLiveActor>*) const	99.9/14 -> 99.9/14	1 compiles	no gain
+Enemy/Kazekun	TKazekun::reset()	99.7/10 -> 99.7/10	2 compiles	no gain
+MoveBG/MapObjSirena	partsRollCallback(J3DNode*, int)	99.1/19 -> 99.1/19	30 compiles	no gain
+MoveBG/MapObjSirena	TCloset::touchWater(THitActor*)	99.6/8 -> 99.6/8	4 compiles	no gain
+MoveBG/MapObjSirena	TDonchou::calcRootMatrix()	99.9/21 -> 99.9/21	9 compiles	no gain
+MoveBG/MapObjSirena	TCloset::calcRootMatrix()	99.8/19 -> 99.8/19	2 compiles	no gain
+MoveBG/MapObjSirena	TItemSlotDrum::moveObject()	100.0/16 -> 100.0/16	1 compiles	no gain
+Camera/CameraBGCheck	CPolarSubCamera::calcInHouseNo_(bool)	97.8/17 -> 97.8/17	30 compiles	no gain
+Camera/CameraBGCheck	CPolarSubCamera::execWallCheck_(Vec*)	95.6/35 -> 95.6/35	30 compiles	no gain
+Camera/CameraBGCheck	CPolarSubCamera::isNeedGroundCheck_()	99.3/11 -> 99.3/11	18 compiles	no gain
+Camera/CameraBGCheck	CPolarSubCamera::execRoofCheck_(Vec)	99.6/6 -> 99.6/6	23 compiles	no gain
+Camera/CameraBGCheck	CPolarSubCamera::execGroundCheck_(Vec)	100.0/3 -> 100.0/3	1 compiles	no gain
+System/MarNameRefGen	TMarNameRefGen::getNameRef(const char*) const	99.9/56 -> 99.9/56	8 compiles	no gain
+Enemy/hauntLeg	THauntLeg::calcRootMatrix()	99.6/95 -> 99.6/95	30 compiles	no gain
+Enemy/hauntLeg	THauntLegManager::initSetEnemies()	99.8/29 -> 99.8/29	12 compiles	no gain
+Enemy/hauntLeg	TNerveHauntLegHaunt::execute(TSpineBase<TLiveActor>*) const	99.9/14 -> 99.9/14	20 compiles	no gain
+Enemy/hauntLeg	THauntLeg::init(TLiveManager*)	99.9/12 -> 99.9/12	10 compiles	no gain
+GC2D/CardSave	TCardSave::setMessageC(J2DTextBox*, long, unsigned long)	98.1/101 -> 98.1/101	5 compiles	no gain
+GC2D/CardSave	TCardSave::drawMessage(TEProgress)	99.8/44 -> 99.8/44	1 compiles	no gain
+Enemy/enemyAttachment	TEnemyPolluteModelManager::perform(unsigned long, JDrama::TGraphics*)	98.0/5 -> 98.0/5	1 compiles	no gain
+Enemy/enemyAttachment	TEnemyPolluteModelManager::generatePolluteModel(JGeometry::TVec3<float>&, JGeometry::TVec3<float>&)	99.7/26 -> 99.7/26	1 compiles	no gain
+Enemy/enemyAttachment	TEnemyAttachment::bind()	100.0/8 -> 100.0/8	1 compiles	no gain
+Camera/CameraChange	CPolarSubCamera::changeCamModeSub_(int, int, bool)	98.7/53 -> 98.7/53	9 compiles	no gain
+Player/MarioCap	TMarioCap::TMarioCap(TMario*)	99.2/13 -> 99.2/13	30 compiles	no gain
+Player/MarioCap	TMarioCap::perform(unsigned long, JDrama::TGraphics*)	99.9/30 -> 99.9/30	20 compiles	no gain
+NPC/NpcManager	TNPCManager::clipEnemies(JDrama::TGraphics*)	99.0/34 -> 99.0/34	11 compiles	no gain
+NPC/NpcManager	TNPCManager::makePartsModelData_(unsigned long, unsigned long, TModelDataKeeper*)	100.0/3 -> 100.0/3	1 compiles	no gain
+MSound/MAnmSound	MAnmSoundNPC::startAnimSound(void*, unsigned long, JAISound**, JAIActor*, unsigned char)	99.7/9 -> 99.7/9	24 compiles	no gain
+M3DUtil/SDLModel	SDLModelData::entrySDLModels()	99.9/19 -> 99.9/19	2 compiles	no gain
+MarioUtil/ScreenUtil	TAfterEffect::perform(unsigned long, JDrama::TGraphics*)	99.8/23 -> 99.8/23	30 compiles	no gain
+Enemy/BossHanachanAnm	TBossHanachan::changeAnmRateAndFrameUpdate_()	99.9/14 -> 99.9/14	18 compiles	no gain
+MoveBG/MapObjGrass	TMapObjGrassManager::initDrawNear() const	99.9/20 -> 99.9/20	0 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::bind()	98.8/120 -> 98.8/120	30 compiles	no gain
+Enemy/fireWanwan	TFireWanwanTailHit::perform(unsigned long, JDrama::TGraphics*)	98.6/106 -> 98.6/106	30 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::calcRootMatrix()	95.8/54 -> 95.8/54	1 compiles	no gain
+Enemy/fireWanwan	TFireWanwanTailNode::perform(unsigned long, JDrama::TGraphics*, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&)	97.3/75 -> 97.3/75	9 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::updatePollute()	97.2/39 -> 97.2/39	30 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanTurn::execute(TSpineBase<TLiveActor>*) const	99.1/14 -> 99.1/14	1 compiles	no gain
+Enemy/fireWanwan	TFireWanwanTailHit::performNodes(unsigned long, JDrama::TGraphics*)	99.4/74 -> 99.4/74	4 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanRecoverGraph::execute(TSpineBase<TLiveActor>*) const	99.7/90 -> 99.7/90	8 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanFindMario::execute(TSpineBase<TLiveActor>*) const	99.7/90 -> 99.7/90	1 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanDie::execute(TSpineBase<TLiveActor>*) const	99.4/31 -> 99.4/31	11 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::checkWalls(JGeometry::TVec3<float>*, TBGWallCheckRecord*, float)	99.4/38 -> 99.4/38	22 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::bindPoint(JGeometry::TVec3<float>*, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, float, TBGWallCheckRecord*)	99.7/59 -> 99.7/59	15 compiles	no gain
+Enemy/fireWanwan	TFireWanwanManager::perform(unsigned long, JDrama::TGraphics*)	99.6/27 -> 99.6/27	1 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::emitEffects()	99.8/47 -> 99.8/47	15 compiles	no gain
+Enemy/fireWanwan	TTailRubber::bindOne(TTailRubber::Node&)	99.3/16 -> 99.3/16	10 compiles	no gain
+Enemy/fireWanwan	TFireWanwanTailHit::moveRequest(const JGeometry::TVec3<float>&)	99.4/31 -> 99.4/31	17 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::initEscapeNextGraphNode()	99.7/42 -> 99.7/42	30 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanFly::execute(TSpineBase<TLiveActor>*) const	99.8/42 -> 99.8/42	30 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanHungTail::execute(TSpineBase<TLiveActor>*) const	99.8/29 -> 99.8/29	8 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanAttack::execute(TSpineBase<TLiveActor>*) const	99.9/25 -> 99.9/25	1 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::behaveToWater(THitActor*)	99.9/20 -> 99.9/20	1 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::isMissMario() const	99.8/20 -> 99.8/20	12 compiles	no gain
+Enemy/fireWanwan	TFireWanwan::init(TLiveManager*)	99.9/19 -> 99.9/19	18 compiles	no gain
+Enemy/fireWanwan	TNerveFireWanwanFreeze::execute(TSpineBase<TLiveActor>*) const	99.8/16 -> 99.8/16	1 compiles	no gain
+Enemy/hanasambo	SamboHeadRollCallback(J3DNode*, int)	97.1/68 -> 97.1/68	30 compiles	no gain
+Enemy/hanasambo	TSamboLeaf::perform(unsigned long, JDrama::TGraphics*)	96.3/30 -> 96.3/30	26 compiles	no gain
+Enemy/hanasambo	TNerveSamboHeadHitWater::execute(TSpineBase<TLiveActor>*) const	98.7/18 -> 98.7/18	8 compiles	no gain
+Enemy/hanasambo	TNerveSamboHeadAttack::execute(TSpineBase<TLiveActor>*) const	98.9/44 -> 98.9/44	30 compiles	no gain
+Enemy/hanasambo	TNerveHanaSamboWait::execute(TSpineBase<TLiveActor>*) const	99.4/16 -> 99.4/16	1 compiles	no gain
+Enemy/hanasambo	TSamboFlowerManager::dropLeaf(JGeometry::TVec3<float>&, JGeometry::TVec3<float>&)	99.6/51 -> 99.6/51	30 compiles	no gain
+Enemy/hanasambo	TNerveHanaSamboAppear::execute(TSpineBase<TLiveActor>*) const	99.7/14 -> 99.7/14	1 compiles	no gain
+Enemy/hanasambo	TNerveHanaSamboHide::execute(TSpineBase<TLiveActor>*) const	99.7/12 -> 99.7/12	1 compiles	no gain
+Enemy/hanasambo	TSamboHead::behaveToWater(THitActor*)	99.8/37 -> 99.8/37	4 compiles	no gain
+Enemy/hanasambo	TNerveSamboHeadHide::execute(TSpineBase<TLiveActor>*) const	99.8/5 -> 99.8/5	1 compiles	no gain
+Enemy/hanasambo	TSamboFlowerManager::loadAfter()	100.0/9 -> 100.0/9	1 compiles	no gain
+Enemy/telesa	TNerveTelesaImitate::execute(TSpineBase<TLiveActor>*) const	98.8/85 -> 99.8/38	30 compiles	KEPT
+Enemy/telesa	TNerveTelesaAttackMario::execute(TSpineBase<TLiveActor>*) const	99.5/76 -> 99.5/76	1 compiles	no gain
+Enemy/telesa	TTelesa::initAttacker(THitActor*)	99.7/2 -> 99.7/2	7 compiles	no gain
+Enemy/telesa	TTelesa::bind()	99.8/42 -> 99.8/42	2 compiles	no gain
+Enemy/telesa	TTelesa::behaveToWater(THitActor*)	99.8/30 -> 99.8/30	14 compiles	no gain
+Enemy/telesa	TNerveTelesaFreeze::execute(TSpineBase<TLiveActor>*) const	99.9/21 -> 99.9/21	1 compiles	no gain
+Enemy/telesa	TNerveKageMarioModokiWait::execute(TSpineBase<TLiveActor>*) const	99.8/20 -> 99.8/20	9 compiles	no gain
+Enemy/telesa	TTelesa::isReachedToGoal() const	99.7/17 -> 99.7/17	1 compiles	no gain
+Enemy/telesa	TMarioModokiTelesa::load(JSUMemoryInputStream&)	100.0/12 -> 100.0/12	1 compiles	no gain
+Enemy/telesa	TTelesa::perform(unsigned long, JDrama::TGraphics*)	100.0/3 -> 100.0/1	1 compiles	KEPT
+Enemy/koopajr	TKoopaJrSubmarine::calcRootMatrix()	97.9/114 -> 97.9/114	13 compiles	no gain
+Enemy/koopajr	TKoopaJrSubmarine::makeRoundVelocity()	98.7/49 -> 98.7/49	30 compiles	no gain
+Enemy/koopajr	TKoopaJrSubmarine::makeRelativeAngle()	98.6/39 -> 98.6/39	30 compiles	no gain
+Enemy/koopajr	TDirectionCalc::calcTurnDirection(float, float)	98.2/28 -> 98.2/28	21 compiles	no gain
+Enemy/koopajr	TDirectionCalc::sub(float)	98.2/19 -> 98.2/19	3 compiles	no gain
+Enemy/koopajr	TKoopaJrSubmarine::checkNerve()	99.9/28 -> 99.9/28	1 compiles	no gain
+Enemy/koopajr	TKoopaJrSubmarine::launchKiller()	99.8/20 -> 99.8/20	30 compiles	no gain
+Enemy/koopajr	TKoopaJr::perform(unsigned long, JDrama::TGraphics*)	99.9/18 -> 99.9/18	1 compiles	no gain
+Enemy/koopajr	TKoopaJrSubmarine::moveSwing()	100.0/10 -> 100.0/10	1 compiles	no gain
+Enemy/koopajr	TKoopaJrSubmarine::bind()	99.9/8 -> 99.9/8	1 compiles	no gain
+MoveBG/MapObjPinna	TAmiKing::moveObject()	97.5/31 -> 97.5/31	30 compiles	no gain
+MoveBG/MapObjPinna	TMerrygoround::initMapObj()	99.8/46 -> 99.8/46	14 compiles	no gain
+MoveBG/MapObjPinna	TPinnaCoaster::control()	99.7/28 -> 99.7/28	30 compiles	no gain
+MoveBG/MapObjPinna	TPinnaShell::control()	99.9/25 -> 99.9/25	0 compiles	no gain
+MoveBG/MapObjPinna	TFerrisWheel::control()	99.8/13 -> 99.8/13	14 compiles	no gain
+MoveBG/MapObjPinna	TAmiKing::calc()	99.9/15 -> 99.9/13	30 compiles	KEPT
+MoveBG/MapObjPinna	TMerrygoround::control()	99.9/8 -> 99.9/8	10 compiles	no gain
+Enemy/tamaNoko	TTamaNokoManager::initSetEnemies()	97.2/12 -> 97.2/12	13 compiles	no gain
+Enemy/tamaNoko	TTamaNoko::walkBehavior(int, float)	99.7/54 -> 99.7/54	30 compiles	no gain
+Enemy/tamaNoko	TNerveTamaNokoAttack::execute(TSpineBase<TLiveActor>*) const	99.9/35 -> 99.9/35	30 compiles	no gain
+Enemy/tamaNoko	TTamaNoko::isReachedToGoal() const	99.2/22 -> 99.2/22	2 compiles	no gain
+Enemy/tamaNoko	TNerveTamaNokoSink::execute(TSpineBase<TLiveActor>*) const	99.9/16 -> 99.9/16	26 compiles	no gain
+Enemy/tamaNoko	TNerveTamaNokoDown::execute(TSpineBase<TLiveActor>*) const	99.9/14 -> 99.9/14	10 compiles	no gain
+System/CardManager	TCardManager::filledInitData_(CARDFileInfo*)	97.9/59 -> 97.9/59	19 compiles	no gain
+System/CardManager	TCardManager::getBookmarkInfos_()	98.7/26 -> 98.7/26	10 compiles	no gain
+System/CardManager	TCardManager::readBlock_(unsigned long)	99.1/17 -> 99.1/17	30 compiles	no gain
+System/CardManager	TCardManager::cmdLoop()	99.3/26 -> 99.3/26	1 compiles	no gain
+System/CardManager	TCardManager::copyTo(TCardManager::TCriteria*, TCardBookmarkInfo*)	99.8/22 -> 99.8/22	1 compiles	no gain
+System/CardManager	TCardManager::writeBlock_(unsigned long)	99.9/11 -> 99.9/11	30 compiles	no gain
+System/CardManager	TCardManager::writeOptionBlock_()	99.9/11 -> 99.9/11	30 compiles	no gain
+Enemy/wireTrap	TNerveWireTrapSearch::execute(TSpineBase<TLiveActor>*) const	99.0/40 -> 99.0/40	1 compiles	no gain
+Enemy/wireTrap	TWireTrap::checkHitActors()	99.8/88 -> 99.8/88	5 compiles	no gain
+Enemy/wireTrap	TWireTrap::load(JSUMemoryInputStream&)	99.8/25 -> 99.8/25	30 compiles	no gain
+Enemy/wireTrap	TNerveWireTrapOnewayMove::execute(TSpineBase<TLiveActor>*) const	99.9/23 -> 99.9/23	1 compiles	no gain
+Enemy/wireTrap	TNerveWireTrapReturnMove::execute(TSpineBase<TLiveActor>*) const	99.8/21 -> 99.8/21	1 compiles	no gain
+Enemy/wireTrap	std::fmodf(float, float)	99.7/8 -> 99.7/8	6 compiles	no gain
+NPC/NpcAnm	TBaseNPC::npcRecoverFromSinking()	96.3/43 -> 96.3/43	2 compiles	no gain
+NPC/NpcAnm	TBaseNPC::npcWetting()	99.8/46 -> 99.8/46	1 compiles	no gain
+NPC/NpcAnm	TBaseNPC::npcMadding()	99.8/37 -> 99.8/37	1 compiles	no gain
+NPC/NpcAnm	TBaseNPC::walkAnmRateChange_()	99.9/16 -> 99.9/16	1 compiles	no gain
+Enemy/fruitsboat	TFruitsBoat::moveObject()	99.6/152 -> 99.6/152	30 compiles	no gain
+Enemy/fruitsboat	TNerveFruitsBoatGraphWander::execute(TSpineBase<TLiveActor>*) const	99.4/43 -> 99.4/43	14 compiles	no gain
+Enemy/fruitsboat	TNerveFruitsBoatBckTrace::execute(TSpineBase<TLiveActor>*) const	99.6/35 -> 99.6/35	1 compiles	no gain
+Enemy/fruitsboat	TFruitsBoat::setGroundCollision()	99.9/13 -> 99.9/13	1 compiles	no gain
+Enemy/fruitsboat	TFruitsBoat::setBckTrack(const char*)	99.9/8 -> 99.9/8	12 compiles	no gain
+Enemy/rocket	TRocket::calcRootMatrix()	98.7/101 -> 98.7/101	30 compiles	no gain
+Enemy/rocket	TRocketManager::initSetEnemies()	99.4/17 -> 99.4/17	7 compiles	no gain
+Enemy/rocket	TNerveRocketFly::execute(TSpineBase<TLiveActor>*) const	99.8/28 -> 99.8/28	30 compiles	no gain
+System/MovieDirector	TMovieDirector::rsetup()	99.8/92 -> 99.8/92	0 compiles	no gain
+System/MovieDirector	TMovieDirector::direct()	99.9/62 -> 99.9/62	15 compiles	no gain
+GC2D/SelectMenu	TSelectMenu::initData(unsigned char, JKRArchive*, TSelectShineManager*, TSelectDir*)	99.3/126 -> 99.3/126	30 compiles	no gain
+GC2D/SelectMenu	TSelectGrad::perform(unsigned long, JDrama::TGraphics*)	98.2/38 -> 98.2/38	30 compiles	no gain
+Player/MarioEffect	TMarioEffect::setJumpIntoWaterEffectSmall()	95.6/27 -> 95.6/22	23 compiles	KEPT
+Player/MarioEffect	TMarioEffect::setJumpIntoWaterEffect()	97.7/49 -> 97.7/49	30 compiles	no gain
+Enemy/wireBinder	TWireBinder::bind(TLiveActor*)	99.6/56 -> 99.7/39	16 compiles	KEPT
+Enemy/wireBinder	TWireBinder::getDirAtPos(const JGeometry::TVec3<float>&, float) const	99.9/12 -> 99.9/12	23 compiles	no gain
+Map/MapWarp	TMapWarp::init(JSUMemoryInputStream&)	97.3/96 -> 97.3/90	30 compiles	KEPT
+Map/MapWarp	TMapWarp::watchToWarp()	99.8/42 -> 99.8/42	30 compiles	no gain
+MSound/MSModBgm	MSModBgm::modBgm(unsigned char, unsigned char)	96.5/7 -> 96.5/7	2 compiles	no gain
+MSound/MSModBgm	MSBgmXFade::xFadeBgm(float)	99.4/17 -> 99.4/17	6 compiles	no gain
+GC2D/ConsoleStr	TConsoleStr::load(JSUMemoryInputStream&)	99.5/8 -> 99.5/8	30 compiles	no gain
+MoveBG/MapObjWave	TMapObjWave::draw()	99.8/38 -> 99.8/38	24 compiles	no gain
+MoveBG/MapObjWave	TMapObjWave::updateHeightAndAlpha()	99.9/13 -> 99.9/13	22 compiles	no gain
+Enemy/seal	TSeal::init(TLiveManager*)	98.7/63 -> 98.7/63	6 compiles	no gain
+NPC/NpcInitPrg	TBaseNPC::init(TLiveManager*)	99.8/25 -> 99.8/25	30 compiles	no gain
+Strategic/question	TQuestionManager::makeDL(JDrama::TGraphics*) const	99.5/37 -> 99.5/37	30 compiles	no gain
+Camera/CameraSecureView	CPolarSubCamera::execSecureView_(short, Vec*)	99.9/19 -> 99.9/19	30 compiles	no gain
+Camera/CameraCodeControl	CPolarSubCamera::controlByCameraCode_(int*)	99.9/12 -> 99.9/12	13 compiles	no gain
+Map/PollutionObj	TPollutionObj::getDepthFromMap(int, int)	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/hamukuri	TBossDangoHamuKuri::generateBody()	96.3/16 -> 96.3/16	25 compiles	no gain
+Enemy/hamukuri	TFireHamuKuriManager::initSetEnemies()	98.6/33 -> 98.6/33	30 compiles	no gain
+Enemy/hamukuri	TNerveHaneHamuKuriMoveOnGraph::execute(TSpineBase<TLiveActor>*) const	99.7/59 -> 99.7/59	30 compiles	no gain
+Enemy/hamukuri	THaneHamuKuri::walkBehavior(int, float)	99.9/57 -> 99.9/57	18 compiles	no gain
+Enemy/hamukuri	TDoroHamuKuri::isCollidMove(THitActor*)	99.8/45 -> 99.8/45	30 compiles	no gain
+Enemy/hamukuri	TNerveHamuKuriBoundFreeze::execute(TSpineBase<TLiveActor>*) const	99.8/44 -> 99.8/44	14 compiles	no gain
+Enemy/hamukuri	THamuKuri::bind()	99.7/44 -> 99.7/44	3 compiles	no gain
+Enemy/hamukuri	THamuKuri::makeCapFly(TMapObjBase*)	99.8/41 -> 99.8/41	30 compiles	no gain
+Enemy/hamukuri	TDangoHamuKuri::behaveToWater(THitActor*)	99.9/39 -> 99.9/39	10 compiles	no gain
+Enemy/hamukuri	THaneHamuKuri::bind()	99.7/37 -> 99.7/37	2 compiles	no gain
+Enemy/hamukuri	TNerveDoroHamuKuriRobCap::execute(TSpineBase<TLiveActor>*) const	99.7/31 -> 99.7/31	6 compiles	no gain
+Enemy/hamukuri	THamuKuri::jumpToSearchActor()	99.8/25 -> 99.8/25	11 compiles	no gain
+Enemy/hamukuri	TNerveHaneHamuKuriUpWait::execute(TSpineBase<TLiveActor>*) const	99.8/23 -> 99.8/23	1 compiles	no gain
+Enemy/hamukuri	TNerveDoroHaneHitWater::execute(TSpineBase<TLiveActor>*) const	99.8/22 -> 99.8/22	1 compiles	no gain
+Enemy/hamukuri	THamuKuri::isCollidMove(THitActor*)	99.9/22 -> 99.9/22	10 compiles	no gain
+Enemy/hamukuri	TNerveHamuKuriWallDie::execute(TSpineBase<TLiveActor>*) const	99.9/21 -> 99.9/21	7 compiles	no gain
+Enemy/hamukuri	TNerveHamuKuriGoForSearchActor::execute(TSpineBase<TLiveActor>*) const	99.8/20 -> 99.8/20	1 compiles	no gain
+Enemy/hamukuri	TDangoHamuKuri::calcRootMatrix()	99.8/20 -> 99.8/20	23 compiles	no gain
+Enemy/hamukuri	THamuKuriLauncher::stateLaunch()	99.8/19 -> 99.8/19	28 compiles	no gain
+Enemy/hamukuri	THaneHamuKuri::isReachedToGoal() const	99.7/15 -> 99.7/15	1 compiles	no gain
+Enemy/hamukuri	THaneHamuKuri2::isReachedToGoal() const	99.7/15 -> 99.7/15	1 compiles	no gain
+Enemy/hamukuri	THamuKuri::setMActorAndKeeper()	99.8/11 -> 99.8/11	20 compiles	no gain
+Enemy/hamukuri	TFireHamuKuri::setMActorAndKeeper()	99.8/11 -> 99.8/11	4 compiles	no gain
+Enemy/hamukuri	TDoroHamuKuri::setBehavior()	99.9/10 -> 99.9/10	3 compiles	no gain
+Enemy/hamukuri	THamuKuri::getTakingMtx()	99.9/9 -> 99.9/9	30 compiles	no gain
+Enemy/hamukuri	THamuKuriManager::requestSerialKill(THamuKuri*)	99.9/6 -> 99.9/6	19 compiles	no gain
+Enemy/cannon	TNerveCannonOpen::execute(TSpineBase<TLiveActor>*) const	97.2/32 -> 97.2/32	1 compiles	no gain
+Enemy/cannon	TNerveCannonDamageDemo::execute(TSpineBase<TLiveActor>*) const	97.9/31 -> 97.9/31	8 compiles	no gain
+Enemy/cannon	TChorobei::checkHit()	98.8/38 -> 98.8/38	3 compiles	no gain
+Enemy/cannon	TCannon::bombShoot()	99.7/37 -> 99.7/37	26 compiles	no gain
+Enemy/cannon	TCannon::bombSet()	99.8/35 -> 99.8/35	30 compiles	no gain
+Enemy/cannon	TCannon::calcRootMatrix()	99.9/34 -> 99.9/34	3 compiles	no gain
+Enemy/cannon	TCannon::moveObject()	99.9/25 -> 99.9/25	12 compiles	no gain
+Enemy/cannon	TNerveCannonDamage::execute(TSpineBase<TLiveActor>*) const	100.0/20 -> 100.0/20	1 compiles	no gain
+Enemy/cannon	TChorobei::perform(unsigned long, JDrama::TGraphics*)	99.8/17 -> 99.8/17	3 compiles	no gain
+Enemy/cannon	TCannon::setKillerGoalPoint()	99.9/16 -> 99.9/16	7 compiles	no gain
+Enemy/cannon	TCannonDom::perform(unsigned long, JDrama::TGraphics*)	99.8/14 -> 99.8/14	21 compiles	no gain
+Enemy/cannon	TNerveCannonShoot::execute(TSpineBase<TLiveActor>*) const	100.0/10 -> 100.0/10	1 compiles	no gain
+Enemy/cannon	TNerveCannonClose::execute(TSpineBase<TLiveActor>*) const	100.0/10 -> 100.0/10	1 compiles	no gain
+Enemy/cannon	TNerveCannonForceBombShoot::execute(TSpineBase<TLiveActor>*) const	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/gesso	GessoBodyCallback(J3DNode*, int)	97.4/45 -> 97.4/45	30 compiles	no gain
+Enemy/gesso	TNerveGessoTurn::execute(TSpineBase<TLiveActor>*) const	97.9/9 -> 97.9/9	1 compiles	no gain
+Enemy/gesso	TNerveGessoFall::execute(TSpineBase<TLiveActor>*) const	99.8/75 -> 99.8/75	10 compiles	no gain
+Enemy/gesso	TNerveGessoFreeze::execute(TSpineBase<TLiveActor>*) const	99.8/55 -> 99.8/55	4 compiles	no gain
+Enemy/gesso	TGesso::calcRootMatrix()	99.7/31 -> 99.8/18	30 compiles	KEPT
+Enemy/gesso	TGesso::pollute()	99.8/23 -> 99.8/20	30 compiles	KEPT
+Enemy/gesso	TGessoPolluteObj::set()	99.8/21 -> 99.8/21	19 compiles	no gain
+Enemy/gesso	TGessoPolluteObj::getNowGravity()	98.1/4 -> 98.1/4	1 compiles	no gain
+Enemy/gesso	TGesso::rollCheck()	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/gesso	TNerveGessoStay::execute(TSpineBase<TLiveActor>*) const	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/gesso	TGesso::bind()	100.0/5 -> 100.0/5	1 compiles	no gain
+Player/Yoshi	TYoshi::calcAnim()	98.6/24 -> 98.6/24	14 compiles	no gain
+Player/Yoshi	TYoshi::entry()	98.5/49 -> 98.5/49	30 compiles	no gain
+Player/Yoshi	TYoshi::movement()	99.6/79 -> 99.6/79	30 compiles	no gain
+Player/Yoshi	TYoshi::init(TMario*)	99.6/61 -> 99.6/61	30 compiles	no gain
+Player/Yoshi	TYoshi::appearFromEgg(const JGeometry::TVec3<float>&, float, TEggYoshi*)	97.6/9 -> 97.6/9	7 compiles	no gain
+Player/Yoshi	TYoshi::getEmitPosDir(JGeometry::TVec3<float>*, JGeometry::TVec3<float>*) const	97.1/10 -> 97.1/10	1 compiles	no gain
+Player/Yoshi	YoshiHeadCtrl(J3DNode*, int)	99.8/9 -> 99.8/9	11 compiles	no gain
+Enemy/namekuri	NameKuriAttackCallback(J3DNode*, int)	96.4/22 -> 96.4/22	10 compiles	no gain
+Enemy/namekuri	TNameIndParCallback::execute(JPABaseEmitter*, JPABaseParticle*)	98.7/75 -> 98.7/75	30 compiles	no gain
+Enemy/namekuri	TNameKuri::calcRootMatrix()	99.6/95 -> 99.6/95	30 compiles	no gain
+Enemy/namekuri	TNerveNameKuriJumpAttack::execute(TSpineBase<TLiveActor>*) const	99.7/71 -> 99.7/65	30 compiles	KEPT
+Enemy/namekuri	TNerveNKFollowMario::execute(TSpineBase<TLiveActor>*) const	99.8/23 -> 99.8/23	30 compiles	no gain
+Enemy/namekuri	NameKuriScaleCallback(J3DNode*, int)	99.8/15 -> 99.8/15	2 compiles	no gain
+Enemy/namekuri	TNameKuri::setMeltAnm()	99.8/14 -> 99.8/14	2 compiles	no gain
+Enemy/namekuri	TNameKuri::setDeadAnm()	99.8/14 -> 99.8/14	3 compiles	no gain
+Enemy/namekuri	TNameKuri::moveObject()	99.9/12 -> 99.9/12	8 compiles	no gain
+Enemy/namekuri	TNameKuriLauncher::stateLaunch()	99.8/12 -> 99.8/12	8 compiles	no gain
+System/MSoundMainSide	MSStageCubeFadeDouble::proc()	97.9/86 -> 97.9/86	0 compiles	no gain
+System/MSoundMainSide	MSStageCubeFade::setBgmVolumeForce()	97.4/45 -> 97.4/45	0 compiles	no gain
+System/MSoundMainSide	MSStageDistFadeMonte::proc()	99.2/84 -> 99.2/84	30 compiles	no gain
+System/MSoundMainSide	MSMainProc::setMSoundEnterStage(unsigned char, unsigned char)	99.7/37 -> 99.7/37	19 compiles	no gain
+System/MSoundMainSide	MSStageCubeFadeMonte::proc()	99.7/76 -> 99.7/76	30 compiles	no gain
+System/MSoundMainSide	MSStageCubeFade::proc()	99.5/72 -> 99.5/72	30 compiles	no gain
+System/MSoundMainSide	MSStageDistFade::proc()	99.7/53 -> 99.7/53	30 compiles	no gain
+System/MSoundMainSide	MSMainProc::getMonteVillageActorArea(const Vec&)	99.7/16 -> 99.7/16	1 compiles	no gain
+System/MarDirectorDirect	decideNextStage()	96.4/10 -> 96.4/10	2 compiles	no gain
+System/MarDirectorDirect	TMarDirector::direct()	99.7/46 -> 99.7/46	30 compiles	no gain
+System/MarDirectorDirect	TMarDirector::changeState()	99.9/46 -> 99.9/46	7 compiles	no gain
+System/MarDirectorDirect	TMarDirector::updateGameMode()	99.9/39 -> 99.9/39	1 compiles	no gain
+System/MarDirectorDirect	TMarDirector::moveStage()	99.9/33 -> 99.9/33	26 compiles	no gain
+System/MarDirectorDirect	TMarDirector::setMario()	99.8/11 -> 99.8/11	30 compiles	no gain
+MSound/MSound	MSSeCallBack::setParameterSeqSync(JASystem::TTrack*, unsigned short)	98.8/84 -> 98.8/84	23 compiles	no gain
+MSound/MSound	MSound::startMarioVoice(unsigned long, short, unsigned char)	99.8/29 -> 99.8/29	30 compiles	no gain
+MSound/MSound	MSound::fadeOutAllSound(unsigned long)	99.1/15 -> 99.1/15	1 compiles	no gain
+MSound/MSound	MSound::getDistPowFromCamera(const Vec&)	99.1/12 -> 99.1/12	0 compiles	no gain
+MSound/MSound	MSound::startSoundActorSpecial(unsigned long, const Vec*, float, float, unsigned long, JAISound**, unsigned long, unsigned char)	99.8/21 -> 99.8/21	2 compiles	no gain
+Enemy/BossHanachanParts	TBossHanachanPartsBase::considerSetAnm_(EnumBossHanachanNerveAnm)	99.7/36 -> 99.7/36	14 compiles	no gain
+Enemy/BossHanachanParts	TBossHanachanPartsBase::isCurBckAlreadyEnd_() const	98.1/17 -> 98.1/17	8 compiles	no gain
+Enemy/BossHanachanParts	TBossHanachanPartsBase::entryCircleShadow_()	99.5/24 -> 99.5/24	4 compiles	no gain
+Enemy/BossHanachanParts	TBossHanachanPartsBase::changeTumbleAnmRate_()	99.7/14 -> 99.7/14	1 compiles	no gain
+Enemy/BossHanachanParts	TBossHanachanPartsBase::initMapCollisionAndHitActor_(TIdxGroupObj*)	99.8/5 -> 99.8/5	30 compiles	no gain
+Enemy/BossHanachanParts	TBossHanachanPartsBody::receiveMessage(THitActor*, unsigned long)	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/BossHanachanParts	TBossHanachanPartsHead::receiveMessage(THitActor*, unsigned long)	100.0/6 -> 100.0/6	1 compiles	no gain
+Map/MapWire	TMapWire::init(const TCubeGeneralInfo*)	99.1/95 -> 99.1/95	30 compiles	no gain
+Map/MapWire	TMapWire::getPosInWire(const JGeometry::TVec3<float>&) const	99.3/71 -> 99.4/63	30 compiles	KEPT
+Map/MapWire	TMapWire::setFootPointsAtHanged(float(*)[4])	99.6/69 -> 99.6/69	7 compiles	no gain
+Map/MapWire	TMapWire::release()	99.8/46 -> 99.8/46	27 compiles	no gain
+Map/MapWire	TMapWire::move()	99.8/28 -> 99.8/28	0 compiles	no gain
+Map/MapWire	TMapWire::getPointPosOnWire(float, JGeometry::TVec3<float>*) const	100.0/5 -> 100.0/5	1 compiles	no gain
+Strategic/ObjHitCheck	TObjHitCheck::checkWater()	99.3/25 -> 99.3/25	19 compiles	no gain
+Strategic/ObjHitCheck	TObjHitCheck::entryGroup(TIdxGroupObj*)	99.7/41 -> 99.7/41	14 compiles	no gain
+Strategic/ObjHitCheck	TObjHitCheck::checkAndEntryGroup(TIdxGroupObj*)	99.8/36 -> 99.8/36	14 compiles	no gain
+Animal/AnimalBase	TAnimalBase::execWalk(bool)	99.3/93 -> 99.5/83	30 compiles	KEPT
+Animal/AnimalBase	TAnimalBase::resetRandomCurPathNode()	99.4/60 -> 99.4/60	3 compiles	no gain
+Animal/AnimalBase	TAnimalBase::getRotationFlyToDir(JGeometry::TVec3<float>*, const JGeometry::TVec3<float>&, float, float)	99.9/14 -> 99.9/14	30 compiles	no gain
+Animal/AnimalBase	TAnimalBase::initNoLoad_(TAnimalBase*)	99.9/12 -> 99.9/12	8 compiles	no gain
+Enemy/bombhei	TNerveBombHeiWaitExplosion::execute(TSpineBase<TLiveActor>*) const	99.5/13 -> 99.5/13	1 compiles	no gain
+Enemy/bombhei	TNerveBombHeiAttack::execute(TSpineBase<TLiveActor>*) const	99.8/16 -> 99.8/16	1 compiles	no gain
+Enemy/bombhei	TBombHei::genEventCoin()	99.9/8 -> 99.9/8	11 compiles	no gain
+Enemy/bombhei	TNerveBombHeiGenerate::execute(TSpineBase<TLiveActor>*) const	100.0/5 -> 100.0/5	1 compiles	no gain
+Player/MarioCheckCol	TMario::hangPole(THitActor*)	96.3/33 -> 96.5/29	30 compiles	KEPT
+Player/MarioCheckCol	TMario::checkCollision()	99.7/157 -> 99.7/157	28 compiles	no gain
+Player/MarioCheckCol	TMario::hitNormal(THitActor*)	98.2/19 -> 98.2/19	4 compiles	no gain
+System/MenuDir	TMenuDirector::rsetup()	99.3/154 -> 99.3/154	30 compiles	no gain
+System/MenuDir	TMenuDirector::setFixedStageValue()	99.9/21 -> 99.9/21	1 compiles	no gain
+MSound/MSHandle	MSHandle::calcDolby(const Vec&, float)	98.9/12 -> 98.9/12	30 compiles	no gain
+MSound/MSHandle	MSHandle::setSeDistanceVolume(unsigned char)	99.6/11 -> 99.6/11	27 compiles	no gain
+MSound/MSHandle	MSHandle::calcPan(const Vec&, float, float)	99.9/10 -> 99.9/10	30 compiles	no gain
+Enemy/coasterkiller	TCoasterEnemy::bind()	99.9/8 -> 99.9/8	1 compiles	no gain
+GC2D/SelectShine2	TSelectShine::move()	99.3/63 -> 99.3/63	30 compiles	no gain
+GC2D/SelectShine2	TSelectShine::TSelectShine(J3DModelData*, J3DAnmColor*, JPAEmitterManager*, JGeometry::TVec3<float>&, short, unsigned char, float, float, float)	99.8/31 -> 99.8/31	30 compiles	no gain
+Animal/boid	TBoidLeader::calcForces(const TBoid*) const	99.6/100 -> 99.6/100	17 compiles	no gain
+Animal/boid	TBoidLeader::calcGoalForce(const JGeometry::TVec3<float>&) const	99.6/63 -> 99.6/63	4 compiles	no gain
+System/PerformList	TPerformList::load(JSUMemoryInputStream&)	99.8/21 -> 99.8/21	11 compiles	no gain
+Strategic/ObjModel	TModelDataKeeper::createAndKeepData(const char*, unsigned long)	99.8/14 -> 99.8/14	8 compiles	no gain
+Camera/CameraMultiPlayer	CPolarSubCamera::ctrlMultiPlayerCamera_()	99.1/66 -> 99.1/66	30 compiles	no gain
+MarioUtil/PacketUtil	ShapePacketCallBackFunc(J3DCallBackPacket*, int)	99.8/2 -> 99.8/2	1 compiles	no gain
+MarioUtil/ModelUtil	SMS_RideMoveByGroundActor(TRidingInfo*, JGeometry::TVec3<float>*, float*)	99.8/19 -> 99.8/19	3 compiles	no gain
+Player/MarioSwim	TMario::swimMain()	100.0/10 -> 100.0/10	1 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::startCameraDemo()	99.1/150 -> 99.1/150	1 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::loadAfter()	99.6/205 -> 99.6/205	30 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::drawWater(J2DOrthoGraph&)	98.9/84 -> 98.9/84	0 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::startDisappearCoin()	98.2/54 -> 98.2/54	4 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::load(JSUMemoryInputStream&)	99.7/42 -> 99.7/42	2 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::drawJuice(J2DOrthoGraph&, unsigned long)	99.7/66 -> 99.7/66	30 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::startInsertLife(int)	99.7/79 -> 99.7/79	4 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::startDisappearTank()	99.5/38 -> 99.5/38	3 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::startDisappearStar()	99.7/52 -> 99.7/52	1 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::processDownCoin(int)	99.9/32 -> 99.9/32	1 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::processAppearCoin(int)	99.9/23 -> 99.9/23	1 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::processDisappearBalloon()	99.7/21 -> 99.7/21	27 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::processAppearBalloon()	99.8/18 -> 99.8/18	19 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::checkChangeTelopArray()	99.8/18 -> 99.8/18	1 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::processDrawTelop(unsigned long)	99.7/13 -> 99.7/13	1 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::processAppearLife(int)	99.9/10 -> 99.9/10	2 compiles	no gain
+Enemy/tinkoopa	TNerveTinKoopaBreak::execute(TSpineBase<TLiveActor>*) const	99.1/20 -> 99.1/20	4 compiles	no gain
+Enemy/tinkoopa	TTinKoopaPartsBase::emitPartsDisappearEffects(const char**, int, float)	98.3/13 -> 98.3/13	30 compiles	no gain
+Enemy/tinkoopa	TTinKoopaPartsBase::emitPartsTrackEffects(const char**, int)	98.0/3 -> 98.0/3	11 compiles	no gain
+Enemy/tinkoopa	TTinKoopaLaunchOrder::checkOrder()	99.3/2 -> 99.3/2	5 compiles	no gain
+Enemy/tinkoopa	TTinKoopa::makeLaunchSchedule()	99.6/11 -> 99.6/11	1 compiles	no gain
+Enemy/tinkoopa	TTinKoopaFlame::emitFlameEffects()	99.8/14 -> 99.8/14	30 compiles	no gain
+Enemy/tinkoopa	TTinKoopa::checkTinKoopaKillerApproachingMessage()	99.8/17 -> 99.8/17	8 compiles	no gain
+Enemy/tinkoopa	TTinKoopaPartsBase::initTinKoopaPartsBase()	99.8/20 -> 99.8/20	3 compiles	no gain
+Enemy/tinkoopa	TTinKoopaFlame::perform(unsigned long, JDrama::TGraphics*)	99.9/13 -> 99.9/13	1 compiles	no gain
+Enemy/tinkoopa	TNerveTinKoopaDamage::execute(TSpineBase<TLiveActor>*) const	99.9/12 -> 99.9/12	1 compiles	no gain
+Enemy/tinkoopa	TTinKoopa::emitTinKoopaEffects()	100.0/6 -> 100.0/6	1 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::updatePosture_()	98.8/121 -> 98.8/121	30 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::control()	99.4/31 -> 99.4/31	30 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::allowsTumble() const	99.0/40 -> 99.0/40	21 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::getNextJuncture(const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&) const	99.1/70 -> 99.1/70	18 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::getNextGrip(const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, float, float*) const	99.2/66 -> 99.2/66	19 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::getNearGrip(const JGeometry::TVec3<float>&, float, float*) const	99.1/49 -> 99.1/49	19 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::perform(unsigned long, JDrama::TGraphics*)	99.5/33 -> 99.5/33	9 compiles	no gain
+MoveBG/MapObjCorona	TBathtubGrip::control()	99.9/16 -> 99.9/16	17 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::quake(const JGeometry::TVec3<float>&)	99.6/13 -> 99.6/13	30 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::hipdrop(const JGeometry::TVec3<float>&)	99.6/4 -> 99.6/4	20 compiles	no gain
+MoveBG/MapObjCorona	TBathtubGrip::TBathtubGrip(TBathtub*, float, MActorAnmData*, const char*)	99.9/17 -> 99.9/17	30 compiles	no gain
+MoveBG/MapObjCorona	TBathtub::startDemo()	99.9/14 -> 99.9/14	11 compiles	no gain
+MoveBG/MapObjBianco	TLeafBoat::bind()	98.2/63 -> 98.2/55	30 compiles	KEPT
+MoveBG/MapObjBianco	TBigWindmill::control()	98.9/30 -> 98.9/30	29 compiles	no gain
+MoveBG/MapObjBianco	TLeafBoat::control()	99.3/19 -> 99.3/19	13 compiles	no gain
+MoveBG/MapObjBianco	TBiancoWatermillVertical::touchWater(THitActor*)	99.4/2 -> 99.4/2	30 compiles	no gain
+MoveBG/MapObjBianco	TLeafBoat::touchWall(JGeometry::TVec3<float>*, TBGWallCheckRecord*)	99.3/26 -> 99.3/26	16 compiles	no gain
+MoveBG/MapObjBianco	TLeafBoat::touchActor(THitActor*)	99.7/32 -> 99.8/26	30 compiles	KEPT
+MoveBG/MapObjBianco	TBiancoMiniWindmill::calc()	99.7/29 -> 100.0/1	1 compiles	KEPT
+MoveBG/MapObjBianco	TWoodLog::control()	99.7/21 -> 99.7/21	9 compiles	no gain
+MoveBG/MapObjBianco	TBiancoMiniWindmill::touchWater(THitActor*)	99.8/12 -> 99.8/12	5 compiles	no gain
+MoveBG/MapObjBianco	TLampSeesawMain::loadAfter()	99.8/11 -> 99.8/11	30 compiles	no gain
+MoveBG/MapObjBianco	TLampSeesaw::load(JSUMemoryInputStream&)	99.9/3 -> 99.9/3	1 compiles	no gain
+Enemy/bgtentacle	TBGAttackHit::perform(unsigned long, JDrama::TGraphics*)	97.7/99 -> 97.7/99	1 compiles	no gain
+Enemy/bgtentacle	TBGTentacle::moveNode()	99.7/159 -> 99.7/159	30 compiles	no gain
+Enemy/bgtentacle	TBGTentacle::TNode::calcVelocity(TBGTentacle*, TBGTentacle::TNode*, float)	99.5/118 -> 99.7/84	30 compiles	KEPT
+Enemy/bgtentacle	TBGTentacle::calcAttackGuideAnm()	99.6/105 -> 99.6/105	30 compiles	no gain
+Enemy/bgtentacle	TBGTakeHit::moveRequest(const JGeometry::TVec3<float>&)	99.6/61 -> 99.6/61	30 compiles	no gain
+Enemy/bgtentacle	TBGTentacle::calcAtkParticleAndSE()	99.9/26 -> 99.9/26	30 compiles	no gain
+Enemy/bgtentacle	TBGTentacle::perform(unsigned long, JDrama::TGraphics*)	100.0/6 -> 100.0/6	1 compiles	no gain
+Map/MapEventMare	TMareEventBumpyWall::bumpUpZ()	98.6/10 -> 98.6/10	1 compiles	no gain
+Map/MapEventMare	TMareEventBumpyWall::bumpUpX()	98.6/10 -> 98.6/10	1 compiles	no gain
+Map/MapEventMare	TMareEventBumpyWall::bumpDownX()	98.6/10 -> 98.6/10	8 compiles	no gain
+Map/MapEventMare	TMareEventBumpyWall::bumpDownZ()	98.6/10 -> 98.6/10	8 compiles	no gain
+Map/MapEventMare	TMareEventDepressWall::rising()	99.6/39 -> 99.6/39	6 compiles	no gain
+Map/MapEventMare	TMareWallRock::loadAfter()	99.4/21 -> 99.4/21	11 compiles	no gain
+Map/MapEventMare	TMareWallRock::appear()	99.8/26 -> 99.8/26	8 compiles	no gain
+Map/MapEventMare	TMareEventDepressWall::depressing()	99.9/18 -> 99.9/18	12 compiles	no gain
+Map/MapEventMare	TMareEventWallRock::load(JSUMemoryInputStream&)	99.9/8 -> 99.9/8	4 compiles	no gain
+Enemy/Kukku	TKukku::calcRootMatrix()	99.0/78 -> 99.0/78	0 compiles	no gain
+Enemy/Kukku	TKukku::dropCoins()	99.4/69 -> 99.4/69	30 compiles	no gain
+Enemy/Kukku	TNerveKukkuGraphWander::execute(TSpineBase<TLiveActor>*) const	99.8/57 -> 99.8/57	1 compiles	no gain
+Enemy/Kukku	TNerveKukkuFall::execute(TSpineBase<TLiveActor>*) const	99.8/40 -> 99.8/40	30 compiles	no gain
+Enemy/Kukku	TKukku::updateRotation()	99.8/29 -> 99.8/29	30 compiles	no gain
+Enemy/Kukku	TKukkuBall::init()	99.9/8 -> 99.9/8	5 compiles	no gain
+Enemy/amiNoko	TAmiNoko::calcDirection()	99.5/96 -> 99.5/96	0 compiles	no gain
+Enemy/amiNoko	TNerveAmiNokoWalkOnFence::execute(TSpineBase<TLiveActor>*) const	99.4/67 -> 99.4/67	10 compiles	no gain
+Enemy/amiNoko	TNerveAmiNokoTurn::execute(TSpineBase<TLiveActor>*) const	99.8/67 -> 99.8/67	10 compiles	no gain
+Enemy/amiNoko	TAmiNoko::isHitValid(unsigned long)	99.5/17 -> 99.5/17	6 compiles	no gain
+Enemy/amiNoko	TNerveAmiNokoDie::execute(TSpineBase<TLiveActor>*) const	99.9/41 -> 99.9/21	18 compiles	KEPT
+Enemy/amiNoko	TAmiNoko::bind()	99.9/8 -> 99.9/8	1 compiles	no gain
+Enemy/amiNoko	TAmiNoko::emitEffects()	100.0/6 -> 100.0/6	0 compiles	no gain
+NPC/NpcChange	TBaseNPC::changeNerveProc_()	99.3/47 -> 99.3/47	8 compiles	no gain
+NPC/NpcChange	TBaseNPC::isNerveCanGoToTalk() const	97.1/13 -> 97.1/13	2 compiles	no gain
+NPC/NpcChange	TBaseNPC::setPosAndInitAfterSinkBottom()	99.6/37 -> 99.6/37	30 compiles	no gain
+NPC/NpcChange	TBaseNPC::behaveToSandBomb_(const TLiveActor*)	99.9/18 -> 99.9/18	3 compiles	no gain
+NPC/NpcChange	TBaseNPC::behaveToBeTrampled_()	100.0/12 -> 100.0/12	1 compiles	no gain
+Animal/fishoid	TRealoidActor::calcRootMatrix(TBoid*)	99.6/59 -> 99.6/59	30 compiles	no gain
+Animal/fishoid	TFishoid::perform(unsigned long, JDrama::TGraphics*)	99.5/20 -> 99.5/20	6 compiles	no gain
+Animal/fishoid	TRealoid::loadDefault(JSUMemoryInputStream&, const char*, int)	99.7/29 -> 99.7/29	30 compiles	no gain
+Animal/fishoid	TRealoid::clipBoids(JDrama::TGraphics*)	99.8/10 -> 99.8/10	1 compiles	no gain
+MarioUtil/LightUtil	TIndirectLightWithDBSet::makeDrawBuffer()	99.9/8 -> 99.9/8	15 compiles	no gain
+MarioUtil/LightUtil	TObjectLightWithDBSet::makeDrawBuffer()	100.0/6 -> 100.0/6	1 compiles	no gain
+MarioUtil/LightUtil	TPlayerLightWithDBSet::makeDrawBuffer()	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/yunbo	TNerveYumboDancing::execute(TSpineBase<TLiveActor>*) const	99.8/35 -> 99.8/35	1 compiles	no gain
+Enemy/yunbo	TNerveYumboAppearing::execute(TSpineBase<TLiveActor>*) const	99.8/27 -> 99.8/27	1 compiles	no gain
+Enemy/yunbo	TNerveYumboAttack::execute(TSpineBase<TLiveActor>*) const	99.8/23 -> 99.8/23	10 compiles	no gain
+Enemy/yunbo	TYumbo::init(TLiveManager*)	100.0/6 -> 100.0/6	1 compiles	no gain
+MoveBG/MapObjRicco	TFruitLauncher::loadAfter()	99.5/72 -> 99.5/72	2 compiles	no gain
+MoveBG/MapObjRicco	TFruitLauncher::fireObj()	99.9/29 -> 99.9/29	7 compiles	no gain
+MoveBG/MapObjRicco	TCraneUpDown::control()	99.9/26 -> 99.9/26	19 compiles	no gain
+MoveBG/MapObjRicco	TRiccoWatermill::control()	99.9/16 -> 99.9/16	3 compiles	no gain
+NPC/NpcWalkTurn	TBaseNPC::execWalk(bool)	97.7/61 -> 97.7/61	30 compiles	no gain
+NPC/NpcWalkTurn	TBaseNPC::execUTurn()	99.0/12 -> 99.0/12	30 compiles	no gain
+NPC/NpcWalkTurn	TBaseNPC::execTurnToFirstState()	99.7/16 -> 99.7/16	30 compiles	no gain
+Enemy/limitkoopajr	TLimitKoopaJr::init(TLiveManager*)	97.6/14 -> 97.6/14	30 compiles	no gain
+Enemy/limitkoopajr	TLimitKoopaJr::moveRun()	99.6/100 -> 99.7/76	30 compiles	KEPT
+Enemy/limitkoopajr	TNerveLimitKoopaJrWait::execute(TSpineBase<TLiveActor>*) const	99.8/44 -> 99.8/44	1 compiles	no gain
+Map/MapStaticObject	TMapStaticObj::init(const char*)	99.8/22 -> 99.8/22	11 compiles	no gain
+Map/MapStaticObject	TMapObjSoundGroup::perform(unsigned long, JDrama::TGraphics*)	99.7/34 -> 99.7/34	20 compiles	no gain
+Map/MapStaticObject	TMapStaticObj::perform(unsigned long, JDrama::TGraphics*)	99.9/14 -> 99.9/14	8 compiles	no gain
+GC2D/SelectDir	TSelectDir::rsetup()	99.6/370 -> 99.6/370	30 compiles	no gain
+GC2D/SelectDir	TSelectDir::direct()	99.8/31 -> 99.8/31	1 compiles	no gain
+MoveBG/MapObjCloud	TRideCloud::control()	98.9/23 -> 98.9/23	20 compiles	no gain
+Map/MapWireManager	TMapWireActor::getPosInWire() const	99.3/71 -> 99.3/71	13 compiles	no gain
+Map/MapWireManager	TMapWireManager::load(JSUMemoryInputStream&)	99.8/24 -> 99.8/24	6 compiles	no gain
+Map/PollutionAction	TPollutionLayer::action()	99.7/42 -> 99.7/42	3 compiles	no gain
+Enemy/riccohook	TNerveRHGraphWander::execute(TSpineBase<TLiveActor>*) const	99.9/13 -> 99.9/13	16 compiles	no gain
+Map/PollutionPos	TPollutionPos::getEdgeDegree(int, int) const	97.8/34 -> 97.8/34	2 compiles	no gain
+MSound/MSoundScene	MSSceneSE::sortMaxTrans(Vec*, unsigned char, unsigned char)	99.3/7 -> 99.3/7	15 compiles	no gain
+Enemy/bgpoldrop	TBGPolDrop::move()	99.8/31 -> 99.8/31	11 compiles	no gain
+NPC/NpcThrow	TNpcThrow::throwMario(THitActor*)	99.8/16 -> 99.8/16	30 compiles	no gain
+NPC/NpcColor	SMS_InitChangeNpcColor(const MActor*, const TColorChangeInfo*, short, const _GXColor*)	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/bossgesso	TBossGesso::init(TLiveManager*)	99.0/77 -> 99.0/77	20 compiles	no gain
+Enemy/bossgesso	TBGBeakHit::receiveMessage(THitActor*, unsigned long)	98.9/42 -> 98.9/42	25 compiles	no gain
+Enemy/bossgesso	TBossGessoMtxCalc::calc(unsigned short)	97.0/53 -> 97.0/53	30 compiles	no gain
+Enemy/bossgesso	TNerveBGBeakDamage::execute(TSpineBase<TLiveActor>*) const	99.2/43 -> 99.2/43	17 compiles	no gain
+Enemy/bossgesso	TNerveBGPolDrop::execute(TSpineBase<TLiveActor>*) const	98.7/36 -> 98.7/36	30 compiles	no gain
+Enemy/bossgesso	TNerveBGPollute::execute(TSpineBase<TLiveActor>*) const	98.4/24 -> 98.4/24	13 compiles	no gain
+Enemy/bossgesso	TNerveBGEyeDamage::execute(TSpineBase<TLiveActor>*) const	98.5/20 -> 98.5/20	7 compiles	no gain
+Enemy/bossgesso	TBGBeakHit::perform(unsigned long, JDrama::TGraphics*)	99.5/97 -> 99.5/97	30 compiles	no gain
+Enemy/bossgesso	TBossGesso::doAttackSingle()	99.8/90 -> 99.8/90	30 compiles	no gain
+Enemy/bossgesso	TBGBinder::bind(TLiveActor*)	99.6/96 -> 99.6/96	30 compiles	no gain
+Enemy/bossgesso	TNerveBGWait::execute(TSpineBase<TLiveActor>*) const	99.7/48 -> 99.7/48	30 compiles	no gain
+Enemy/bossgesso	TBGBeakHit::moveRequest(const JGeometry::TVec3<float>&)	99.6/37 -> 99.6/37	8 compiles	no gain
+Enemy/bossgesso	TNerveBGRoll::execute(TSpineBase<TLiveActor>*) const	99.9/35 -> 99.9/35	7 compiles	no gain
+Enemy/bossgesso	TBossGesso::doAttackShoot()	99.7/10 -> 99.7/10	8 compiles	no gain
+Enemy/bossgesso	TBossGesso::doAttackDouble()	99.8/35 -> 99.8/35	16 compiles	no gain
+Enemy/bossgesso	TBossGesso::doAttackUnison()	99.8/33 -> 99.8/33	12 compiles	no gain
+Enemy/bossgesso	TNerveBGTug::execute(TSpineBase<TLiveActor>*) const	99.9/29 -> 99.9/29	10 compiles	no gain
+Enemy/bossgesso	TNerveBGTentacleDamage::execute(TSpineBase<TLiveActor>*) const	99.9/20 -> 99.9/20	1 compiles	no gain
+Enemy/bossgesso	TBossGesso::doAttackSkipRope()	99.8/19 -> 99.8/19	3 compiles	no gain
+Enemy/bossgesso	TBossGesso::rumblePad(int, const JGeometry::TVec3<float>&)	99.9/13 -> 100.0/1	18 compiles	KEPT
+Enemy/bossgesso	TBossGesso::lenFromToeToMario()	100.0/3 -> 100.0/3	1 compiles	no gain
+Player/MarioMove	TMario::thinkYoshiHeadCollision()	95.9/38 -> 95.9/38	30 compiles	no gain
+Player/MarioMove	TMario::checkController(JDrama::TGraphics*)	99.6/149 -> 99.6/149	30 compiles	no gain
+Player/MarioMove	TMario::gunExec()	99.0/40 -> 99.0/40	10 compiles	no gain
+Player/MarioMove	TMario::checkWet()	99.8/27 -> 99.8/27	5 compiles	no gain
+Player/MarioMove	TMario::checkWallPlane(Vec*, float, float)	99.7/25 -> 99.7/25	13 compiles	no gain
+Player/MarioMove	TMario::checkRideMovement()	99.9/25 -> 99.9/25	13 compiles	no gain
+Player/MarioMove	TMario::warpRequest(const JGeometry::TVec3<float>&, float)	99.6/23 -> 99.6/23	1 compiles	no gain
+Player/MarioMove	TMario::moveRequest(const JGeometry::TVec3<float>&)	99.9/12 -> 99.9/12	1 compiles	no gain
+Player/MarioMove	TMario::thinkHeight()	99.9/11 -> 99.9/11	3 compiles	no gain
+Player/MarioMove	TMario::thinkSituation()	100.0/10 -> 100.0/10	1 compiles	no gain
+Enemy/chuuhana	ChuuHanaBodyCallback(J3DNode*, int)	97.2/80 -> 97.2/75	30 compiles	KEPT
+Enemy/chuuhana	TChuuHana::willFall(long)	97.3/41 -> 97.3/41	7 compiles	no gain
+Enemy/chuuhana	TChuuHana::setGoal()	99.5/44 -> 99.5/44	15 compiles	no gain
+Enemy/chuuhana	TChuuHana::isCollidMove(THitActor*)	99.8/43 -> 99.8/43	1 compiles	no gain
+Enemy/chuuhana	TNerveChuuHanaAttack::execute(TSpineBase<TLiveActor>*) const	99.8/42 -> 99.8/42	1 compiles	no gain
+Enemy/chuuhana	TNerveChuuHanaForceJumped::execute(TSpineBase<TLiveActor>*) const	99.8/41 -> 99.8/41	3 compiles	no gain
+Enemy/chuuhana	TNerveChuuHanaKeepBalance::execute(TSpineBase<TLiveActor>*) const	99.8/39 -> 99.8/39	1 compiles	no gain
+Enemy/chuuhana	TChuuHana::attackToMario()	99.8/33 -> 99.8/33	10 compiles	no gain
+Enemy/chuuhana	TNerveChuuHanaJumpPrepare::execute(TSpineBase<TLiveActor>*) const	99.7/28 -> 99.7/28	30 compiles	no gain
+Enemy/chuuhana	TNerveChuuHanaStick::execute(TSpineBase<TLiveActor>*) const	99.9/20 -> 99.9/20	1 compiles	no gain
+Enemy/chuuhana	TChuuHana::checkStretchType()	100.0/12 -> 100.0/12	1 compiles	no gain
+Enemy/chuuhana	TNerveChuuHanaWalkOnPanel::execute(TSpineBase<TLiveActor>*) const	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::isFindMario(float)	96.7/22 -> 96.7/22	3 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::moveObject()	99.1/76 -> 99.1/76	30 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::reset()	99.5/57 -> 99.5/57	30 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::expandCollision()	98.6/36 -> 98.6/36	30 compiles	no gain
+Enemy/smallEnemy	TNerveSmallEnemyHitWaterJump::execute(TSpineBase<TLiveActor>*) const	99.3/34 -> 99.3/34	9 compiles	no gain
+Enemy/smallEnemy	TNerveSmallEnemyJump::execute(TSpineBase<TLiveActor>*) const	98.9/14 -> 98.9/14	7 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::genEventCoin()	99.6/69 -> 99.7/60	30 compiles	KEPT
+Enemy/smallEnemy	TSmallEnemy::init(TLiveManager*)	99.8/49 -> 99.8/49	30 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::isHitWallInBound()	99.8/20 -> 99.8/20	1 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::isFindMarioFromParam(float) const	99.8/3 -> 99.8/3	30 compiles	no gain
+Enemy/smallEnemy	TNerveSmallEnemyFreeze::execute(TSpineBase<TLiveActor>*) const	99.8/10 -> 99.8/10	6 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::changeByJuice()	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/smallEnemy	TSmallEnemy::generateItem()	99.9/6 -> 99.9/6	30 compiles	no gain
+Enemy/BathtubKiller	TBathtubKiller::moveChasing()	97.6/70 -> 97.6/70	30 compiles	no gain
+Enemy/BathtubKiller	TBathtubKiller::isAboided()	99.2/76 -> 99.4/75	30 compiles	KEPT
+Enemy/BathtubKiller	TBathtubKiller::makeInitialVelocity(JGeometry::TVec3<float>)	99.4/46 -> 99.4/46	30 compiles	no gain
+Enemy/BathtubKiller	TNerveBathtubKillerWander::execute(TSpineBase<TLiveActor>*) const	99.9/36 -> 99.9/36	1 compiles	no gain
+Enemy/BathtubKiller	TNerveBathtubKillerChase::execute(TSpineBase<TLiveActor>*) const	99.9/23 -> 99.9/23	1 compiles	no gain
+Enemy/BathtubKiller	TBathtubKiller::bind()	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/BathtubKiller	TBathtubKiller::isCollidMove(THitActor*)	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/BathtubKiller	TNerveBathtubKillerExplosion::execute(TSpineBase<TLiveActor>*) const	100.0/5 -> 100.0/5	1 compiles	no gain
+Enemy/BathtubKiller	TNerveBathtubKillerBreak::execute(TSpineBase<TLiveActor>*) const	99.9/5 -> 99.9/5	1 compiles	no gain
+MoveBG/Item	TShine::calc()	99.9/26 -> 99.9/26	30 compiles	no gain
+MoveBG/Item	TShine::loadBeforeInit(JSUMemoryInputStream&)	99.7/20 -> 99.7/18	30 compiles	KEPT
+MoveBG/Item	TEggYoshi::receiveMessage(THitActor*, unsigned long)	99.9/10 -> 99.9/10	1 compiles	no gain
+GC2D/Talk2D2	TTalk2D2::setTagParam(JSUMemoryInputStream&, J2DTextBox&, int*, int*)	99.6/50 -> 99.6/50	16 compiles	no gain
+GC2D/Talk2D2	TTalk2D2::load(JSUMemoryInputStream&)	99.2/7 -> 99.2/7	2 compiles	no gain
+GC2D/Talk2D2	TTalk2D2::loadAfter()	99.8/78 -> 99.8/78	30 compiles	no gain
+GC2D/Talk2D2	TTalk2D2::moveBoardWindow()	99.6/4 -> 99.6/4	6 compiles	no gain
+MoveBG/MapObjFence	TRailFence::goOnRail()	98.8/46 -> 98.8/46	6 compiles	no gain
+MoveBG/MapObjFence	TRevolvingFenceInner::receiveMessage(THitActor*, unsigned long)	100.0/6 -> 100.0/6	1 compiles	no gain
+System/Application	TApplication::gameLoop()	98.9/62 -> 98.9/62	11 compiles	no gain
+System/Application	TApplication::mountStageArchive()	98.3/27 -> 98.3/27	3 compiles	no gain
+System/Application	TApplication::drawDVDErr()	99.8/49 -> 99.8/49	30 compiles	no gain
+System/Application	SMSSwitch2DArchive(const char*, TARAMBlock&)	99.9/8 -> 99.9/8	3 compiles	no gain
+System/Application	TApplication::proc()	100.0/6 -> 100.0/6	1 compiles	no gain
+Map/MapCheck	TMapCollisionData::checkGroundList(float, float, float, unsigned char, const TBGCheckList*, const TBGCheckData**)	97.7/39 -> 97.7/39	30 compiles	no gain
+Map/MapCheck	TMapCollisionData::checkRoofList(float, float, float, unsigned char, const TBGCheckList*, const TBGCheckData**)	97.5/34 -> 97.5/34	30 compiles	no gain
+Map/MapCheck	TMapCollisionData::checkWalls(TBGWallCheckRecord*) const	98.4/32 -> 98.5/31	30 compiles	KEPT
+Map/MapCheck	TMapCollisionData::checkGround(float, float, float, unsigned char, const TBGCheckData**) const	99.8/27 -> 99.8/27	30 compiles	no gain
+Map/MapCheck	TMapCollisionData::checkRoof(float, float, float, unsigned char, const TBGCheckData**) const	100.0/5 -> 100.0/5	1 compiles	no gain
+Player/Tongue	TYoshiTongue::init(TYoshi*)	99.3/24 -> 99.3/24	30 compiles	no gain
+Player/Tongue	TYoshiTongue::findTarget(bool, bool)	99.7/58 -> 99.7/58	30 compiles	no gain
+Player/Tongue	TYoshiTongue::canGo()	99.8/19 -> 99.8/19	30 compiles	no gain
+Player/MarioWait	TMario::squating()	99.9/19 -> 99.9/19	30 compiles	no gain
+Player/MarioWait	TMario::canSleep()	99.9/14 -> 99.9/14	30 compiles	no gain
+Player/MarioWait	TMario::waitMain()	100.0/10 -> 100.0/10	1 compiles	no gain
+Player/MarioWait	TMario::waitingCommonEvents()	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/mameGesso	TMameGesso::calcObjCollision()	99.2/24 -> 99.2/24	30 compiles	no gain
+Enemy/mameGesso	TNerveMameGessoJitabata::execute(TSpineBase<TLiveActor>*) const	99.9/20 -> 99.9/20	1 compiles	no gain
+Enemy/mameGesso	TNerveMameGessoDamage::execute(TSpineBase<TLiveActor>*) const	99.9/18 -> 99.9/18	3 compiles	no gain
+Enemy/mameGesso	TNerveMameGessoObject::execute(TSpineBase<TLiveActor>*) const	100.0/8 -> 100.0/8	1 compiles	no gain
+NPC/NpcNerve	TNerveNPCGraphWander::execute(TSpineBase<TLiveActor>*) const	97.7/22 -> 97.7/22	30 compiles	no gain
+NPC/NpcNerve	TNerveNPCGraphWait::execute(TSpineBase<TLiveActor>*) const	99.4/21 -> 99.4/21	1 compiles	no gain
+NPC/NpcNerve	TNerveNPCTurnToMario::execute(TSpineBase<TLiveActor>*) const	99.9/29 -> 99.9/29	30 compiles	no gain
+NPC/NpcEffect	TBaseNPC::emitParticle_()	99.8/96 -> 99.8/96	24 compiles	no gain
+NPC/NpcEffect	TBaseNPC::emitHappyEffect_()	99.7/26 -> 99.7/26	1 compiles	no gain
+MoveBG/MapObjBlock	TIceBlock::control()	100.0/6 -> 100.0/6	1 compiles	no gain
+Camera/sunmodel	CLBScreenFPosToSPos(JGeometry::TVec2<short>*, const JGeometry::TVec2<float>&)	98.0/28 -> 98.0/28	17 compiles	no gain
+Camera/sunmodel	TSunModel::load(JSUMemoryInputStream&)	99.9/16 -> 99.9/16	30 compiles	no gain
+System/MarioGamePad	TMarioGamePad::read()	99.9/5 -> 99.9/5	2 compiles	no gain
+Camera/CubeManagerBase	SMS_IsInSameCameraCube(const Vec&)	99.8/12 -> 99.9/6	30 compiles	KEPT
+Map/Shimmer	TShimmer::perform(unsigned long, JDrama::TGraphics*)	99.8/30 -> 99.8/30	30 compiles	no gain
+M3DUtil/SampleCtrlNode	SampleCtrlMaterial::SampleCtrlMaterial(J3DMaterial*)	100.0/8 -> 100.0/8	1 compiles	no gain
+Strategic/HitActor	THitActor::calcEntryRadius()	99.9/5 -> 99.9/5	12 compiles	no gain
+Enemy/bosseel	TBEelTearsManager::splitTears(JGeometry::TVec3<float>&)	96.4/94 -> 96.4/94	17 compiles	no gain
+Enemy/bosseel	TBossEelTooth::perform(unsigned long, JDrama::TGraphics*)	98.7/113 -> 98.7/113	30 compiles	no gain
+Enemy/bosseel	TBossEel::init(TLiveManager*)	99.5/106 -> 99.5/106	30 compiles	no gain
+Enemy/bosseel	TBEelTears::init(TLiveManager*)	98.9/60 -> 99.1/53	30 compiles	KEPT
+Enemy/bosseel	TBossEel::collideToMario()	99.3/131 -> 99.3/131	30 compiles	no gain
+Enemy/bosseel	TNerveBossEelDie::execute(TSpineBase<TLiveActor>*) const	99.6/35 -> 99.6/35	30 compiles	no gain
+Enemy/bosseel	TBossEelVortex::perform(unsigned long, JDrama::TGraphics*)	99.5/50 -> 99.7/48	30 compiles	KEPT
+Enemy/bosseel	TNerveBossEelSecondSpin::execute(TSpineBase<TLiveActor>*) const	99.8/29 -> 99.8/29	30 compiles	no gain
+Enemy/bosseel	TNerveBossEelMouthOpenWait::execute(TSpineBase<TLiveActor>*) const	99.9/25 -> 99.9/25	3 compiles	no gain
+Enemy/bosseel	TNerveBossEelFirstSpin::execute(TSpineBase<TLiveActor>*) const	99.9/22 -> 99.9/22	1 compiles	no gain
+Enemy/bosseel	TBEelTearsDrop::TBEelTearsDrop(TBEelTears*, int, SDLModelData*, const char*)	99.8/29 -> 99.8/29	30 compiles	no gain
+Enemy/bosseel	TNerveBossEelEat::execute(TSpineBase<TLiveActor>*) const	99.9/26 -> 99.9/26	15 compiles	no gain
+Enemy/bosseel	TBEelTearsDrop::perform(unsigned long, JDrama::TGraphics*)	99.8/19 -> 99.8/19	10 compiles	no gain
+Enemy/bosseel	TBossEelEye::perform(unsigned long, JDrama::TGraphics*)	99.9/18 -> 99.9/18	30 compiles	no gain
+Enemy/bosseel	TNerveBossEelAppear::execute(TSpineBase<TLiveActor>*) const	99.9/18 -> 99.9/18	16 compiles	no gain
+Enemy/bosseel	TBossEelTooth::TBossEelTooth(unsigned char, TBossEel*, const char*, SDLModelData*, const char*)	99.9/17 -> 99.9/17	8 compiles	no gain
+Enemy/bosseel	TBossEelHeartCoin::perform(unsigned long, JDrama::TGraphics*)	99.9/17 -> 99.9/17	9 compiles	no gain
+Enemy/bosseel	TBEelTearsManager::createEnemies(int)	99.7/8 -> 99.9/6	30 compiles	KEPT
+Enemy/bosseel	TNerveBossEelWaitAppear::execute(TSpineBase<TLiveActor>*) const	99.9/16 -> 99.9/16	10 compiles	no gain
+Enemy/igaiga	TGorogoro::walkBehavior(int, float)	97.0/37 -> 97.0/37	7 compiles	no gain
+Enemy/igaiga	TGorogoro::init(TLiveManager*)	95.9/26 -> 95.9/26	30 compiles	no gain
+Enemy/igaiga	TIgaiga::walkBehavior(int, float)	97.9/22 -> 97.9/22	30 compiles	no gain
+Enemy/igaiga	TNerveGorogoroDie::execute(TSpineBase<TLiveActor>*) const	98.5/14 -> 98.5/14	1 compiles	no gain
+Enemy/igaiga	TGorogoro::generateByGateKeeper(const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&)	99.7/97 -> 99.7/97	30 compiles	no gain
+Enemy/igaiga	TIgaiga::moveObject()	99.4/40 -> 99.4/40	30 compiles	no gain
+Enemy/igaiga	TGorogoro::behaveToWater(THitActor*)	99.4/36 -> 99.4/36	2 compiles	no gain
+Enemy/igaiga	TGorogoroManager::initSetEnemies()	99.2/24 -> 99.2/24	9 compiles	no gain
+Enemy/igaiga	TRollEnemy::reset()	99.8/31 -> 99.8/31	28 compiles	no gain
+Enemy/igaiga	TRollEnemy::behaveToWater(THitActor*)	99.8/26 -> 99.8/26	30 compiles	no gain
+Enemy/igaiga	TRollEnemy::flagJump()	99.6/20 -> 99.6/20	16 compiles	no gain
+Enemy/igaiga	TIgaiga::isReachedToGoalXZ()	99.7/16 -> 99.7/16	1 compiles	no gain
+Enemy/igaiga	TRollEnemy::isReachedToGoalXZ()	99.7/15 -> 99.7/15	1 compiles	no gain
+Enemy/igaiga	TIgaiga::setMeltAnm()	99.9/13 -> 99.9/13	9 compiles	no gain
+Enemy/igaiga	TRollEnemy::walkBehavior(int, float)	99.9/12 -> 99.9/12	1 compiles	no gain
+Enemy/igaiga	TNerveIgaigaWaterHit::execute(TSpineBase<TLiveActor>*) const	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/tobiPuku	TobiPukuRollCallback(J3DNode*, int)	96.7/24 -> 96.7/24	29 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuGenerate::execute(TSpineBase<TLiveActor>*) const	96.2/48 -> 96.2/48	7 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuReturnLaunch::execute(TSpineBase<TLiveActor>*) const	97.3/45 -> 97.3/45	30 compiles	no gain
+Enemy/tobiPuku	TTobiPuku::hitWall()	96.1/31 -> 96.1/31	13 compiles	no gain
+Enemy/tobiPuku	TTobiPukuLaunchPad::forceLaunch(TTobiPuku*)	98.4/57 -> 98.4/57	30 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuLand::execute(TSpineBase<TLiveActor>*) const	99.9/29 -> 99.9/29	30 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuFly::execute(TSpineBase<TLiveActor>*) const	99.8/15 -> 99.8/15	30 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuBound::execute(TSpineBase<TLiveActor>*) const	99.8/24 -> 99.8/24	8 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuHitWater::execute(TSpineBase<TLiveActor>*) const	99.8/24 -> 99.8/24	1 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuDie::execute(TSpineBase<TLiveActor>*) const	99.8/21 -> 99.8/21	7 compiles	no gain
+Enemy/tobiPuku	TTobiPuku::hitWater()	99.8/21 -> 99.8/21	20 compiles	no gain
+Enemy/tobiPuku	TTobiPuku::walkBehavior(int, float)	99.7/18 -> 99.7/18	15 compiles	no gain
+Enemy/tobiPuku	TTobiPuku::isReachedToGoalXZ()	99.7/17 -> 99.7/17	1 compiles	no gain
+Enemy/tobiPuku	TNerveTobiPukuAttack::execute(TSpineBase<TLiveActor>*) const	99.9/12 -> 99.9/12	1 compiles	no gain
+Enemy/graph	TGraphWeb::getNearestPosOnGraphLink(const JGeometry::TVec3<float>&) const	97.1/54 -> 97.2/45	30 compiles	KEPT
+Enemy/graph	TGraphTracer::calcSplineSpeed(float)	98.8/79 -> 98.8/79	30 compiles	no gain
+Enemy/graph	TSplineRail::TSplineRail(const TGraphWeb*)	99.7/67 -> 99.7/67	5 compiles	no gain
+Enemy/graph	TGraphTracer::traceSpline(float)	99.3/19 -> 99.3/19	30 compiles	no gain
+Enemy/graph	TGraphWeb::getEscapeDirLimited(int, int, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, float, unsigned long) const	99.8/57 -> 99.8/57	30 compiles	no gain
+Enemy/graph	TGraphWeb::getRandomButDirLimited(int, int, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, float, unsigned long) const	99.9/19 -> 99.9/19	30 compiles	no gain
+Enemy/graph	TGraphWeb::getEscapeFromMarioIndex(int, int, const JGeometry::TVec3<float>&, unsigned long) const	99.9/19 -> 99.9/19	30 compiles	no gain
+Enemy/graph	TGraphWeb::getNeighborNodeIndexByFlag(int, int, unsigned long) const	99.8/16 -> 99.8/16	3 compiles	no gain
+Enemy/graph	TSplineRail::getPosAndRot(float, JGeometry::TVec3<float>*, JGeometry::TVec3<float>*)	99.9/13 -> 99.9/13	24 compiles	no gain
+Enemy/graph	TGraphWeb::getRandomNextIndex(int, int, unsigned long) const	100.0/3 -> 100.0/3	1 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::emitAndSRT(long, unsigned char, const JGeometry::TVec3<float>*, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&)	95.9/18 -> 95.9/18	2 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::emitAndRotateScale(long, unsigned char, const JGeometry::TVec3<float>*) const	96.2/25 -> 96.2/25	2 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::makeMtxRotByAxis(const JGeometry::TVec3<float>&, float, float(*)[4])	98.6/63 -> 98.6/63	5 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::throwObjToFront(TMapObjBase*, float, float, float) const	99.8/18 -> 99.8/18	1 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::throwObjToFrontFromPoint(TMapObjBase*, const JGeometry::TVec3<float>&, float, float) const	99.8/18 -> 99.8/18	1 compiles	no gain
+MoveBG/MapObjLib	TMapObjTurn::touchWater(THitActor*)	99.9/16 -> 99.9/16	0 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::makeRootMtxRotZ(float(*)[4])	99.8/10 -> 99.8/10	6 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::makeRootMtxRotY(float(*)[4])	99.8/10 -> 99.8/10	6 compiles	no gain
+MoveBG/MapObjLib	TMapObjBase::getDistance(const JGeometry::TVec3<float>&) const	99.9/3 -> 99.9/3	19 compiles	no gain
+Enemy/BossHanachanMain	TBossHanachan::execWalk(bool)	95.9/44 -> 95.9/44	26 compiles	no gain
+Enemy/BossHanachanMain	TBossHanachan::throwMario_(THitActor*)	98.4/80 -> 98.4/80	30 compiles	no gain
+Enemy/BossHanachanMain	TBossHanachan::init(TLiveManager*)	99.2/46 -> 99.2/46	30 compiles	no gain
+Enemy/BossHanachanMain	TBossHanachan::checkFallDecideAndSetup()	96.0/19 -> 96.0/19	21 compiles	no gain
+Enemy/BossHanachanMain	CalcRevisionPosByRotateZ(const JGeometry::TVec3<float>&, float, Vec*)	95.4/14 -> 95.4/14	22 compiles	no gain
+Enemy/BossHanachanMain	TBossHanachan::execSlip()	99.1/45 -> 99.1/45	30 compiles	no gain
+Enemy/BossHanachanMain	TBossHanachan::bind()	99.9/28 -> 99.9/28	30 compiles	no gain
+Enemy/BossHanachanMain	TBossHanachanManager::loadAfter()	99.7/10 -> 99.7/10	7 compiles	no gain
+Enemy/killer	KillerBodyCallback(J3DNode*, int)	96.7/48 -> 96.7/48	30 compiles	no gain
+Enemy/killer	TKiller::genEventCoin()	99.1/60 -> 99.1/60	30 compiles	no gain
+Enemy/killer	TNerveFlyEnemyNormalFly::execute(TSpineBase<TLiveActor>*) const	99.4/22 -> 99.4/22	25 compiles	no gain
+Enemy/killer	TKiller::isFindMario(float)	98.4/12 -> 98.4/12	30 compiles	no gain
+Enemy/killer	TFlyEnemy::calcChaseParam()	99.5/52 -> 99.5/52	21 compiles	no gain
+Enemy/killer	TFlyEnemy::fly()	99.7/49 -> 99.7/49	30 compiles	no gain
+Enemy/killer	TKiller::init(TLiveManager*)	99.7/12 -> 99.7/12	9 compiles	no gain
+Enemy/killer	TNerveKillerExplosion::execute(TSpineBase<TLiveActor>*) const	99.9/18 -> 99.9/18	8 compiles	no gain
+Enemy/conductor	TConductor::genEnemyFromPollution()	99.6/65 -> 99.6/65	30 compiles	no gain
+Enemy/conductor	TConductor::makeOneEnemyAppear(const JGeometry::TVec3<float>&, const char*, int)	99.2/36 -> 99.2/36	16 compiles	no gain
+Enemy/conductor	TConductor::getManagerByName(const char*)	99.6/20 -> 99.6/20	1 compiles	no gain
+Enemy/conductor	TConductor::makeEnemyAppear(const JGeometry::TVec3<float>&, const char*, int, int)	99.9/13 -> 99.9/13	10 compiles	no gain
+Map/MapEventSink	TMapEventSinkShadowMario::loadAfter()	96.3/6 -> 96.3/6	2 compiles	no gain
+Map/MapEventSink	TMapEventSinkBianco::loadAfter()	99.2/13 -> 99.2/13	4 compiles	no gain
+Map/MapEventSink	TMapEventSink::startControl()	99.9/17 -> 99.9/17	30 compiles	no gain
+Enemy/Amenbo	TNerveAmenboWalk::execute(TSpineBase<TLiveActor>*) const	97.6/74 -> 97.6/74	1 compiles	no gain
+Enemy/Amenbo	TAmenbo::bind()	99.8/29 -> 99.8/29	2 compiles	no gain
+Enemy/Amenbo	TNerveAmenboTurn::execute(TSpineBase<TLiveActor>*) const	99.9/22 -> 99.9/22	1 compiles	no gain
+Strategic/spcinterp	TSpcInterp::execcall()	99.7/31 -> 99.7/31	23 compiles	no gain
+Camera/cameralib	CLBRotatePosAndUp(short, short, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, JGeometry::TVec3<float>*, JGeometry::TVec3<float>*)	97.9/158 -> 97.9/158	30 compiles	no gain
+Camera/cameralib	CLBIsPointInCube(const Vec&, const Vec&, const Vec&, const Vec&)	98.9/34 -> 98.9/34	30 compiles	no gain
+Camera/cameralib	CLBCalcPointInCubeRatio(const Vec&, const Vec&, const Vec&, const Vec&, float*, float*, float*)	98.9/30 -> 98.9/30	30 compiles	no gain
+Camera/cameralib	CLBCalc2DFPos(JGeometry::TVec2<float>*, const float(*)[4], const float(*)[4], const Vec&, unsigned long*, bool)	98.7/28 -> 98.7/28	30 compiles	no gain
+System/MarDirectorInitECT	TMarDirector::initECDisp(TPerformList*, JDrama::TViewObjPtrListT<JDrama::TViewObj, JDrama::TViewObj>*, JDrama::TViewObjPtrListT<JDrama::TViewObj, JDrama::TViewObj>*)	99.8/143 -> 99.8/143	30 compiles	no gain
+System/MarDirectorInitECT	TMarDirector::initECTGft(TPerformList*, TPerformList*, JDrama::TViewObjPtrListT<JDrama::TViewObj, JDrama::TViewObj>*, JDrama::TViewObjPtrListT<JDrama::TViewObj, JDrama::TViewObj>*)	99.7/94 -> 99.7/94	30 compiles	no gain
+System/MarDirectorInitECT	TMarDirector::setupPerformList_console()	99.7/23 -> 99.7/23	2 compiles	no gain
+System/MarDirectorInitECT	TMarDirector::initECTMir(TPerformList*, JDrama::TViewObjPtrListT<JDrama::TViewObj, JDrama::TViewObj>*)	99.5/16 -> 99.5/16	11 compiles	no gain
+Player/MarioCollision	TMario::calcDamagePos(const JGeometry::TVec3<float>&)	99.4/50 -> 99.4/50	1 compiles	no gain
+Player/MarioCollision	TMario::isTakeSituation(THitActor*)	99.8/26 -> 99.8/26	30 compiles	no gain
+Player/MarioCollision	TMario::considerTake()	100.0/6 -> 100.0/6	1 compiles	no gain
+NPC/NpcCollision	TBaseNPC::execNpcObjCollision_()	98.6/70 -> 98.6/70	6 compiles	no gain
+NPC/NpcCollision	TBaseNPC::bind()	99.8/34 -> 99.8/34	1 compiles	no gain
+NPC/NpcCollision	TBaseNPC::setVariableDamageRadius_()	99.6/13 -> 99.6/13	11 compiles	no gain
+Enemy/generator	TGenerator::load(JSUMemoryInputStream&)	99.8/26 -> 99.8/26	30 compiles	no gain
+Enemy/generator	TGenerator::perform(unsigned long, JDrama::TGraphics*)	99.8/12 -> 99.8/12	14 compiles	no gain
+Enemy/generator	TOneShotGenerator::receiveMessage(THitActor*, unsigned long)	99.8/12 -> 99.8/12	7 compiles	no gain
+Enemy/walker	TWalker::bind(TLiveActor*)	99.6/343 -> 99.6/293	30 compiles	KEPT
+Enemy/walker	calcFarthestVertex(const TBGCheckData*, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&)	99.8/23 -> 99.8/23	22 compiles	no gain
+MarioUtil/MathUtil	matan(float, float)	99.2/26 -> 99.2/26	0 compiles	no gain
+MarioUtil/MathUtil	MsGetRotFromZaxis(const JGeometry::TVec3<float>&)	99.9/5 -> 99.9/5	3 compiles	no gain
+Player/MarioAutodemo	TMario::readBillboard()	99.9/14 -> 99.9/14	1 compiles	no gain
+Player/MarioMain	TMario::perform(unsigned long, JDrama::TGraphics*)	99.9/32 -> 99.9/32	1 compiles	no gain
+Player/MarioMain	TMario::drawSyncCallback(unsigned short)	100.0/3 -> 100.0/3	1 compiles	no gain
+MarioUtil/EffectUtil	SMS_EmitSinkInPollutionEffect(const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, bool)	98.8/54 -> 98.8/54	27 compiles	no gain
+MoveBG/MapObjItem2	TMushroom1up::control()	99.8/65 -> 99.8/65	30 compiles	no gain
+MoveBG/ItemManager	TItemManager::newAndRegisterCoin(unsigned long)	99.5/30 -> 99.5/30	0 compiles	no gain
+Enemy/SleepBossHanachan	TNerveSBH_Fall::execute(TSpineBase<TLiveActor>*) const	99.8/14 -> 99.8/14	28 compiles	no gain
+Camera/CameraBck	TCameraBck::updateDemo(JGeometry::TVec3<float>*, JGeometry::TVec3<float>*, JGeometry::TVec3<float>*, float*)	99.9/8 -> 99.9/8	1 compiles	no gain
+Enemy/bosspakkun	TBPHeadHit::receiveMessage(THitActor*, unsigned long)	98.5/41 -> 98.5/41	30 compiles	no gain
+Enemy/bosspakkun	TNerveBPWait::execute(TSpineBase<TLiveActor>*) const	99.8/83 -> 99.8/83	30 compiles	no gain
+Enemy/bosspakkun	TBossPakkun::perform(unsigned long, JDrama::TGraphics*)	99.8/30 -> 99.8/30	13 compiles	no gain
+Enemy/bosspakkun	TBPTornado::perform(unsigned long, JDrama::TGraphics*)	99.8/68 -> 99.8/68	30 compiles	no gain
+Enemy/bosspakkun	TBossPakkunMtxCalc::calcHeadDir(unsigned short)	99.7/56 -> 99.7/56	30 compiles	no gain
+Enemy/bosspakkun	TNerveBPFly::execute(TSpineBase<TLiveActor>*) const	99.7/52 -> 99.7/52	8 compiles	no gain
+Enemy/bosspakkun	TNerveBPPivot::execute(TSpineBase<TLiveActor>*) const	99.5/22 -> 99.5/22	30 compiles	no gain
+Enemy/bosspakkun	TBossPakkun::init(TLiveManager*)	99.9/47 -> 99.9/47	7 compiles	no gain
+Enemy/bosspakkun	TNerveBPVomit::execute(TSpineBase<TLiveActor>*) const	99.9/32 -> 99.9/32	8 compiles	no gain
+Enemy/bosspakkun	TBossPakkun::changeBck(int)	99.9/32 -> 99.9/32	20 compiles	no gain
+Enemy/bosspakkun	TBossPakkun::launchPolDrop()	99.8/31 -> 99.8/31	30 compiles	no gain
+Enemy/bosspakkun	TBPPolDrop::perform(unsigned long, JDrama::TGraphics*)	99.8/30 -> 99.8/30	8 compiles	no gain
+Enemy/bosspakkun	TBossPakkunMtxCalc::calcBellyScale(unsigned short)	99.9/24 -> 99.9/24	30 compiles	no gain
+Enemy/bosspakkun	TNerveBPTumbleOut::execute(TSpineBase<TLiveActor>*) const	99.9/18 -> 99.9/18	14 compiles	no gain
+Enemy/bosspakkun	TNerveBPPreDie::execute(TSpineBase<TLiveActor>*) const	99.9/18 -> 99.9/18	7 compiles	no gain
+Enemy/bosspakkun	TNerveBPStompReact::execute(TSpineBase<TLiveActor>*) const	99.8/16 -> 99.8/16	7 compiles	no gain
+Enemy/bosspakkun	TNerveBPTouchDown::execute(TSpineBase<TLiveActor>*) const	99.9/14 -> 99.9/14	8 compiles	no gain
+Enemy/bosspakkun	TNerveBPTakeOff::execute(TSpineBase<TLiveActor>*) const	99.9/14 -> 99.9/14	9 compiles	no gain
+Enemy/bosspakkun	TBossPakkun::rumblePad(int, const JGeometry::TVec3<float>&)	99.9/13 -> 100.0/1	16 compiles	KEPT
+Enemy/bosspakkun	TNerveBPFlyPivot::execute(TSpineBase<TLiveActor>*) const	99.8/11 -> 99.8/11	1 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::generateSlotItem()	99.1/253 -> 99.1/251	30 compiles	KEPT
+Enemy/bosstelesa	TNerveBubbleLive::execute(TSpineBase<TLiveActor>*) const	98.1/65 -> 98.1/65	9 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::slotFall()	95.3/20 -> 95.3/20	1 compiles	no gain
+Enemy/bosstelesa	TTelesaSlot::moveObject()	98.8/59 -> 98.8/59	17 compiles	no gain
+Enemy/bosstelesa	TNerveBossTelesaDie::execute(TSpineBase<TLiveActor>*) const	99.4/19 -> 99.4/19	3 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::calcRootMatrix()	99.1/37 -> 99.1/37	30 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::init(TLiveManager*)	99.4/65 -> 99.4/65	30 compiles	no gain
+Enemy/bosstelesa	TNerveBossTelesaSpitSlotItem::execute(TSpineBase<TLiveActor>*) const	98.3/13 -> 98.3/13	1 compiles	no gain
+Enemy/bosstelesa	TNerveBossTelesaHide::execute(TSpineBase<TLiveActor>*) const	99.1/4 -> 99.1/4	1 compiles	no gain
+Enemy/bosstelesa	TNerveBossTelesaFreeze::execute(TSpineBase<TLiveActor>*) const	99.0/4 -> 99.0/4	1 compiles	no gain
+Enemy/bosstelesa	TBubble::appendEnemy()	99.8/24 -> 99.8/24	10 compiles	no gain
+Enemy/bosstelesa	TNerveBossTelesaHideWait::execute(TSpineBase<TLiveActor>*) const	99.9/15 -> 99.9/15	3 compiles	no gain
+Enemy/bosstelesa	TBossTelesa::damageRecover()	100.0/8 -> 100.0/8	1 compiles	no gain
+MoveBG/MapObjMamma	TLeanMirror::release()	98.3/61 -> 98.3/61	4 compiles	no gain
+MoveBG/MapObjMamma	SandCastleCallBack(unsigned long, unsigned long)	96.6/10 -> 96.6/10	6 compiles	no gain
+MoveBG/MapObjMamma	TLeanMirror::draw() const	99.5/47 -> 99.5/47	30 compiles	no gain
+MoveBG/MapObjMamma	TLeanMirror::controlShake()	99.8/33 -> 99.8/33	19 compiles	no gain
+MoveBG/MapObjMamma	TLeanMirror::controlGoTarget()	99.8/28 -> 99.8/28	4 compiles	no gain
+MoveBG/MapObjMamma	TMammaBlockRotate::control()	99.8/24 -> 99.8/24	1 compiles	no gain
+MoveBG/MapObjMamma	TMammaBlockRotate::initMapObj()	99.8/16 -> 99.8/16	20 compiles	no gain
+MoveBG/MapObjMamma	TLeanMirror::load(JSUMemoryInputStream&)	99.8/13 -> 99.8/13	15 compiles	no gain
+Player/MarioRun	TMario::doRunningAnimation()	97.8/24 -> 97.8/24	30 compiles	no gain
+Player/MarioRun	TMario::doSliding(float)	98.5/26 -> 98.5/26	30 compiles	no gain
+Player/MarioRun	TMario::running()	99.6/16 -> 99.6/16	30 compiles	no gain
+Player/MarioRun	TMario::doSurfing()	99.3/32 -> 99.5/28	30 compiles	KEPT
+Player/MarioRun	TMario::walkEnd()	99.1/10 -> 99.1/10	30 compiles	no gain
+Player/MarioRun	TMario::doRunning()	99.7/36 -> 99.7/36	9 compiles	no gain
+Player/MarioRun	TMario::slopeProcess()	99.8/16 -> 99.8/16	30 compiles	no gain
+Player/MarioRun	TMario::moveMain()	100.0/12 -> 100.0/12	1 compiles	no gain
+Player/MarioRun	TMario::turnning()	100.0/10 -> 100.0/10	1 compiles	no gain
+Player/MarioDraw	TMario::calcAnim(unsigned long, JDrama::TGraphics*)	99.4/20 -> 99.4/20	21 compiles	no gain
+Player/MarioDraw	MarioWaistCtrl(J3DNode*, int)	99.3/26 -> 99.3/26	20 compiles	no gain
+Player/MarioDraw	TMario::addDamageFog(JDrama::TGraphics*)	99.9/18 -> 99.9/18	8 compiles	no gain
+Player/MarioDraw	TMario::initMirrorModel()	100.0/4 -> 100.0/4	1 compiles	no gain
+M3DUtil/MActorData	MActorAnmData::init(const char*, const char**)	99.1/38 -> 99.1/38	30 compiles	no gain
+M3DUtil/MActorData	MActorAnmData::addFileTable(const char*)	99.2/52 -> 99.2/52	7 compiles	no gain
+System/EmitterViewObj	TMarioParticleManager::emitAndBindToMtx(long, float(*)[4], unsigned char, const void*)	99.4/13 -> 99.4/13	0 compiles	no gain
+System/EmitterViewObj	TMarioParticleManager::perform(unsigned long, JDrama::TGraphics*)	99.9/20 -> 99.9/20	15 compiles	no gain
+System/EmitterViewObj	TMarioParticleManager::emit(long, const JGeometry::TVec3<float>*, unsigned char, const void*)	100.0/6 -> 100.0/6	1 compiles	no gain
+System/EmitterViewObj	TMarioParticleManager::emitAndBindToSRTMtxPtr(long, float(*)[4], unsigned char, const void*)	100.0/6 -> 100.0/6	1 compiles	no gain
+System/EmitterViewObj	TMarioParticleManager::emitAndBindToMtxPtr(long, float(*)[4], unsigned char, const void*)	100.0/6 -> 100.0/6	1 compiles	no gain
+System/EmitterViewObj	TMarioParticleManager::emitAndBindToPosPtr(long, const JGeometry::TVec3<float>*, unsigned char, const void*)	100.0/6 -> 100.0/6	1 compiles	no gain
+System/EmitterViewObj	TMarioParticleManager::emitTry(long, TMarioParticleManager::TInfo*, unsigned char)	100.0/5 -> 100.0/5	1 compiles	no gain
+MoveBG/MapObjDolpic	TMonumentShine::hitByWater(THitActor*)	98.1/47 -> 98.1/47	30 compiles	no gain
+MoveBG/MapObjDolpic	TDemoCannon::initMapObj()	99.1/17 -> 99.2/15	30 compiles	KEPT
+MoveBG/MapObjDolpic	TBellDolpic::ring(const JGeometry::TVec3<float>&)	99.8/24 -> 99.8/24	30 compiles	no gain
+MoveBG/MapObjDolpic	TBellDolpic::control()	99.9/14 -> 99.9/14	9 compiles	no gain
+MoveBG/MapObjDolpic	TMonumentShine::control()	100.0/8 -> 100.0/8	1 compiles	no gain
+Map/Map	TMap::update()	96.8/22 -> 96.8/22	7 compiles	no gain
+Map/Map	initStageCommon()	98.5/69 -> 98.5/69	30 compiles	no gain
+Map/Map	initMare()	99.6/69 -> 99.6/69	30 compiles	no gain
+Map/Map	initMonte()	99.7/26 -> 99.7/26	7 compiles	no gain
+Map/Map	TMap::isTouchedOneWallAndMoveXZ(float*, float, float*, float) const	99.8/10 -> 99.8/10	2 compiles	no gain
+MoveBG/MapObjRailBlock	TRollBlock::calcRootMatrix()	97.0/34 -> 97.0/34	28 compiles	no gain
+MoveBG/MapObjRailBlock	TRailBlock::control()	99.8/70 -> 99.8/70	30 compiles	no gain
+MoveBG/MapObjRailBlock	TRailMapObj::moveToNextNode(float)	99.7/50 -> 99.7/50	15 compiles	no gain
+MoveBG/MapObjRailBlock	TNormalLift::control()	99.8/23 -> 99.8/23	7 compiles	no gain
+MoveBG/MapObjInit	TMapObjBase::makeMActors()	96.9/79 -> 96.9/79	1 compiles	no gain
+MoveBG/MapObjInit	TMapObjBase::initMapObj()	97.6/14 -> 97.6/14	1 compiles	no gain
+MoveBG/MapObjInit	TMapObjBase::initActorData()	99.7/11 -> 99.7/11	7 compiles	no gain
+System/GCLogoDir	TGCLogoDir::setup(JDrama::TDisplay*, TMarioGamePad*)	99.6/152 -> 99.6/152	30 compiles	no gain
+System/GCLogoDir	TGCLogoDir::direct_nlogo()	99.4/22 -> 99.4/22	0 compiles	no gain
+System/GCLogoDir	TGCLogoDir::direct_dolby()	98.6/17 -> 98.6/17	7 compiles	no gain
+System/GCLogoDir	TGCLogoDir::direct()	99.8/20 -> 99.8/20	8 compiles	no gain
+Strategic/liveactor	TLiveActor::bind()	100.0/8 -> 100.0/8	1 compiles	no gain
+MoveBG/MapObjManager	TMapObjBaseManager::makeObjAppear(float, float, float, unsigned long, bool)	100.0/3 -> 100.0/3	1 compiles	no gain
+Player/MarioSound	TMario::soundTorocco()	99.6/26 -> 99.6/26	1 compiles	no gain
+Player/MarioSound	TMario::soundMovement()	100.0/11 -> 100.0/11	1 compiles	no gain
+Camera/lensglow	TLensGlow::TLensGlow(bool, const char*)	100.0/7 -> 100.0/7	1 compiles	no gain
+NPC/NpcParts	TNpcParts::partsPerform(unsigned long, JDrama::TGraphics*)	98.8/32 -> 98.8/32	30 compiles	no gain
+MoveBG/MapObjFlag	TMapObjFlag::draw()	99.6/39 -> 99.6/39	30 compiles	no gain
+Map/MapMakeData	TMapCollisionBase::updateTrans(const JGeometry::TVec3<float>&)	99.7/31 -> 99.7/31	6 compiles	no gain
+Map/MapMakeData	TMapCollisionBase::initAllCheckData(short, const float*, unsigned short, const TLiveActor*)	99.8/30 -> 99.8/30	30 compiles	no gain
+Enemy/launcher	TCommonLauncher::stateLaunch()	99.9/8 -> 99.9/8	13 compiles	no gain
+Enemy/launcher	TCommonLauncher::init(TLiveManager*)	100.0/5 -> 100.0/5	1 compiles	no gain
+Enemy/spider	TSpider::bind(TLiveActor*)	99.6/138 -> 99.6/138	30 compiles	no gain
+Enemy/BossHanachanEffect	TBossHanachan::emitCamShake_()	99.7/16 -> 99.7/16	22 compiles	no gain
+Camera/CameraNotice	CPolarSubCamera::ctrlLButtonCamera_()	99.8/29 -> 99.8/29	6 compiles	no gain
+MoveBG/WoodBarrel	TWoodBarrel::kill()	99.7/14 -> 99.7/14	2 compiles	no gain
+NPC/NpcCoin	TNpcCoin::requestAppearCoin(const Vec&, float, int)	100.0/8 -> 100.0/8	1 compiles	no gain
+MoveBG/MapObjAirport	TAirportEventSink::watch()	100.0/3 -> 100.0/3	1 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::checkWallCollision(JGeometry::TVec3<float>*)	95.4/30 -> 95.4/30	2 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::calcCurrentMtx()	99.3/110 -> 99.3/110	30 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::rebound(JGeometry::TVec3<float>*)	98.8/12 -> 98.8/12	1 compiles	no gain
+MoveBG/MapObjBall	TBigWatermelon::rebound(JGeometry::TVec3<float>*)	99.1/12 -> 99.1/12	1 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::boundByActor(THitActor*)	99.8/47 -> 99.8/47	8 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::touchWater(THitActor*)	99.3/26 -> 99.3/26	1 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::touchWall(JGeometry::TVec3<float>*, TBGWallCheckRecord*)	99.8/38 -> 99.8/38	10 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::kicked()	99.8/32 -> 99.8/32	30 compiles	no gain
+MoveBG/MapObjBall	TBigWatermelon::startEvent()	99.8/29 -> 99.8/29	14 compiles	no gain
+MoveBG/MapObjBall	TBigWatermelon::kill()	99.9/11 -> 99.9/11	15 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::control()	99.9/11 -> 99.9/11	0 compiles	no gain
+MoveBG/MapObjBall	TResetFruit::receiveMessage(THitActor*, unsigned long)	100.0/10 -> 100.0/10	0 compiles	no gain
+MoveBG/MapObjBall	TResetFruit::appearing()	99.9/10 -> 99.9/10	8 compiles	no gain
+MoveBG/MapObjBall	TResetFruit::breaking()	99.9/10 -> 99.9/10	18 compiles	no gain
+MoveBG/MapObjBall	TResetFruit::waitingToAppear()	99.9/10 -> 99.9/10	17 compiles	no gain
+MoveBG/MapObjBall	TMapObjBall::touchGround(JGeometry::TVec3<float>*)	100.0/7 -> 100.0/7	1 compiles	no gain
+MoveBG/MapObjMare	TCogwheel::draw() const	97.7/84 -> 97.7/84	30 compiles	no gain
+MoveBG/MapObjMare	TMapObjGrowTree::control()	98.8/18 -> 98.8/18	3 compiles	no gain
+MoveBG/MapObjMare	TMuddyBoat::moveByWater()	99.0/43 -> 99.0/43	30 compiles	no gain
+MoveBG/MapObjMare	TCogwheel::initMapObj()	99.5/41 -> 99.5/41	30 compiles	no gain
+MoveBG/MapObjMare	TMuddyBoat::calc()	99.5/41 -> 99.5/41	7 compiles	no gain
+MoveBG/MapObjMare	TMapObjPuncher::touchPlayer(THitActor*)	99.6/39 -> 99.6/39	17 compiles	no gain
+MoveBG/MapObjMare	TMapObjElasticCode::control()	99.7/20 -> 99.8/16	21 compiles	KEPT
+MoveBG/MapObjMare	TMuddyBoat::kill()	99.9/5 -> 99.9/5	28 compiles	no gain
+MoveBG/MapObjMare	TWireBell::control()	100.0/3 -> 100.0/3	1 compiles	no gain
+GC2D/Option	TOptionSoundUnit::initSurroundAnm()	99.7/11 -> 99.7/11	1 compiles	no gain
+GC2D/Option	TOptionSoundUnit::TOptionSoundUnit(J2DScreen*)	99.8/11 -> 99.8/11	1 compiles	no gain
+GC2D/Option	TOptionSoundUnit::initSteleoAnm()	99.6/11 -> 99.6/11	1 compiles	no gain
+Enemy/popo	TNervePopoFly::execute(TSpineBase<TLiveActor>*) const	99.1/29 -> 99.1/29	30 compiles	no gain
+Enemy/popo	PopoPossessedCallback(J3DNode*, int)	99.6/50 -> 99.6/50	30 compiles	no gain
+Enemy/popo	TPopo::attackToMario()	99.8/37 -> 99.8/37	7 compiles	no gain
+Enemy/popo	TPopo::behaveToWater(THitActor*)	99.8/36 -> 99.9/16	6 compiles	KEPT
+Enemy/popo	PopoNonScaleCallback(J3DNode*, int)	99.8/22 -> 99.8/22	15 compiles	no gain
+Enemy/popo	TPopo::behaveToFindMario()	99.8/21 -> 99.8/21	1 compiles	no gain
+Enemy/popo	TNervePopoAttack::execute(TSpineBase<TLiveActor>*) const	99.8/21 -> 99.8/21	7 compiles	no gain
+Enemy/popo	TPopo::flyBehavior()	99.9/17 -> 99.9/17	21 compiles	no gain
+Enemy/popo	TNervePopoExplosion::execute(TSpineBase<TLiveActor>*) const	99.9/16 -> 99.9/16	1 compiles	no gain
+Enemy/popo	TNervePopoWait::execute(TSpineBase<TLiveActor>*) const	99.8/16 -> 99.8/16	1 compiles	no gain
+Enemy/popo	TPopo::isFindMario(float)	99.9/5 -> 99.9/5	30 compiles	no gain
+Enemy/elecNokonoko	TNerveElecCarapaceMove::execute(TSpineBase<TLiveActor>*) const	99.5/54 -> 99.5/54	8 compiles	no gain
+Enemy/elecNokonoko	TElecCarapace::sendMessage()	99.1/10 -> 99.1/10	18 compiles	no gain
+Enemy/elecNokonoko	TNerveElecCarapaceReturn::execute(TSpineBase<TLiveActor>*) const	99.9/34 -> 99.9/34	19 compiles	no gain
+Enemy/elecNokonoko	TElecCarapace::reflect(THitActor*)	99.8/27 -> 99.8/27	12 compiles	no gain
+Enemy/elecNokonoko	TNerveElecNokonokoCollect::execute(TSpineBase<TLiveActor>*) const	99.9/27 -> 99.9/27	3 compiles	no gain
+Enemy/elecNokonoko	TNerveElecNokonokoTurn::execute(TSpineBase<TLiveActor>*) const	99.8/23 -> 99.8/23	1 compiles	no gain
+Enemy/elecNokonoko	TElecNokonoko::isResignationAttack()	99.8/20 -> 99.8/20	1 compiles	no gain
+Enemy/elecNokonoko	TElecCarapace::loadInit(TSpineEnemy*, const char*)	99.9/12 -> 99.9/12	4 compiles	no gain
+Enemy/elecNokonoko	TElecNokonoko::calcRootMatrix()	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/elecNokonoko	TNerveElecNokonokoFreeze::execute(TSpineBase<TLiveActor>*) const	100.0/8 -> 100.0/8	1 compiles	no gain
+MoveBG/MapObjMonte	THangingBridge::drawRopeBetweenBoards(float, int) const	99.5/215 -> 99.5/215	30 compiles	no gain
+MoveBG/MapObjMonte	TSwingBoard::control()	99.6/26 -> 99.6/26	30 compiles	no gain
+MoveBG/MapObjMonte	THangingBridge::loadAfter()	99.9/49 -> 99.9/49	30 compiles	no gain
+MoveBG/MapObjMonte	TFluff::move()	99.9/12 -> 99.9/12	30 compiles	no gain
+Enemy/TabePuku	TTPHitActor::updateTerrainCollsion()	97.5/39 -> 97.6/27	30 compiles	KEPT
+Enemy/TabePuku	TNerveTabePukuAttack::execute(TSpineBase<TLiveActor>*) const	99.2/67 -> 99.2/67	1 compiles	no gain
+Enemy/TabePuku	TTabePuku::calcRootMatrix()	99.0/5 -> 99.0/5	24 compiles	no gain
+Enemy/TabePuku	TNerveTabePukuFound::execute(TSpineBase<TLiveActor>*) const	99.5/48 -> 99.5/48	1 compiles	no gain
+Enemy/TabePuku	TNerveTabePukuGraphWander::execute(TSpineBase<TLiveActor>*) const	99.8/24 -> 99.8/24	1 compiles	no gain
+Enemy/TabePuku	TNerveTabePukuBite::execute(TSpineBase<TLiveActor>*) const	99.9/8 -> 99.9/8	1 compiles	no gain
+Enemy/TabePuku	TNerveTabePukuRecoverGraph::execute(TSpineBase<TLiveActor>*) const	99.9/8 -> 99.9/8	8 compiles	no gain
+Map/MapMirror	TMirrorCamera::TMirrorCamera(const char*)	99.9/5 -> 99.9/5	30 compiles	no gain
+Map/MapMirror	TMirrorModel::initPlaneInfo()	99.8/21 -> 99.8/21	10 compiles	no gain
+Map/MapMirror	TMirrorModelManager::load(JSUMemoryInputStream&)	99.8/18 -> 99.9/16	30 compiles	KEPT
+Map/MapMirror	TMirrorModelObj::setPlane()	99.8/11 -> 99.8/11	18 compiles	no gain
+Map/MapMirror	TMirrorModelManager::isUpperThanMirrorPlane(const JGeometry::TVec3<float>&) const	99.8/10 -> 99.8/10	20 compiles	no gain
+MoveBG/MapObjBase	TMapObjBase::startAnim(unsigned short)	98.6/15 -> 98.6/15	3 compiles	no gain
+MoveBG/MapObjBase	TMapObjBase::makeObjAppeared()	99.8/23 -> 99.8/23	7 compiles	no gain
+MoveBG/MapObjBase	TMapObjBase::perform(unsigned long, JDrama::TGraphics*)	100.0/12 -> 100.0/12	1 compiles	no gain
+MoveBG/MapObjBase	TMapObjBase::setGroundCollision()	99.9/11 -> 99.9/11	1 compiles	no gain
+MoveBG/MapObjBase	TMapObjBase::setUpCurrentMapCollision()	99.8/10 -> 99.8/10	1 compiles	no gain
+GC2D/PauseMenu2	TPauseMenu2::drawAppearPane(J2DPicture*, float, JUTRect&, float)	96.6/52 -> 96.6/52	30 compiles	no gain
+GC2D/PauseMenu2	TPauseMenu2::perform(unsigned long, JDrama::TGraphics*)	99.4/109 -> 99.4/109	2 compiles	no gain
+GC2D/PauseMenu2	TPauseMenu2::disappearWindow()	99.6/96 -> 99.6/96	2 compiles	no gain
+GC2D/PauseMenu2	TPauseMenu2::appearWindow()	99.7/68 -> 99.7/68	30 compiles	no gain
+Player/MarioJump	TMario::diving()	99.2/25 -> 99.2/25	9 compiles	no gain
+Player/MarioJump	TMario::jumpMain()	100.0/17 -> 100.0/17	1 compiles	no gain
+Player/MarioJump	TMario::jumpingBasic(int, int, int)	100.0/6 -> 100.0/6	1 compiles	no gain
+Camera/cameragc	CPolarSubCamera::perform(unsigned long, JDrama::TGraphics*)	97.8/32 -> 97.8/32	6 compiles	no gain
+Camera/cameragc	CPolarSubCamera::calcSlopeAngleX_(short*)	98.6/69 -> 98.7/57	30 compiles	KEPT
+Camera/cameragc	CPolarSubCamera::CPolarSubCamera(const char*)	99.2/13 -> 99.2/13	30 compiles	no gain
+Camera/cameragc	CPolarSubCamera::ctrlGameCamera_()	99.9/28 -> 99.9/28	0 compiles	no gain
+Enemy/effectObj	TEffectObjBase::moveObject()	98.8/28 -> 98.8/28	1 compiles	no gain
+Map/MapEventDolpic	TDolpicEventRiccoMammaGate::load(JSUMemoryInputStream&)	99.9/11 -> 99.9/11	30 compiles	no gain
+Camera/CameraDemo	CPolarSubCamera::ctrlNormalDeadDemo_()	99.9/15 -> 99.9/15	13 compiles	no gain
+Camera/CameraDemo	CPolarSubCamera::startGateDemoCamera(const JDrama::TActor*)	99.8/14 -> 99.8/14	24 compiles	no gain
+Camera/CameraDemo	CPolarSubCamera::updateGateDemoCamera_()	99.9/4 -> 99.9/4	3 compiles	no gain
+GC2D/MovieRumble	TMovieRumble::init(const char*)	98.5/21 -> 98.5/21	4 compiles	no gain
+Map/MapMakeList	TMapCollisionData::getGridArea(const TBGCheckData*, int, int*, int*, int*, int*)	99.8/14 -> 99.8/14	30 compiles	no gain
+Map/MapMakeList	TMapCollisionData::removeCheckListData(unsigned short, long)	99.9/4 -> 99.9/4	30 compiles	no gain
+MoveBG/MapObjEx	TJointCoin::makeObj(const char*, unsigned short)	95.4/36 -> 95.4/36	0 compiles	no gain
+MoveBG/MapObjPlane	TMapObjPlane::calcNrm(int, int)	99.0/108 -> 99.0/108	30 compiles	no gain
+Animal/AnimalNerve	TNerveAnimalGraphWander::execute(TSpineBase<TLiveActor>*) const	99.6/77 -> 99.6/77	30 compiles	no gain
+Map/Sky	TSky::perform(unsigned long, JDrama::TGraphics*)	99.8/50 -> 99.8/50	30 compiles	no gain
+Enemy/areacylinder	TAreaCylinder::load(JSUMemoryInputStream&)	99.8/27 -> 99.8/26	30 compiles	KEPT
+Animal/AnimalManager	TAnimalManagerBase::clipEnemies(JDrama::TGraphics*)	99.9/8 -> 99.9/8	25 compiles	no gain
+Enemy/bossManta	TBossManta::updateAttractor()	99.3/206 -> 99.3/206	30 compiles	no gain
+Enemy/bossManta	TBossMantaManager::loadAfter()	98.2/29 -> 98.2/29	4 compiles	no gain
+Enemy/bossManta	TBossMantaManager::spawn(int, const JGeometry::TVec3<float>&)	98.5/64 -> 98.5/64	18 compiles	no gain
+Enemy/bossManta	TBossManta::init(TLiveManager*)	99.0/49 -> 99.0/49	1 compiles	no gain
+Enemy/bossManta	TBossManta::calcRootMatrix()	98.8/28 -> 98.8/28	30 compiles	no gain
+Enemy/bossManta	TBossMantaManager::drawMantaShadow(JDrama::TGraphics*)	99.8/74 -> 99.8/74	30 compiles	no gain
+Enemy/bossManta	TBossManta::collidedWithWater()	99.8/32 -> 99.8/32	0 compiles	no gain
+Enemy/bossManta	TBossMantaAdditionalCollisionSet::update(unsigned long, JDrama::TGraphics*)	99.5/32 -> 99.8/24	30 compiles	KEPT
+Enemy/bossManta	TBossManta::initNthGeneration(int)	99.9/40 -> 99.9/40	4 compiles	no gain
+Enemy/bossManta	TBossManta::getIntoGraphVec(JGeometry::TVec3<float>*)	99.8/36 -> 99.8/36	19 compiles	no gain
+Enemy/bossManta	TNerveMantaHitWater::execute(TSpineBase<TLiveActor>*) const	99.8/18 -> 99.8/18	10 compiles	no gain
+Enemy/bossManta	TNerveMantaSpawn::execute(TSpineBase<TLiveActor>*) const	99.8/20 -> 99.8/20	9 compiles	no gain
+Enemy/bossManta	TBossMantaManager::createEnemies(int)	99.8/19 -> 99.8/19	1 compiles	no gain
+Enemy/bossManta	TBossMantaManager::setupEfbAlpha(JDrama::TGraphics*)	100.0/9 -> 100.0/9	1 compiles	no gain
+Enemy/bossManta	TNerveMantaDeath::execute(TSpineBase<TLiveActor>*) const	99.9/8 -> 99.9/8	1 compiles	no gain
+Enemy/Koopa	TNerveKoopaWait::execute(TSpineBase<TLiveActor>*) const	98.9/48 -> 98.9/48	20 compiles	no gain
+Enemy/Koopa	TKoopa::getNeckFocus() const	98.8/13 -> 98.8/13	30 compiles	no gain
+Enemy/Koopa	TNerveKoopaFlame::execute(TSpineBase<TLiveActor>*) const	99.7/78 -> 99.7/78	1 compiles	no gain
+Enemy/Koopa	TNerveKoopaGetDown::execute(TSpineBase<TLiveActor>*) const	99.5/23 -> 99.5/23	1 compiles	no gain
+Enemy/Koopa	TKoopa::perform(unsigned long, JDrama::TGraphics*)	99.8/34 -> 99.8/34	1 compiles	no gain
+Enemy/Koopa	TKoopa::getFlameDirRate() const	99.2/28 -> 99.4/27	30 compiles	KEPT
+Enemy/Koopa	TKoopa::getTargetDir(const JGeometry::TVec3<float>&) const	99.1/22 -> 99.1/22	30 compiles	no gain
+Enemy/Koopa	TKoopa::updateAnmSound()	99.5/10 -> 99.5/10	3 compiles	no gain
+Enemy/enemy	TSpineEnemy::calcEnemyRootMatrix()	97.8/99 -> 97.8/99	27 compiles	no gain
+Enemy/enemy	TSpineEnemy::doShortCut()	99.6/81 -> 99.6/81	5 compiles	no gain
+Enemy/enemy	TSpineEnemy::goToDirLimitedNextGraphNode(float)	99.5/44 -> 99.6/40	23 compiles	KEPT
+Enemy/enemy	TSpineEnemy::goToExclusiveNextGraphNode()	99.8/37 -> 99.8/37	3 compiles	no gain
+Enemy/enemy	TSpineEnemy::calcTurnSpeedToReach(float, float) const	99.4/12 -> 99.4/12	30 compiles	no gain
+Enemy/enemy	TSpineEnemy::jumpToNextGraphNode()	99.7/24 -> 99.7/24	2 compiles	no gain
+Enemy/enemy	TSpineEnemy::setGoalPathFromGraph()	99.5/22 -> 99.5/22	0 compiles	no gain
+Enemy/enemy	TSpineEnemy::goToDirectedNextGraphNode(const JGeometry::TVec3<float>&)	99.7/22 -> 99.7/22	13 compiles	no gain
+Enemy/enemy	TSpineEnemy::turnToCurPathNode(float)	99.9/14 -> 99.9/14	26 compiles	no gain
+Enemy/pakkun	PakkunRootCallback(J3DNode*, int)	96.0/40 -> 96.0/40	30 compiles	no gain
+Enemy/pakkun	TPakkun::init(TLiveManager*)	98.1/34 -> 98.1/34	12 compiles	no gain
+Enemy/pakkun	TPakkunSeed::rebirth()	98.4/16 -> 98.4/16	7 compiles	no gain
+Enemy/pakkun	TNervePakkunGenerate::execute(TSpineBase<TLiveActor>*) const	98.8/17 -> 98.8/17	10 compiles	no gain
+Enemy/pakkun	TNervePakkunAppear::execute(TSpineBase<TLiveActor>*) const	98.6/2 -> 98.6/2	1 compiles	no gain
+Enemy/pakkun	PakkunRootCallback2(J3DNode*, int)	98.1/22 -> 98.1/22	17 compiles	no gain
+Enemy/pakkun	TPakkunSeed::loadInit(TSpineEnemy*, const char*)	99.8/23 -> 99.8/23	6 compiles	no gain
+Enemy/pakkun	TPakkunSeed::moveObject()	99.7/12 -> 99.7/12	1 compiles	no gain
+Enemy/pakkun	TStayPakkun::genRandomItem()	99.9/8 -> 99.9/8	30 compiles	no gain
+Enemy/pakkun	TNerveStayPakkunHide::execute(TSpineBase<TLiveActor>*) const	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/gatekeeper	TBGKMtxCalc::calc(unsigned short)	99.4/55 -> 99.4/55	30 compiles	no gain
+Enemy/gatekeeper	TBiancoGateKeeper::init(TLiveManager*)	99.7/74 -> 99.7/74	30 compiles	no gain
+Enemy/gatekeeper	TNerveBGKWait::execute(TSpineBase<TLiveActor>*) const	100.0/18 -> 100.0/18	1 compiles	no gain
+Enemy/gatekeeper	TNerveBGKSleep::execute(TSpineBase<TLiveActor>*) const	99.9/17 -> 99.9/17	19 compiles	no gain
+Enemy/gatekeeper	TNerveBGKSleepDamage::execute(TSpineBase<TLiveActor>*) const	99.9/15 -> 99.9/15	3 compiles	no gain
+Enemy/gatekeeper	TNerveBGKDive::execute(TSpineBase<TLiveActor>*) const	99.9/15 -> 99.9/15	3 compiles	no gain
+Enemy/gatekeeper	TNerveBGKWait2::execute(TSpineBase<TLiveActor>*) const	99.9/15 -> 99.9/15	7 compiles	no gain
+Enemy/gatekeeper	TBiancoGateKeeper::getRumblePow()	99.8/13 -> 100.0/1	9 compiles	KEPT
+Enemy/gatekeeper	TNerveBGKAwakeDamage::execute(TSpineBase<TLiveActor>*) const	99.9/11 -> 99.9/11	1 compiles	no gain
+Enemy/gatekeeper	TNerveBGKAppear::execute(TSpineBase<TLiveActor>*) const	99.9/10 -> 99.9/10	1 compiles	no gain
+Enemy/gatekeeper	TNerveBGKLaunchGoro::execute(TSpineBase<TLiveActor>*) const	99.9/8 -> 99.9/8	1 compiles	no gain
+Player/MarioSpecial	TMario::fenceMove()	99.7/99 -> 99.7/99	30 compiles	no gain
+Player/MarioSpecial	TMario::pulling()	99.6/18 -> 99.6/18	30 compiles	no gain
+Player/MarioSpecial	TMario::getOnWirePosAngle(JGeometry::TVec3<float>*, short*)	99.5/60 -> 99.5/60	30 compiles	no gain
+Player/MarioSpecial	TMario::moveRoof()	99.8/26 -> 99.8/26	4 compiles	no gain
+Player/MarioSpecial	TMario::fencePunch()	99.9/19 -> 99.9/19	30 compiles	no gain
+Player/MarioSpecial	TMario::wireMove(float)	99.8/19 -> 99.8/19	30 compiles	no gain
+Player/MarioSpecial	TMario::barWait()	99.9/9 -> 99.9/9	1 compiles	no gain
+Player/MarioSpecial	TMario::doRoofMovingProcess()	99.9/8 -> 99.9/8	30 compiles	no gain
+Player/MarioSpecial	TMario::specMain()	100.0/7 -> 100.0/7	1 compiles	no gain
+Player/MarioSpecial	TMario::barClimb()	100.0/6 -> 100.0/6	1 compiles	no gain
+MoveBG/MapObjTown	TMapObjWaterSpray::load(JSUMemoryInputStream&)	97.7/13 -> 97.7/13	28 compiles	no gain
+MoveBG/MapObjTown	TMapObjWaterSpray::calc()	96.7/16 -> 96.7/16	2 compiles	no gain
+MoveBG/MapObjTown	TMapObjBillboard::touchWater(THitActor*)	99.8/20 -> 99.8/20	20 compiles	no gain
+MoveBG/MapObjTown	TMapObjSwitch::load(JSUMemoryInputStream&)	99.8/14 -> 99.8/14	30 compiles	no gain
+MoveBG/MapObjTown	TRedCoinSwitch::load(JSUMemoryInputStream&)	99.8/10 -> 99.8/10	15 compiles	no gain
+MoveBG/MapObjHide	TWaterHitPictureHideObj::load(JSUMemoryInputStream&)	99.8/18 -> 99.8/18	20 compiles	no gain
+MoveBG/MapObjHide	THideObjPictureTwin::afterFinishedAnim()	99.9/14 -> 99.9/14	11 compiles	no gain
+MoveBG/MapObjHide	TWaterHitPictureHideObj::loadAfter()	100.0/10 -> 100.0/10	1 compiles	no gain
+MoveBG/MapObjHide	THideObjPictureTwin::loadAfter()	99.9/6 -> 99.9/6	30 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowParts::calc(float)	98.9/51 -> 98.9/51	30 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowBody::entryDrawShadow()	99.1/60 -> 99.1/60	1 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowManager::drawShadow(unsigned long, JDrama::TGraphics*)	99.9/42 -> 99.9/42	30 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowManager::drawShadowVolume(bool, TAlphaShadowQuad*)	99.9/37 -> 99.9/37	7 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowManager::request(const TCircleShadowRequest&, unsigned long)	99.9/28 -> 99.9/28	30 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowManager::forceRequest(const TCircleShadowRequest&, unsigned long)	99.8/15 -> 99.8/15	24 compiles	no gain
+MarioUtil/ShadowUtil	TMBindShadowBody::TMBindShadowBody(THitActor*, J3DModel*, float)	100.0/13 -> 100.0/13	1 compiles	no gain
+MarioUtil/MtxUtil	SMS_MakeJointsToArc(J3DModel*, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&)	98.5/181 -> 98.5/163	30 compiles	KEPT
+MarioUtil/MtxUtil	TMtxTimeLag::calc(float(*)[4])	98.9/67 -> 98.9/61	30 compiles	KEPT
+MarioUtil/MtxUtil	TMtxSwingRZ::calcLocalXY(float(*)[4], Vec*, Vec*)	99.7/46 -> 99.7/46	30 compiles	no gain
+MarioUtil/MtxUtil	TRope::moveHead(const JGeometry::TVec3<float>&)	99.7/32 -> 99.7/32	7 compiles	no gain
+MarioUtil/MtxUtil	TRope::constraintTail(const JGeometry::TVec3<float>&)	99.8/29 -> 99.8/29	7 compiles	no gain
+MarioUtil/MtxUtil	MtxToQuat(float(*)[4], Quaternion*)	99.9/2 -> 99.9/2	30 compiles	no gain
+Enemy/walkerEnemy	TWalkerEnemy::moveObject()	99.8/21 -> 99.8/21	17 compiles	no gain
+Enemy/walkerEnemy	TWalkerEnemy::isResignationAttack()	99.7/20 -> 99.7/20	1 compiles	no gain
+Enemy/walkerEnemy	TWalkerEnemy::isReachedToGoalXZ()	99.7/17 -> 99.7/17	1 compiles	no gain
+Enemy/walkerEnemy	TNerveWalkerEscape::execute(TSpineBase<TLiveActor>*) const	99.9/13 -> 99.9/13	16 compiles	no gain
+GC2D/Guide	TGuide::resetObjects()	97.8/48 -> 97.8/48	30 compiles	no gain
+GC2D/Guide	TGuide::placeMario()	98.0/52 -> 98.0/52	30 compiles	no gain
+GC2D/Guide	TGuide::changeBotStatus(int)	99.4/11 -> 99.4/11	30 compiles	no gain
+Strategic/MirrorActor	TMirrorActor::checkIsInMirror()	98.9/16 -> 98.9/16	30 compiles	no gain
+Strategic/MirrorActor	TMirrorActor::init(J3DModel*, unsigned short)	99.9/12 -> 99.9/12	12 compiles	no gain
+Strategic/MirrorActor	TMirrorActor::entryMirrorDrawBufferAlways(J3DModel*)	99.8/12 -> 99.8/12	8 compiles	no gain
+Map/PollutionLayer	TPollutionLayer::cleaned(float, float, float, float)	99.8/29 -> 99.8/29	6 compiles	no gain
+Map/PollutionLayer	TPollutionLayer::stampModel(J3DModel*)	99.3/3 -> 99.3/3	17 compiles	no gain
+Map/PollutionLayer	TPollutionLayer::initTexImage(const char*)	99.9/9 -> 99.9/9	21 compiles	no gain
+Map/PollutionLayer	TPollutionLayer::isPolluted(float, float, float) const	99.8/16 -> 99.8/16	15 compiles	no gain
+System/MarDirectorEvent	TMarDirector::setNextStage(unsigned short, JDrama::TActor*)	98.0/3 -> 98.0/3	3 compiles	no gain
+System/MarDirectorEvent	TMarDirector::findNearestTalkNPC()	99.8/9 -> 99.8/9	12 compiles	no gain
+NPC/NpcBase	TBaseNPC::moveObject()	100.0/11 -> 100.0/11	1 compiles	no gain
+GC2D/ScrnFader	TSMSFader::load(JSUMemoryInputStream&)	96.6/14 -> 96.6/14	13 compiles	no gain
+GC2D/CardLoad	TCardLoad::drawMessageBM(TEProgress)	99.8/93 -> 99.8/93	1 compiles	no gain
+GC2D/CardLoad	TCardLoad::changeScene()	100.0/62 -> 100.0/62	1 compiles	no gain
+Camera/CameraOption	CPolarSubCamera::ctrlOptionCamera_()	99.9/26 -> 99.9/26	10 compiles	no gain
+Camera/CameraOption	TCameraOption::TCameraOption(JGeometry::TVec3<float>, JGeometry::TVec3<float>*)	99.9/14 -> 99.9/14	30 compiles	no gain
+MoveBG/MapObjTrap	TLampTrapSpike::control()	98.5/95 -> 98.5/95	7 compiles	no gain
+M3DUtil/M3UJoint	M3UMtxCalcBlendAux(unsigned short, J3DTransformInfo*, J3DTransformInfo*, float, bool)	98.8/56 -> 98.8/56	30 compiles	no gain
+Camera/sunmgr	TSunMgr::load(JSUMemoryInputStream&)	99.0/37 -> 99.0/37	30 compiles	no gain
+GC2D/ProgSelect	TProgSelect::perform(unsigned long, JDrama::TGraphics*)	99.8/31 -> 99.8/31	2 compiles	no gain
+System/MarDirectorPreEntry	TMarDirector::preEntry(TPerformList*)	100.0/8 -> 100.0/8	1 compiles	no gain
+Player/WaterGun	TNozzleBase::animation(int)	98.5/40 -> 98.5/40	1 compiles	no gain
+Player/WaterGun	TNozzleDeform::animation(int)	99.4/56 -> 99.4/56	25 compiles	no gain
+Player/WaterGun	TWaterGun::perform(unsigned long, JDrama::TGraphics*)	96.6/12 -> 96.6/12	3 compiles	no gain
+Player/WaterGun	TWaterGun::movement()	99.7/69 -> 99.7/69	7 compiles	no gain
+Player/WaterGun	TNozzleBase::calcGunAngle(const TMarioControllerWork&)	99.7/18 -> 99.7/18	13 compiles	no gain
+Player/WaterGun	TWaterGun::calcAnimation(JDrama::TGraphics*)	99.9/25 -> 99.9/25	13 compiles	no gain
+Player/WaterGun	TNozzleBase::emitCommon(int, TWaterEmitInfo*)	99.8/22 -> 99.8/22	23 compiles	no gain
+Player/WaterGun	TWaterGun::changeNozzle(TWaterGun::TNozzleType, bool)	99.8/21 -> 99.8/21	1 compiles	no gain
+Player/WaterGun	WaterGunDivingCtrlR(J3DNode*, int)	99.7/11 -> 99.7/11	27 compiles	no gain
+Player/WaterGun	WaterGunDivingCtrlL(J3DNode*, int)	99.7/11 -> 99.7/11	26 compiles	no gain
+Player/WaterGun	TNozzleBase::movement(const TMarioControllerWork&)	99.6/13 -> 99.6/13	2 compiles	no gain
+Player/WaterGun	RotateCtrl(J3DNode*, int)	99.8/9 -> 99.8/9	9 compiles	no gain
+Player/WaterGun	NozzleCtrl(J3DNode*, int)	99.8/9 -> 99.8/9	1 compiles	no gain
+Player/WaterGun	TWaterGun::setBaseTRMtx(float(*)[4])	100.0/3 -> 100.0/3	1 compiles	no gain
+Enemy/bosswanwan	TNerveBWDie::execute(TSpineBase<TLiveActor>*) const	97.7/51 -> 97.7/51	27 compiles	no gain
+Enemy/bosswanwan	TNerveBWStun::execute(TSpineBase<TLiveActor>*) const	97.3/50 -> 97.3/50	30 compiles	no gain
+Enemy/bosswanwan	TBossWanwan::perform(unsigned long, JDrama::TGraphics*)	99.1/43 -> 99.1/43	14 compiles	no gain
+Enemy/bosswanwan	TBossWanwanMtxCalc::calc(unsigned short)	97.4/53 -> 97.4/53	4 compiles	no gain
+Enemy/bosswanwan	TBossWanwan::control()	98.7/30 -> 98.7/30	30 compiles	no gain
+Enemy/bosswanwan	TBWLeash::perform(unsigned long, JDrama::TGraphics*)	99.3/106 -> 99.3/106	30 compiles	no gain
+Enemy/bosswanwan	TNerveBWBark::execute(TSpineBase<TLiveActor>*) const	98.6/16 -> 98.6/16	1 compiles	no gain
+Enemy/bosswanwan	TNerveBWShake::execute(TSpineBase<TLiveActor>*) const	97.9/16 -> 97.9/16	7 compiles	no gain
+Enemy/bosswanwan	TNerveBWWakeup::execute(TSpineBase<TLiveActor>*) const	97.8/16 -> 97.8/16	1 compiles	no gain
+Enemy/bosswanwan	TNerveBWJump::execute(TSpineBase<TLiveActor>*) const	97.8/37 -> 97.8/37	6 compiles	no gain
+Enemy/bosswanwan	TNerveBWJumpToBath::execute(TSpineBase<TLiveActor>*) const	98.8/66 -> 98.8/66	27 compiles	no gain
+Enemy/bosswanwan	TBWLeashNode::calcMatrix()	99.0/102 -> 99.2/97	30 compiles	KEPT
+Enemy/bosswanwan	TBWPicket::perform(unsigned long, JDrama::TGraphics*)	99.6/124 -> 99.6/124	30 compiles	no gain
+Enemy/bosswanwan	TBWLeashNode::perform(unsigned long, JDrama::TGraphics*)	99.5/29 -> 99.5/29	10 compiles	no gain
+Enemy/bosswanwan	TBossWanwan::slideToCurPathNode(float, float)	99.7/55 -> 99.7/55	30 compiles	no gain
+Enemy/bosswanwan	TBWLeash::TBWLeash(TBossWanwan*, int, const char*)	99.8/29 -> 99.8/29	30 compiles	no gain
+Enemy/bosswanwan	TNerveBWFall::execute(TSpineBase<TLiveActor>*) const	99.8/32 -> 99.8/32	6 compiles	no gain
+Enemy/bosswanwan	TBossWanwan::shakeCamera(int)	99.8/5 -> 99.8/5	30 compiles	no gain
+Enemy/bosswanwan	TBossWanwan::emitEffects()	100.0/8 -> 100.0/8	1 compiles	no gain
+Enemy/Kumokun	TKumokun::decideTargetAtDir(const JGeometry::TVec3<float>&)	98.5/96 -> 98.5/96	1 compiles	no gain
+Enemy/Kumokun	TKumokun::initAttachPlane()	99.0/68 -> 99.0/68	7 compiles	no gain
+Enemy/Kumokun	TKumokun::calcRootMatrix()	99.6/50 -> 99.6/50	4 compiles	no gain
+Enemy/Kumokun	TKumokun::bindOnFlying()	99.5/61 -> 99.5/61	6 compiles	no gain
+Enemy/Kumokun	TWallAtGraph::init(const TGraphWeb*, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&)	99.6/11 -> 99.6/11	30 compiles	no gain
+Enemy/Kumokun	TNerveKumokunFly::execute(TSpineBase<TLiveActor>*) const	99.8/48 -> 99.8/48	1 compiles	no gain
+Enemy/Kumokun	TKumokun::checkOnMovingRoof(JGeometry::TVec3<float>*, const TBGCheckData**, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&) const	99.8/27 -> 99.8/27	30 compiles	no gain
+Enemy/Kumokun	TNerveKumokunPreWalk::execute(TSpineBase<TLiveActor>*) const	99.9/12 -> 99.9/12	1 compiles	no gain
+Enemy/Kumokun	TNerveKumokunFreeze::execute(TSpineBase<TLiveActor>*) const	99.9/12 -> 99.9/12	3 compiles	no gain
+Enemy/Kumokun	TNerveKumokunPostWalk::execute(TSpineBase<TLiveActor>*) const	99.9/12 -> 99.9/12	3 compiles	no gain
+Enemy/Kumokun	TNerveKumokunPostFreeze::execute(TSpineBase<TLiveActor>*) const	99.9/12 -> 99.9/12	3 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::drawShineShadowVolume(float(*)[4])	99.1/83 -> 99.1/83	30 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::calcDrawVtx(float(*)[4])	98.6/77 -> 98.6/77	30 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::calcVMMtxGround(float(*)[4], float, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, float(*)[4])	96.8/43 -> 96.8/43	30 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::calcWorldMinMax()	97.6/30 -> 97.6/30	11 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::calcVMMtxWall(float(*)[4], float, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, float(*)[4])	98.0/22 -> 98.2/22	30 compiles	KEPT
+Player/ModelWaterManager	TModelWaterManager::makeEmit(const TWaterEmitInfo&)	99.2/50 -> 99.2/50	30 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::perform(unsigned long, JDrama::TGraphics*)	99.5/32 -> 99.5/32	1 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::drawMirror(float(*)[4])	99.9/70 -> 99.9/70	30 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::drawWaterVolume(float(*)[4])	99.9/37 -> 99.9/37	1 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::drawSilhouette(float(*)[4])	99.9/35 -> 99.9/35	5 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::loadAfter()	99.7/14 -> 99.7/14	22 compiles	no gain
+Player/ModelWaterManager	TModelWaterManager::drawRefracAndSpec() const	100.0/18 -> 100.0/18	1 compiles	no gain
+Animal/Bird	TNerveAnimalBirdLanding::execute(TSpineBase<TLiveActor>*) const	96.7/47 -> 96.7/47	7 compiles	no gain
+Animal/Bird	TNerveAnimalBirdComeback::execute(TSpineBase<TLiveActor>*) const	97.5/10 -> 97.5/10	1 compiles	no gain
+Animal/Bird	TNerveAnimalBirdPreLanding::execute(TSpineBase<TLiveActor>*) const	97.2/10 -> 97.2/10	5 compiles	no gain
+Animal/Bird	TAnimalBird::doFlyToCurPathNode()	98.7/103 -> 98.7/103	30 compiles	no gain
+Animal/Bird	TNerveAnimalBirdWalkOnGround::execute(TSpineBase<TLiveActor>*) const	99.7/52 -> 99.7/52	1 compiles	no gain
+Animal/Bird	TNerveAnimalBirdGraphWander::execute(TSpineBase<TLiveActor>*) const	99.8/49 -> 99.8/49	1 compiles	no gain
+Animal/Bird	TNerveAnimalBirdWaitOnGround::execute(TSpineBase<TLiveActor>*) const	99.9/3 -> 99.9/3	1 compiles	no gain
+Animal/Bird	TNerveAnimalBirdChangeToCoin::execute(TSpineBase<TLiveActor>*) const	99.9/8 -> 99.9/8	1 compiles	no gain
+Animal/Bird	TAnimalBird::load(JSUMemoryInputStream&)	100.0/4 -> 100.0/4	1 compiles	no gain
+MarioUtil/DrawUtil	SetViewFrustumClipCheck(float, float, float, float, float, float)	99.5/19 -> 99.6/17	30 compiles	KEPT
+MarioUtil/DrawUtil	TSilhouette::perform(unsigned long, JDrama::TGraphics*)	99.8/42 -> 99.8/42	30 compiles	no gain
+MarioUtil/DrawUtil	SMS_UnifyMaterial(J3DModel*)	99.3/7 -> 99.3/7	13 compiles	no gain
+MarioUtil/DrawUtil	TSilhouette::setting(float(*)[4])	99.9/8 -> 99.9/8	18 compiles	no gain
+MarioUtil/DrawUtil	SMS_CountPolygonNumInShape(J3DShape*)	99.9/8 -> 99.9/8	0 compiles	no gain
+MarioUtil/DrawUtil	TTrembleModelEffect::init(J3DModel*)	100.0/6 -> 100.0/6	1 compiles	no gain
+Enemy/limitkoopa	TNerveLimitKoopaWait::execute(TSpineBase<TLiveActor>*) const	99.3/39 -> 99.3/39	1 compiles	no gain
+Enemy/limitkoopa	TLimitKoopa::startHipDrop()	99.6/55 -> 99.6/55	30 compiles	no gain
+Enemy/limitkoopa	TLimitKoopa::bind()	99.9/8 -> 99.9/8	1 compiles	no gain
+Enemy/poihana	TNervePoihanaTrapped::execute(TSpineBase<TLiveActor>*) const	98.2/81 -> 98.2/81	21 compiles	no gain
+Enemy/poihana	TPoiHana::genEventCoin()	99.7/21 -> 99.7/21	13 compiles	no gain
+Enemy/poihana	TPoiHana::isCollidMove(THitActor*)	99.9/20 -> 99.9/20	2 compiles	no gain
+Enemy/poihana	TNervePoihanaThrow::execute(TSpineBase<TLiveActor>*) const	99.8/19 -> 99.8/19	13 compiles	no gain
+Enemy/poihana	TNervePoihanaSleep::execute(TSpineBase<TLiveActor>*) const	100.0/8 -> 100.0/8	1 compiles	no gain
+Player/MarioPhysics	TMario::checkGroundAtJumping(const Vec&, int)	98.9/83 -> 98.9/83	30 compiles	no gain
+Player/MarioPhysics	TMario::checkDescent()	99.2/29 -> 99.2/29	30 compiles	no gain
+Player/MarioPhysics	TMario::hangonCheck(const TBGCheckData*, const Vec&, const Vec&)	99.7/28 -> 99.7/28	2 compiles	no gain
+Player/MarioPhysics	TMario::keepDistance(const JGeometry::TVec3<float>&, float, float)	99.9/28 -> 99.9/25	30 compiles	KEPT
+Player/MarioPhysics	TMario::jumpProcess(int)	99.9/14 -> 99.9/14	30 compiles	no gain
+Player/MarioPhysics	TMario::barProcess()	99.9/13 -> 100.0/5	2 compiles	KEPT
+Player/MarioPhysics	TMario::checkGroundAtWalking(Vec*)	100.0/8 -> 100.0/8	1 compiles	no gain
+Player/MarioParticle	TMario::surfingEffect()	99.5/20 -> 99.5/20	30 compiles	no gain
+Player/MarioParticle	TMario::toroccoEffect()	99.7/26 -> 99.7/26	6 compiles	no gain
+Player/MarioParticle	TMario::inOutWaterEffect(float)	99.9/17 -> 99.9/17	12 compiles	no gain
+Player/MarioParticle	TMario::emitSweat(short)	99.8/12 -> 99.8/12	4 compiles	no gain
+Player/MarioParticle	TBubbleCallBack::execute(JPABaseEmitter*, JPABaseParticle*)	99.8/9 -> 99.8/9	0 compiles	no gain
+Player/MarioParticle	TMario::emitFootPrintWithEffect(int, int)	100.0/6 -> 100.0/6	1 compiles	no gain
+M3DUtil/MActor	MActor::setModel(J3DModel*, unsigned long)	99.9/16 -> 99.9/16	14 compiles	no gain
+Enemy/enemymanager	TEnemyManager::copyAnmMtx(TSpineEnemy*)	96.0/16 -> 96.0/16	30 compiles	no gain
+Enemy/enemymanager	TEnemyManager::performShared(unsigned long, JDrama::TGraphics*)	99.5/19 -> 99.5/19	30 compiles	no gain
+Enemy/enemymanager	TEnemyManager::createEnemies(int)	98.8/32 -> 98.8/32	1 compiles	no gain
+Enemy/enemymanager	TEnemyManager::copyFromShared()	99.9/11 -> 99.9/11	30 compiles	no gain
+Map/PollutionCount	TPollutionCounterLayer::drawJointObjStamp(int) const	99.4/44 -> 99.4/44	3 compiles	no gain
+Map/PollutionCount	TPollutionCounterLayer::calcViewMtx()	99.2/33 -> 99.2/33	14 compiles	no gain
+Enemy/BathtubPeach	TBathtubPeach::calcRootMatrix()	99.2/15 -> 99.2/15	4 compiles	no gain
+Enemy/BossHanachanSub	BHSCalcCentrifugalForce(const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&, float)	96.9/55 -> 96.9/55	30 compiles	no gain
+Enemy/BossHanachanSub	TSphereLink::setDegreeZAndRevisionPosXZ(int, float)	98.1/40 -> 98.1/40	18 compiles	no gain
+Enemy/BossHanachanSub	TSphereLink::TSphereLink(unsigned short, const JGeometry::TVec3<float>&, float, float, float, float, float, float)	99.5/39 -> 99.5/39	30 compiles	no gain
+System/DrawSyncManager	TDrawSyncManager::threadFunc(void*)	99.9/15 -> 99.9/15	23 compiles	no gain
+Map/MapCollisionEntry	TMapCollisionMove::move()	99.9/4 -> 99.9/4	0 compiles	no gain
+GC2D/BoundPane	TBoundPane::update()	99.5/62 -> 99.5/62	3 compiles	no gain
+MoveBG/ModelGate	TModelGate::screenBlur(JDrama::TGraphics*)	99.7/43 -> 99.7/43	30 compiles	no gain
+MoveBG/ModelGate	TModelGate::loadAfter()	100.0/27 -> 100.0/27	1 compiles	no gain
+System/MarDirectorLoadResource	TMarDirector::loadParticle()	100.0/8 -> 100.0/8	1 compiles	no gain
+System/MarDirectorLoadResource	TMarDirector::loadResource()	100.0/13 -> 100.0/13	1 compiles	no gain
+Camera/CameraNormal	CPolarSubCamera::ctrlNormalOrTowerCamera_()	98.8/35 -> 98.8/35	30 compiles	no gain
+MoveBG/MapObjWater	TMapObjWaterFilter::perform(unsigned long, JDrama::TGraphics*)	97.5/28 -> 97.5/28	30 compiles	no gain
+Player/MarioReceiveMsg	TMario::receiveMessage(THitActor*, unsigned long)	100.0/44 -> 100.0/44	1 compiles	no gain
+System/MarDirectorSetup2	TMarDirector::setup2()	99.6/49 -> 99.6/49	30 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::startAppearBalloon(unsigned long, bool)	98.0/29 -> 98.1/25	30 compiles	KEPT
+Enemy/Kumokun	TKumokun::checkOnMovingWall(JGeometry::TVec3<float>*, const TBGCheckData**, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&) const	99.2/117 -> 99.3/105	30 compiles	KEPT
+Enemy/Kumokun	TKumokun::checkOnMovingFloor(JGeometry::TVec3<float>*, const TBGCheckData**, const JGeometry::TVec3<float>&, const JGeometry::TVec3<float>&) const	99.5/81 -> 99.8/36	30 compiles	KEPT
+Enemy/amiNoko	TAmiNoko::calcDirection()	99.5/96 -> 99.5/96	0 compiles	no gain
+System/MovieDirector	TMovieDirector::rsetup()	99.8/92 -> 99.8/92	0 compiles	no gain
+GC2D/GCConsole2	TGCConsole2::drawWater(J2DOrthoGraph&)	98.9/84 -> 98.9/84	0 compiles	no gain
+System/MSoundMainSide	MSStageCubeFadeDouble::proc()	97.9/86 -> 97.9/86	0 compiles	no gain
+MarioUtil/DrawUtil	SMS_CountPolygonNumInShape(J3DShape*)	99.9/8 -> 99.9/8	0 compiles	no gain
+System/Application	TApplication::gameLoop()	98.9/62 -> 98.9/62	23 compiles	no gain
+System/GCLogoDir	TGCLogoDir::direct_nlogo()	99.4/22 -> 99.4/22	0 compiles	no gain
+Enemy/graph	TGraphTracer::calcSplineSpeed(float)	98.8/79 -> 98.8/79	30 compiles	no gain
+System/MSoundMainSide	MSStageCubeFade::setBgmVolumeForce()	97.4/45 -> 97.4/45	0 compiles	no gain
+MSound/MSound	MSound::getDistPowFromCamera(const Vec&)	99.1/12 -> 99.1/12	0 compiles	no gain
+Enemy/bossManta	TBossMantaManager::spawn(int, const JGeometry::TVec3<float>&)	98.5/64 -> 98.5/64	22 compiles	no gain
+MSound/MSound	MSound::startMarioVoice(unsigned long, short, unsigned char)	99.8/29 -> 99.8/29	30 compiles	no gain
+Enemy/amiNoko	TAmiNoko::emitEffects()	100.0/6 -> 100.0/6	0 compiles	no gain
+Enemy/amiNoko	TAmiNoko::calcDirection()	99.5/96 -> 99.5/96	30 compiles	no gain
+System/MovieDirector	TMovieDirector::rsetup()	99.8/92 -> 99.8/83	30 compiles	KEPT
+GC2D/GCConsole2	TGCConsole2::drawWater(J2DOrthoGraph&)	98.9/84 -> 98.9/84	30 compiles	no gain
+System/MSoundMainSide	MSStageCubeFadeDouble::proc()	97.9/86 -> 97.9/86	30 compiles	no gain
+MarioUtil/DrawUtil	SMS_CountPolygonNumInShape(J3DShape*)	99.9/8 -> 99.9/8	16 compiles	no gain
+System/Application	TApplication::gameLoop()	98.9/62 -> 98.9/62	23 compiles	no gain
+System/GCLogoDir	TGCLogoDir::direct_nlogo()	99.4/22 -> 99.4/22	7 compiles	no gain
+Enemy/graph	TGraphTracer::calcSplineSpeed(float)	98.8/79 -> 98.8/79	30 compiles	no gain
+System/MSoundMainSide	MSStageCubeFade::setBgmVolumeForce()	97.4/45 -> 97.4/45	5 compiles	no gain
+MSound/MSound	MSound::getDistPowFromCamera(const Vec&)	99.1/12 -> 99.1/12	3 compiles	no gain
+Enemy/bossManta	TBossMantaManager::spawn(int, const JGeometry::TVec3<float>&)	98.5/64 -> 98.5/64	16 compiles	no gain
+MSound/MSound	MSound::startMarioVoice(unsigned long, short, unsigned char)	99.8/29 -> 99.8/29	30 compiles	no gain
+Enemy/amiNoko	TAmiNoko::emitEffects()	100.0/6 -> 100.0/6	1 compiles	no gain
+Map/MapMirror	TMirrorModelManager::load(JSUMemoryInputStream&)	99.9/16 -> 99.9/16	95 compiles	no gain

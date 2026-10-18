@@ -1,0 +1,238 @@
+--- a/include/aurora/aurora.h
++++ b/include/aurora/aurora.h
+@@ -138,6 +138,16 @@
+ void aurora_set_resampler(AuroraSampler sampler);
+ /** Sets the clock timescale. Default 1.0f. 0.0f is paused. Range 0.0f-16.0f. */
+ void aurora_set_timescale(float scale);
++/** SMS PC port patch (aurora_texture_filter.patch): texture filtering overrides, applied
++ *  from the next draw. anisotropy 0 = the texture's GX request (default), 1-16 = that
++ *  maximum for linear-filtered mipmapped textures; forceTrilinear = linear mip blending. */
++void aurora_set_texture_filtering(uint16_t anisotropy, bool forceTrilinear);
++/** SMS PC port patch (aurora_visual_options.patch): post-processing in the present pass.
++ *  gamma/brightness 1.0 and fxaa false (defaults) leave the picture untouched. */
++void aurora_set_post_process(float gamma, float brightness, bool fxaa);
++/** SMS PC port patch (aurora_visual_options.patch): false skips GXSetCopyFilter's vertical
++ *  filter on texture copies (sharper screen effects; not GameCube-accurate). Default true. */
++void aurora_set_copy_filter_enabled(bool enabled);
+ 
+ SDL_Window* aurora_get_window();
+ AuroraWindowSize aurora_get_window_size();
+--- a/lib/gfx/texture.cpp
++++ b/lib/gfx/texture.cpp
+@@ -9,6 +9,7 @@
+ #include "../gx/gx_fmt.hpp"
+ 
+ #include <algorithm>
++#include <atomic>
+ #include <cstdint>
+ #include <memory>
+ #include <utility>
+@@ -82,6 +83,11 @@
+     return {wgpu::FilterMode::Linear, wgpu::MipmapFilterMode::Linear};
+   }
+ }
++
++// SMS PC port patch (aurora_texture_filter.patch): optional filtering overrides set at
++// run time by aurora_set_texture_filtering(). 0 / false = GX behaviour (default).
++std::atomic<u16> g_forcedAnisotropy{0};
++std::atomic<bool> g_forceTrilinear{false};
+ 
+ u16 wgpu_aniso(GXAnisotropy aniso) {
+   switch (aniso) {
+@@ -310,6 +316,18 @@
+   float minLod = texObj.min_lod();
+   float maxLod = texObj.max_lod();
+   u16 maxAnisotropy = wgpu_aniso(texObj.max_aniso());
++  // SMS PC port patch (aurora_texture_filter.patch): forced anisotropy replaces the
++  // texture's GX request for linear-filtered mipmapped textures (nearest-filtered ones
++  // keep their look); forced trilinear blends between mip levels.
++  if (mipsEnabled && !(ref && ref->hasArbitraryMips)) {
++    if (const u16 forced = g_forcedAnisotropy.load(std::memory_order_relaxed);
++        forced != 0 && minFilter == wgpu::FilterMode::Linear) {
++      maxAnisotropy = forced;
++    }
++    if (g_forceTrilinear.load(std::memory_order_relaxed)) {
++      mipFilter = wgpu::MipmapFilterMode::Linear;
++    }
++  }
+   if (ref && ref->isReplacement) {
+     minLod = 0.f;
+     maxLod = 1000.f;
+@@ -341,3 +359,9 @@
+   };
+ }
+ } // namespace aurora::gfx
++
++// SMS PC port patch (aurora_texture_filter.patch)
++void aurora_set_texture_filtering(uint16_t anisotropy, bool forceTrilinear) {
++  aurora::gfx::g_forcedAnisotropy.store(std::min<uint16_t>(anisotropy, 16), std::memory_order_relaxed);
++  aurora::gfx::g_forceTrilinear.store(forceTrilinear, std::memory_order_relaxed);
++}
+--- a/lib/dolphin/gx/GXFrameBuffer.cpp
++++ b/lib/dolphin/gx/GXFrameBuffer.cpp
+@@ -10,6 +10,7 @@
+ #include "../vi/vi_internal.hpp"
+ 
+ #include <algorithm>
++#include <atomic>
+ #include <cmath>
+ 
+ namespace {
+@@ -33,6 +34,10 @@
+ } // namespace
+ 
+ namespace aurora::gx {
++// SMS PC port patch (aurora_visual_options.patch): optional "no copy filter" (sharper
++// screen-texture effects; the GameCube applies the vertical filter). Default off.
++static std::atomic<bool> g_copyFilterDisabled{false};
++
+ // SMS PC port patch (aurora_copy_scale.patch): the copy source rectangle is mapped with rounded
+ // edges (map_logical_scissor rounds outwards), and a 1:1 copy gets exactly the source
+ // rectangle's size. With outward rounding the source was one row/column larger than the scaled
+@@ -103,7 +108,10 @@
+       logicalH != 0 ? static_cast<float>(targetH) / static_cast<float>(logicalH) : 1.f;
+   gfx::resolve_pass_into(handle.handle, rect, clearColor, clearAlpha, clearDepth, g_gxState.clearColor,
+                          clear_depth_value(), texCopyFmt, g_gxState.pixelFmt,
+-                         gx::is_depth_format(texCopyFmt) ? 0u : g_gxState.copyVFilter, lineHeight);
++                         gx::is_depth_format(texCopyFmt) || g_copyFilterDisabled.load(std::memory_order_relaxed)
++                             ? 0u
++                             : g_gxState.copyVFilter,
++                         lineHeight);
+   ++handle.revision;
+   g_gxState.copyTextures[dest] = handle;
+   texture::invalidate_bindings();
+@@ -111,6 +119,11 @@
+ } // namespace aurora::gx
+ 
+ extern "C" {
++// SMS PC port patch (aurora_visual_options.patch); declared in aurora/aurora.h
++void aurora_set_copy_filter_enabled(bool enabled) {
++  aurora::gx::g_copyFilterDisabled.store(!enabled, std::memory_order_relaxed);
++}
++
+ GXRenderModeObj GXNtsc480IntDf = {
+     VI_TVMODE_NTSC_INT,
+     640,
+--- a/lib/webgpu/gpu.cpp
++++ b/lib/webgpu/gpu.cpp
+@@ -103,7 +103,18 @@
+   // SMS PC port patch (aurora_efb_size.patch): presented fraction of the source.
+   float contentScaleX = 1.f;
+   float contentScaleY = 1.f;
++  // SMS PC port patch (aurora_visual_options.patch): optional post-processing in the present
++  // resample pass. Defaults leave the picture untouched (the shader skips them).
++  float gamma = 1.f;
++  float brightness = 1.f;
++  uint32_t fxaa = 0;
++  uint32_t pad2 = 0;
+ };
++
++// SMS PC port patch (aurora_visual_options.patch): set by aurora_set_post_process().
++std::atomic<float> g_postGamma{1.f};
++std::atomic<float> g_postBrightness{1.f};
++std::atomic<bool> g_postFxaa{false};
+ 
+ constexpr std::string_view resampleShaderSource = R"(
+ struct Uniforms {
+@@ -111,6 +122,9 @@
+     frame_width: f32,
+     frame_height: f32,
+     content_scale: vec2<f32>,
++    gamma: f32,
++    brightness: f32,
++    fxaa: u32,
+ };
+ 
+ struct VertexOutput {
+@@ -190,6 +204,48 @@
+ 
+ // END AREA SAMPLER REGION
+ 
++// SMS PC port patch (aurora_visual_options.patch): FXAA (the classic "PC fast" variant) on
++// the source picture, and brightness/gamma.
++fn fxaa_luma(c: vec3<f32>) -> f32 {
++    return dot(c, vec3<f32>(0.299, 0.587, 0.114));
++}
++
++fn fxaa_sample(uv: vec2<f32>) -> vec3<f32> {
++    // (w8, aurora_efb_size.patch) stay inside the presented part of the EFB target.
++    let half_texel = 0.5 / vec2<f32>(textureDimensions(t));
++    return textureSampleLevel(t, s, clamp(uv, half_texel, uniforms.content_scale - half_texel), 0.0).rgb;
++}
++
++fn fxaa(uv: vec2<f32>) -> vec3<f32> {
++    let rcp = 1.0 / vec2<f32>(textureDimensions(t));
++    let rgbNW = fxaa_sample(uv + vec2<f32>(-1.0, -1.0) * rcp);
++    let rgbNE = fxaa_sample(uv + vec2<f32>(1.0, -1.0) * rcp);
++    let rgbSW = fxaa_sample(uv + vec2<f32>(-1.0, 1.0) * rcp);
++    let rgbSE = fxaa_sample(uv + vec2<f32>(1.0, 1.0) * rcp);
++    let rgbM = fxaa_sample(uv);
++    let lNW = fxaa_luma(rgbNW);
++    let lNE = fxaa_luma(rgbNE);
++    let lSW = fxaa_luma(rgbSW);
++    let lSE = fxaa_luma(rgbSE);
++    let lM = fxaa_luma(rgbM);
++    let lMin = min(lM, min(min(lNW, lNE), min(lSW, lSE)));
++    let lMax = max(lM, max(max(lNW, lNE), max(lSW, lSE)));
++    if (lMax - lMin < max(0.0312, lMax * 0.125)) {
++        return rgbM;
++    }
++    var dir = vec2<f32>(-((lNW + lNE) - (lSW + lSE)), (lNW + lSW) - (lNE + lSE));
++    let dirReduce = max((lNW + lNE + lSW + lSE) * (0.25 / 8.0), 1.0 / 128.0);
++    let rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);
++    dir = clamp(dir * rcpDirMin, vec2<f32>(-8.0), vec2<f32>(8.0)) * rcp;
++    let rgbA = 0.5 * (fxaa_sample(uv + dir * (1.0 / 3.0 - 0.5)) + fxaa_sample(uv + dir * (2.0 / 3.0 - 0.5)));
++    let rgbB = rgbA * 0.5 + 0.25 * (fxaa_sample(uv - dir * 0.5) + fxaa_sample(uv + dir * 0.5));
++    let lB = fxaa_luma(rgbB);
++    if (lB < lMin || lB > lMax) {
++        return rgbA;
++    }
++    return rgbB;
++}
++
+ @fragment
+ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
+     // (aurora_efb_size.patch) Clamped half a texel inside the presented part, so bilinear
+@@ -200,7 +256,17 @@
+     if (uniforms.sampler_mode == 1u) {
+         color = sample_area(in.position);
+     }
+-    return vec4(color.rgb, 1.0);
++    var rgb = color.rgb;
++    if (uniforms.fxaa != 0u) {
++        rgb = fxaa(in.uv * uniforms.content_scale);
++    }
++    if (uniforms.brightness != 1.0) {
++        rgb = clamp(rgb * uniforms.brightness, vec3<f32>(0.0), vec3<f32>(1.0));
++    }
++    if (uniforms.gamma != 1.0) {
++        rgb = pow(rgb, vec3<f32>(1.0 / uniforms.gamma));
++    }
++    return vec4(rgb, 1.0);
+ }
+ )"sv;
+ 
+@@ -719,6 +785,9 @@
+       .frameHeight = static_cast<float>(height),
+       .contentScaleX = static_cast<float>(present_content_width()) / static_cast<float>(source.size.width),
+       .contentScaleY = static_cast<float>(present_content_height()) / static_cast<float>(source.size.height),
++      .gamma = g_postGamma.load(std::memory_order_relaxed),           // aurora_visual_options.patch
++      .brightness = g_postBrightness.load(std::memory_order_relaxed), // aurora_visual_options.patch
++      .fxaa = g_postFxaa.load(std::memory_order_relaxed) ? 1u : 0u,   // aurora_visual_options.patch
+   };
+   AURORA_ASSERT(gfx::render_worker::is_worker_thread(), "Present resample queue write must run on the render worker");
+   g_queue.WriteBuffer(g_ResampleUniformBuffer, 0, &uniform, sizeof(uniform));
+@@ -1242,6 +1311,13 @@
+ }
+ } // namespace aurora::webgpu
+ 
++// SMS PC port patch (aurora_visual_options.patch)
++void aurora_set_post_process(float gamma, float brightness, bool fxaa) {
++  aurora::webgpu::g_postGamma.store(gamma > 0.f ? gamma : 1.f, std::memory_order_relaxed);
++  aurora::webgpu::g_postBrightness.store(brightness > 0.f ? brightness : 1.f, std::memory_order_relaxed);
++  aurora::webgpu::g_postFxaa.store(fxaa, std::memory_order_relaxed);
++}
++
+ void aurora_enable_vsync(const bool enabled) {
+   aurora::webgpu::g_vsyncEnabled.store(enabled, std::memory_order_release);
+   aurora::webgpu::g_graphicsConfig.surfaceConfiguration.presentMode =

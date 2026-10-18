@@ -1,0 +1,181 @@
+#include <Map/MapWarp.hpp>
+#include <Map/MapModel.hpp>
+#include <Map/Map.hpp>
+#include <Map/MapData.hpp>
+#include <MarioUtil/MathUtil.hpp>
+#include <Player/MarioAccess.hpp>
+#include <Camera/CubeManagerBase.hpp>
+#include <System/MarDirector.hpp>
+#include <dolphin/mtx.h>
+
+// rogue includes needed for matching sinit & bss
+#include <MSound/MSSetSound.hpp>
+#include <MSound/MSoundBGM.hpp>
+
+void TMapWarp::changeModel(int i)
+{
+	// FAKEMATCH(frame): 24 bytes; real construct unknown
+	volatile u32 pad[6]; (void)pad;
+	if (unk8 == i)
+		return;
+
+	// TODO: inlines
+	gpMap->getModelManager()->getJointModel(0)->mChildren[unk8]->sleep();
+	gpMap->getModelManager()->getJointModel(0)->mChildren[i]->awake();
+	unk8 = i;
+}
+
+void TMapWarp::warp(int) { }
+
+void TMapWarp::watchToWarp()
+{
+	const TBGCheckData* checkData;
+	f32 fVar8 = gpMap->checkGroundExactY(SMS_GetMarioPos().x,
+	                                     SMS_GetMarioPos().y + 30.0f,
+	                                     SMS_GetMarioPos().z, &checkData);
+
+	if (checkData->isWarp()) {
+		int data = checkData->getData();
+		int warp = unk4[data].unk0;
+		if (unk8 != warp) {
+			gpMap->getModelManager()->getJointModel(0)->getChild(unk8)->sleep();
+			gpMap->getModelManager()->getJointModel(0)->getChild(warp)->awake();
+			unk8 = unk4[data].unk0;
+			JGeometry::TVec3<f32> pos = SMS_GetMarioPos() + unk4[data].unk8;
+			SMS_MarioWarpRequest(pos,
+			                     (SMS_GetMarioAngleY() * 180.0f) / 32768.0f);
+		}
+	}
+
+	if (checkData->isMapChange()) {
+		int data = checkData->getData();
+		if (unk8 != data) {
+			gpMap->getModelManager()->getJointModel(0)->getChild(unk8)->sleep();
+			gpMap->getModelManager()->getJointModel(0)->getChild(data)->awake();
+			unk8 = data;
+		}
+	}
+
+	int no = gpCubeStream->getInCubeNo(SMS_GetMarioPos());
+	if (no == -1)
+		return;
+
+	TCubeStreamInfo& info = (TCubeStreamInfo&)(*gpCubeStream->unk14)[no];
+	Mtx mtx;
+	MsMtxSetXYZRPH(mtx, 0.0f, 0.0f, 0.0f, info.unk18.x, info.unk18.y,
+	               info.unk18.z);
+
+	JGeometry::TVec3<f32> vec2(0.0f, 0.0f, 0.0f);
+	vec2.z = info.unk40 * 0.01f;
+	MTXMultVec(mtx, &vec2, &vec2);
+	if ((info.unk38 == 0 ? true : false) || (info.unk38 == 1 ? true : false))
+		SMS_FlowMoveMario(vec2);
+	else
+		SMS_WindMoveMario(vec2);
+}
+
+void TMapWarp::initModel()
+{
+	// FAKEMATCH(frame): 16 bytes; real construct unknown
+	volatile u32 pad[4]; (void)pad;
+	// TODO: inlines
+	int num = gpMap->getModelManager()->getJointModel(0)->mChildrenNum;
+	for (int i = 0; i < num; ++i)
+		if (i != unk8)
+			gpMap->getModelManager()
+			    ->getJointModel(0)
+			    ->mChildren[(u16)i]
+			    ->sleep();
+}
+
+void getWarpPointNo(const char*) { }
+
+void loadWarpPointPos(JSUMemoryInputStream&, int, Vec*) { }
+
+void TMapWarp::init(JSUMemoryInputStream& stream)
+{
+	// Fabricated
+	struct NameTableEntry {
+		const char* unk0;
+		u32 unk4;
+	};
+	static const NameTableEntry point_name_table[] = {
+		{ "warpA1", 0 },  { "warpA0", 1 },  { "warpB1", 2 },  { "warpB0", 3 },
+		{ "warpC1", 4 },  { "warpC0", 5 },  { "warpD1", 6 },  { "warpD0", 7 },
+		{ "warpE1", 8 },  { "warpE0", 9 },  { "warpF1", 10 }, { "warpF0", 11 },
+		{ "warpG1", 12 }, { "warpG0", 13 }, { "warpH1", 14 }, { "warpH0", 15 },
+		{ "warpI1", 16 }, { "warpI0", 17 }, { nullptr, 0 },
+	};
+
+	u32 val;
+	stream >> val;
+	unk0 = val;
+	if (!unk0)
+		return;
+
+	stream >> val;
+	unk8 = val;
+	unk4 = new TMapWarpInfo[unk0 * 2];
+
+	JGeometry::TVec3<f32> local_130[20];
+	u32 local_180[20];
+	u32 local_1d0[20];
+
+	for (int i = 0; i < unk0; ++i) {
+		stream >> val;
+		local_1d0[i] = val;
+		stream >> val;
+		local_180[i] = val;
+	}
+
+	int cnt = unk0 * 2;
+	for (int i = 0; i < cnt; ++i) {
+		u32 dummy;
+		u32 needle;
+		u32 idx;
+		const char* str = stream.readString();
+		needle = 0;
+		while (strcmp(point_name_table[needle].unk0, str) != 0)
+			++needle;
+
+		idx = point_name_table[needle].unk4;
+		// TODO: the three references reproduce the per-component address
+		// temporaries of the target; maybe an inlined helper
+		f32& x = local_130[idx].x;
+		f32& y = local_130[idx].y;
+		f32& z = local_130[idx].z;
+		stream >> x >> y >> z;
+		stream >> dummy >> dummy >> dummy;
+		stream >> dummy >> dummy >> dummy;
+	}
+
+	for (int i = 0; i < unk0; ++i) {
+		unk4[2 * i].unk8.x = local_130[2 * i].x - local_130[2 * i + 1].x;
+		unk4[2 * i].unk8.y = local_130[2 * i].y - local_130[2 * i + 1].y;
+		unk4[2 * i].unk8.z = local_130[2 * i].z - local_130[2 * i + 1].z;
+
+		unk4[2 * i].unk0 = local_180[i];
+		unk4[2 * i].unk4 = local_1d0[i];
+
+		unk4[2 * i + 1].unk8.x = -unk4[2 * i].getUnk8().x;
+		unk4[2 * i + 1].unk8.y = -unk4[2 * i].getUnk8().y;
+		unk4[2 * i + 1].unk8.z = -unk4[2 * i].getUnk8().z;
+
+		// The return entry swaps the two model groups (target asm: +0x14 gets
+		// local_1d0, +0x18 gets local_180), so exiting goes back to the source.
+		unk4[2 * i + 1].unk0 = local_1d0[i];
+		unk4[2 * i + 1].unk4 = local_180[i];
+	}
+
+	if (gpMarDirector->mMap == 4) {
+		unkC = 8.0f;
+	}
+}
+
+TMapWarp::TMapWarp()
+    : unk0(0)
+    , unk4(0)
+    , unk8(0)
+    , unkC(3.0f)
+{
+}

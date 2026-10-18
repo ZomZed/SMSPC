@@ -1,0 +1,962 @@
+#include <NPC/NpcBase.hpp>
+#include <System/MarDirector.hpp>
+#include <M3DUtil/SDLModel.hpp>
+#include <M3DUtil/LodAnm.hpp>
+#include <M3DUtil/MActor.hpp>
+#include <MarioUtil/MapUtil.hpp>
+#include <MarioUtil/MathUtil.hpp>
+#include <MarioUtil/MtxUtil.hpp>
+#include <MSound/MSound.hpp>
+#include <System/Particles.hpp>
+#include <Strategic/Spine.hpp>
+#include <NPC/NpcManager.hpp>
+#include <NPC/NpcParts.hpp>
+#include <NPC/NpcBalloon.hpp>
+#include <NPC/NpcTrample.hpp>
+#include <NPC/NpcNerve.hpp>
+#include <NPC/NpcInbetween.hpp>
+#include <NPC/NpcSave.hpp>
+#include <NPC/NpcCoin.hpp>
+#include <Player/MarioAccess.hpp>
+#include <Enemy/Conductor.hpp>
+#include <Camera/Camera.hpp>
+#include <Camera/cameralib.hpp>
+
+// rogue includes needed for matching sinit & bss
+#include <MSound/MSSetSound.hpp>
+#include <MSound/MSoundBGM.hpp>
+#ifdef SMS_ALPHA_DEBUG
+#include <MarioUtil/AlphaDebug.hpp>
+#endif
+#ifdef SMS_PORT
+#include <port_widescreen.h> // w11: widescreen (Hor+)
+#endif
+#ifdef SMS_PORT_AURORA
+// Multiplayer NPC sync (w12, port_mp_npcs.cpp): NPCs currently driven by another player.
+extern "C" int gPortMpNpcPuppets;
+extern "C" int port_mp_npc_puppet_move(TBaseNPC* npc);
+extern "C" int port_mp_npc_keep_moving(TBaseNPC* npc); // w15
+extern "C" int port_mp_npc_puppet_hit(TBaseNPC* npc, THitActor* sender, u32 message);
+#endif
+
+TNpcSaveNormal* TBaseNPC::mPtrSaveNormal = nullptr;
+s16 TBaseNPC::mAngleYDiffWhenTaken       = 0;
+TBaseNPC* gpCurrentNpc                   = nullptr;
+
+TBaseNPC::TBaseNPC(u32 param_1, const char* name)
+    : TSpineEnemy(name)
+    , unk150(nullptr)
+    , unk154(nullptr)
+    , unk158(nullptr)
+    , unk15C(nullptr)
+    , mMultiMtxEffect(nullptr)
+    , mNeckJointIndex(-1)
+    , unk168(nullptr)
+    , unk16C(0)
+    , mActionFlag(0)
+    , mPollutionAmount(0.0f)
+    , mThrowCtrl(nullptr)
+    , mTrampleCtrl(nullptr)
+    , mCoinCtrl(nullptr)
+    , mBalloonCtrl(nullptr)
+    , mInbetweenCtrl(nullptr)
+    , mKeepAnmCtrl(nullptr)
+    , unk1C4(0.0f)
+    , unk1C8(0.0f)
+    , unk1CC(0)
+    , unk1D0(0.0f)
+    , mDummyConnectActor(nullptr)
+    , unk1D8(0)
+    , unk1D9(0)
+    , unk1DA(0)
+    , unk1DC(0)
+    , mTalkForbidCount(120)
+    , mWalkForbidCount(0)
+    , mDamageParticleForbidCount(0)
+    , mHappyEffectMtxPtr(nullptr)
+    , mNoteEffectMtxPtr(nullptr)
+    , unk1F0(0.0f, 0.0f, 0.0f)
+    , mPollutionEffectMtxPtr(nullptr)
+    , unk200(nullptr)
+    , unk204(nullptr)
+    , mSmokeEffectMtxPtr(nullptr)
+    , mFireParticlePos(0.0f, 0.0f, 0.0f)
+    , mBurnStrength(1.0f)
+    , mWaveParticlePos(0.0f, 0.0f, 0.0f)
+    , unk22C(nullptr)
+    , unk230(nullptr)
+{
+	gpCurrentNpc         = nullptr;
+	mAngleYDiffWhenTaken = 0;
+
+	unk174.r = 255;
+	unk174.g = 255;
+	unk174.b = 255;
+	unk174.a = 0;
+
+	mActorType = param_1;
+
+	if (param_1 != ACTOR_TYPE_NPC_DUMMY) {
+		mKeepAnmCtrl = new TNpcKeepAnm;
+
+		if (isBeTrampledNpc())
+			mTrampleCtrl = new TNpcTrample;
+	}
+}
+
+void TBaseNPC::load(JSUMemoryInputStream& stream)
+{
+	TSpineEnemy::load(stream);
+	unk194        = mPosition;
+	unk1A0        = mRotation;
+	mInitialScale = mScaling;
+	unk1B8        = getFocalPoint();
+
+	if (mActorType >= 0x400001E || mActorType < ACTOR_TYPE_NPC_DUMMY)
+		setIndividualDifference_(stream);
+}
+
+void TBaseNPC::loadAfter()
+{
+    // FAKEMATCH(frame): 32 bytes; real construct unknown
+    volatile u32 pad[8]; (void)pad;
+	TSpineEnemy::loadAfter();
+	if (mActorType == ACTOR_TYPE_NPC_PEACH
+	    && gpMarDirector->getCurrentMap() == 1
+	    && gpMarDirector->getCurrentStage() == 1) {
+		mBalloonCtrl = new TNpcBalloon;
+	}
+	gpMarDirector->entryNPC(this);
+}
+
+bool TBaseNPC::isNormalMonteM() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MONTE_M:
+	case ACTOR_TYPE_NPC_MONTE_MA:
+	case ACTOR_TYPE_NPC_MONTE_MB:
+	case ACTOR_TYPE_NPC_MONTE_MC:
+	case ACTOR_TYPE_NPC_MONTE_MD:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isNormalMonteW() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MONTE_W:
+	case ACTOR_TYPE_NPC_MONTE_WA:
+	case ACTOR_TYPE_NPC_MONTE_WB:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isSpecialMonteM() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MONTE_ME:
+	case ACTOR_TYPE_NPC_MONTE_MF:
+	case ACTOR_TYPE_NPC_MONTE_MG:
+	case ACTOR_TYPE_NPC_MONTE_MH:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isSpecialMonteW() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MONTE_WC:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isNormalMareM() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MARE_M:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isNormalMareW() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MARE_W:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isSpecialMareM() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MARE_MA:
+	case ACTOR_TYPE_NPC_MARE_MB:
+	case ACTOR_TYPE_NPC_MARE_MC:
+	case ACTOR_TYPE_NPC_MARE_MD:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isSpecialMareW() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MARE_WA:
+	case ACTOR_TYPE_NPC_MARE_WB:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isJellyFishMare() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MARE_WA:
+	case ACTOR_TYPE_NPC_MARE_MA:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isSunflower() const
+{
+	bool result = false;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_SUNFLOWER_L:
+	case ACTOR_TYPE_NPC_SUNFLOWER_S:
+		result = true;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isChild() const
+{
+	bool result = false;
+	if (mScaling.x < 0.7f && mScaling.y < 0.7f && mScaling.z < 0.7f)
+		result = true;
+	return result;
+}
+
+bool TBaseNPC::isSmallNpc() const
+{
+	bool result = false;
+	if (isChild() || isMare())
+		result = true;
+	else
+		switch (mActorType) {
+		case ACTOR_TYPE_NPC_KINOPIO:
+		case ACTOR_TYPE_NPC_KINOJII:
+			result = true;
+			break;
+		}
+	return result;
+}
+
+bool TBaseNPC::isPollutionNpc() const
+{
+	bool result = false;
+
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MONTE_M:
+	case ACTOR_TYPE_NPC_MONTE_MA:
+	case ACTOR_TYPE_NPC_MONTE_MC:
+	case ACTOR_TYPE_NPC_MONTE_W:
+	case ACTOR_TYPE_NPC_MONTE_WA:
+	case ACTOR_TYPE_NPC_MARE_M:
+	case ACTOR_TYPE_NPC_MARE_W:
+	case ACTOR_TYPE_NPC_KINOPIO:
+		result = true;
+		break;
+	}
+
+	return result;
+}
+
+bool TBaseNPC::isBeTrampledNpc() const
+{
+	bool result = false;
+
+	if (!isJellyFishMare()) {
+		if (isMonte() || isMare()) {
+			result = true;
+		} else {
+			switch (mActorType) {
+			case ACTOR_TYPE_NPC_KINOPIO:
+			case ACTOR_TYPE_NPC_KINOJII:
+				result = true;
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
+bool TBaseNPC::isMadNpc() const
+{
+	bool result = false;
+	if (isNormalMonte())
+		result = true;
+	else {
+		switch (mActorType) {
+		case ACTOR_TYPE_NPC_MONTE_ME:
+		case ACTOR_TYPE_NPC_MONTE_MF:
+		case ACTOR_TYPE_NPC_MONTE_WC:
+			result = true;
+			break;
+		}
+	}
+	return result;
+}
+
+bool TBaseNPC::isBehaveToWaterNpc() const
+{
+	bool result = true;
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_MONTE_MF:
+	case ACTOR_TYPE_NPC_MONTE_MG:
+	case ACTOR_TYPE_NPC_MARE_MA:
+	case ACTOR_TYPE_NPC_MARE_WA:
+	case ACTOR_TYPE_NPC_DUMMY:
+	case ACTOR_TYPE_NPC_BOARD:
+		result = false;
+		break;
+	}
+	return result;
+}
+
+bool TBaseNPC::isBehaveToHitNpc() const
+{
+	bool result = false;
+
+	if (isMadNpc()) {
+		result = true;
+	} else {
+		switch (mActorType) {
+		case ACTOR_TYPE_NPC_MARE_M:
+		case ACTOR_TYPE_NPC_MARE_MB:
+		case ACTOR_TYPE_NPC_MARE_MC:
+		case ACTOR_TYPE_NPC_MARE_W:
+		case ACTOR_TYPE_NPC_MARE_WB:
+		case ACTOR_TYPE_NPC_KINOPIO:
+		case ACTOR_TYPE_NPC_KINOJII:
+			result = true;
+		}
+	}
+
+	return result;
+}
+
+bool TBaseNPC::isPartsAnmNpc() const
+{
+	bool result = false;
+	if (isJellyFishMare()) {
+		result = true;
+	} else {
+		switch (mActorType) {
+		case ACTOR_TYPE_NPC_MARE_MB:
+		case ACTOR_TYPE_NPC_MARE_WB:
+		case ACTOR_TYPE_NPC_PEACH:
+			result = true;
+			break;
+		}
+	}
+	return result;
+}
+
+bool TBaseNPC::isNeedNeckStraight() const
+{
+    // FAKEMATCH(frame): 16 bytes; real construct unknown
+    volatile u32 pad[4]; (void)pad;
+	bool result = false;
+	int anmKind = unkD0->getCurrentAnmKind();
+	if ((mHolder != nullptr && mHolder == gpMarioAddress) || !isClean()
+	    || mActorType == ACTOR_TYPE_NPC_MARE_MD
+	    || (mActorType == ACTOR_TYPE_NPC_RACCOON_DOG
+	        && anmKind == NPC_ANM_KIND_UNK5)
+	    || (isMare() && anmKind == NPC_ANM_KIND_UNKC)
+	    || ((checkUnk1D8(UNK1D8_FLAG_UNK2) || anmKind == NPC_ANM_KIND_UNK5)
+	        & (mActorType == ACTOR_TYPE_NPC_PEACH))) {
+		result = true;
+	}
+	return result;
+}
+
+bool TBaseNPC::isInBodyTurnSearchRange() const
+{
+	bool result = false;
+	if (abs(SMS_GetMarioPos().y - mPosition.y)
+	        < mIndividualParams->mBodyTurnSearchHeight.get()
+	    && isInSight(SMS_GetMarioPos(),
+	                 mIndividualParams->mBodyTurnSearchDist.get(),
+	                 mIndividualParams->mBodyTurnSearchDegree.get(),
+	                 mIndividualParams->mBodyTurnSearchAware.get()))
+		result = true;
+	return result;
+}
+
+bool TBaseNPC::isInMadSearchRange() const
+{
+	bool result = false;
+	if (abs(SMS_GetMarioPos().y - mPosition.y)
+	        < mIndividualParams->mMadSearchHeight.get()
+	    && isInSight(SMS_GetMarioPos(), mIndividualParams->mMadSearchDist.get(),
+	                 mIndividualParams->mMadSearchDegree.get(),
+	                 mIndividualParams->mMadSearchAware.get()))
+		result = true;
+	return result;
+}
+
+JGeometry::TVec3<f32> TBaseNPC::getCursorPos() const
+{
+	return JGeometry::TVec3<f32>(
+	    mPosition.x,
+	    mPosition.y + mInitialScale.y * mIndividualParams->mSLBodyHeight.get()
+	        + mIndividualParams->mSLCursorHeight.get(),
+	    mPosition.z);
+}
+
+JGeometry::TVec3<f32> TBaseNPC::getFocalPoint() const
+{
+	return JGeometry::TVec3<f32>(
+	    mPosition.x,
+	    mPosition.y
+	        + mInitialScale.y
+	              * (mIndividualParams->mSLBodyHeight.get()
+	                 - mIndividualParams->mSLLookatHeight.get()),
+	    mPosition.z);
+}
+
+BOOL TBaseNPC::receiveMessage(THitActor* param_1, u32 param_2)
+{
+	bool result = false;
+
+#ifdef SMS_PORT_AURORA
+	// Multiplayer NPC sync (port_mp_npcs.cpp): water or a stomp from our Mario on an NPC
+	// another player runs goes to that player, whose copy reacts (the reaction comes back
+	// with its state); the local copy only acknowledges the hit. 0 outside a session.
+	if (gPortMpNpcPuppets != 0 && port_mp_npc_puppet_hit(this, param_1, param_2))
+		return true;
+#endif
+
+	switch (mActorType) {
+	case ACTOR_TYPE_NPC_DUMMY:
+		break;
+
+	default:
+		if (param_2 == HIT_MESSAGE_TAKE && checkLiveFlag(LIVE_FLAG_UNK100000)
+		    && mHolder == nullptr) {
+			behaveToBeTaken_(param_1);
+			result = true;
+		} else if (param_2 == HIT_MESSAGE_TRAMPLE) {
+			behaveToBeTrampled_();
+			result = true;
+		} else if (param_2 == HIT_MESSAGE_SPRAYED_BY_WATER) {
+			if (isBehaveToWaterNpc())
+				behaveToHitObject_(param_1, HIT_NPC_OBJECT_KIND_WATER_SPRAY);
+			result = true;
+		} else if (param_2 == HIT_MESSAGE_UNK10
+		           || (param_2 == HIT_MESSAGE_ATTACK
+		               && param_1->getActorType() == ACTOR_TYPE_WOOD_BARREL)) {
+			if (mDamageParticleForbidCount == 0) {
+				SMS_EasyEmitParticle(PARTICLE_MS_DMG_A, &param_1->mPosition,
+				                     nullptr,
+				                     JGeometry::TVec3<f32>(1.0f, 1.0f, 1.0f));
+				SMS_EasyEmitParticle(PARTICLE_MS_DMG_B, &param_1->mPosition,
+				                     nullptr,
+				                     JGeometry::TVec3<f32>(1.0f, 1.0f, 1.0f));
+				SMS_EasyEmitParticle(PARTICLE_MS_DMG_C, &param_1->mPosition,
+				                     nullptr,
+				                     JGeometry::TVec3<f32>(1.0f, 1.0f, 1.0f));
+				mDamageParticleForbidCount = 16;
+			}
+
+			if (isBehaveToHitNpc()) {
+				EnumHitNpcObjectKind kind = HIT_NPC_OBJECT_KIND_UNK2;
+				if (param_2 == HIT_MESSAGE_UNK10)
+					kind = HIT_NPC_OBJECT_KIND_UNK1;
+				behaveToHitObject_(param_1, kind);
+			}
+
+			result = true;
+		}
+		break;
+	}
+
+	return result;
+}
+
+void TBaseNPC::moveObject()
+{
+	if (checkLiveFlag(LIVE_FLAG_DEAD))
+		return;
+
+	ensureTakeSituation();
+	if (unk158 != nullptr && unk158->getHeldObject() != this)
+		releaseTaken_();
+
+	if (mTrampleCtrl != nullptr
+	    && mTrampleCtrl->updateTrample(mInitialScale.y, &mScaling.y)
+	    && isNerveCanGoToMad() && isStateGoToMad_()) {
+		changeNerveToMad_();
+	}
+
+	mInbetweenCtrl->applyPos(mPosition);
+
+	if (mCoinCtrl != nullptr)
+		mCoinCtrl->updateCoin();
+
+	if (mBalloonCtrl != nullptr) {
+		int prev = mBalloonCtrl->unk0;
+		if (!gpMarDirector->isTalkOrDemoModeNow()
+		    && mBalloonCtrl->updateBalloon()) {
+			// The US target uses message ids 0x52..0x54 here (verified
+			// against GMSE01 asm); the 0xE004F.. ids are kept for other
+			// versions.
+#ifdef VERSION_GMSP01
+			if (mHolder != nullptr) {
+				switch (prev) {
+				case 0x52:
+					mBalloonCtrl->setNextMessage(0x54, 0x1C20);
+					break;
+				case 0x53:
+					break;
+				case 0x54:
+					mBalloonCtrl->setNextMessage(0x52, 0x1C20);
+					break;
+				}
+			} else {
+				switch (prev) {
+				case 0x53:
+					mBalloonCtrl->setNextMessage(0x53, 0x1C20);
+					break;
+				}
+			}
+#else
+			if (mHolder != nullptr) {
+				switch (prev) {
+				case 0xE004F:
+					mBalloonCtrl->setNextMessage(0xE0051, 0x1C20);
+					break;
+				case 0xE0050:
+					break;
+				case 0xE0051:
+					mBalloonCtrl->setNextMessage(0xE004F, 0x1C20);
+					break;
+				}
+			} else {
+				switch (prev) {
+				case 0xE0050:
+					mBalloonCtrl->setNextMessage(0xE0050, 0x1C20);
+					break;
+				}
+			}
+#endif
+		}
+	}
+
+	updateForbidCount_();
+
+	updateSquareToMario();
+	mPositionDelta.zero();
+	mRotationDelta.zero();
+	const TLiveActor* groundActor
+	    = SMS_GetGroundActor(mGroundPlane, ACTOR_TYPE_SAND_BOMB_BASE00);
+	if (groundActor) {
+		mHeadHeight = mPtrSaveNormal->mSLHeadHeightSandBomb.get();
+		behaveToSandBomb_(groundActor);
+	} else {
+		mHeadHeight = mPtrSaveNormal->mSLHeadHeightNormal.get();
+		unk1C8      = 0.0f;
+	}
+
+	control();
+
+	if (!checkLiveFlag(LIVE_FLAG_UNK400000))
+		calcRideMomentum();
+
+	if (checkLiveFlag(LIVE_FLAG_UNK400000)
+	    && !checkLiveFlag(LIVE_FLAG_UNK1000000))
+		emitSinkEffect_();
+
+	if (mSpine->getLatestNerve()
+	    != &TNerveNPCSetPosAfterSinkBottom::theNerve()) {
+		execNpcObjCollision_();
+
+		if (!checkLiveFlag(LIVE_FLAG_UNK10))
+			bind();
+
+		if (mHolder != nullptr) {
+			MtxPtr mtx = mHolder->getTakingMtx();
+			mPosition.set(mtx[0][3], mtx[1][3], mtx[2][3]);
+			if (unk150 == nullptr) {
+				s16 angle = CLBDegToShortAngle(mHolder->mRotation.y)
+				            - mAngleYDiffWhenTaken;
+				mRotation.y = SHORTANGLE2DEG(angle);
+			}
+		} else {
+			if (!checkLiveFlag(LIVE_FLAG_UNK10) && isNerveWalk()
+			    && !belongToGround() && mPositionDelta.y > 5.0f) {
+				mPositionDelta.y = 5.0f;
+			}
+			mPosition += mPositionDelta;
+			mRotation += mRotationDelta;
+		}
+		calcRidePos();
+	}
+}
+
+void TBaseNPC::execMotionBlend_()
+{
+	if (!mInbetweenCtrl->isMotionBlending())
+		setKeepAnm_();
+
+	mInbetweenCtrl->execMotionBlend(getMActor());
+
+	if (mInbetweenCtrl->isForcedBlendRatio())
+		mKeepAnmCtrl->reset();
+}
+
+void TBaseNPC::calcRootMatrix()
+{
+    // FAKEMATCH(frame): 24 bytes; real construct unknown
+    volatile u32 pad[6]; (void)pad;
+	if (mActorType == ACTOR_TYPE_NPC_BOARD) {
+		TLiveActor::calcRootMatrix();
+		return;
+	}
+
+	execMotionBlend_();
+
+	if (mHolder != nullptr && unk150 != nullptr) {
+		unk150->setBaseTRMtx(mHolder->getTakingMtx());
+		unk150->calc();
+		getModel()->setBaseTRMtx(unk154);
+		return;
+	}
+
+	TLiveActor::calcRootMatrix();
+}
+
+void TBaseNPC::movementOnlyTalk_(const JDrama::TGraphics* param_1)
+{
+	if (checkLiveFlag(LIVE_FLAG_DEAD))
+		return;
+
+	updateForbidCount_();
+	updateSquareToMario();
+	control();
+	if (param_1->unk0 & 0x2)
+		changeNerveProc_();
+}
+
+static inline f32 NpcSqDist(const JGeometry::TVec3<f32>& a,
+                            const JGeometry::TVec3<f32>& b)
+{
+	f32 dx = a.x - b.x;
+	f32 dy = a.y - b.y;
+	f32 dz = a.z - b.z;
+	f32 xx = dx * dx;
+	f32 yy = dy * dy;
+	f32 zz = dz * dz;
+	f32 r  = xx + yy;
+	r      = zz + r;
+	return r;
+}
+
+void TBaseNPC::perform(u32 cue, JDrama::TGraphics* graphics)
+{
+	if (mActorType == ACTOR_TYPE_NPC_DUMMY) {
+		if (!(cue & CUE_MOVE))
+			return;
+
+		if (mDummyConnectActor != nullptr) {
+			mPosition = mDummyConnectActor->mPosition;
+			mRotation = mDummyConnectActor->mRotation;
+		}
+
+		movementOnlyTalk_(graphics);
+		return;
+	}
+
+	if (mActorType == ACTOR_TYPE_NPC_BOARD) {
+		if (checkLiveFlag(LIVE_FLAG_UNK200 | LIVE_FLAG_DEAD))
+			return;
+
+		if (cue & CUE_MOVE)
+			movementOnlyTalk_(graphics);
+
+		TLiveActor::performOnlyDraw(cue, graphics);
+		return;
+	}
+
+	bool bVar5 = true;
+	if (checkLiveFlag(LIVE_FLAG_DEAD)) {
+		bVar5 = false;
+	} else if (checkLiveFlag(LIVE_FLAG_UNK200)) {
+		bVar5 = false;
+	} else if ((cue & (CUE_CALC_VIEW | CUE_ENTRY))
+	           && checkLiveFlag(LIVE_FLAG_CLIPPED_OUT | LIVE_FLAG_HIDDEN)) {
+		bVar5 = false;
+	} else if ((cue & CUE_MOVE) && mHolder == nullptr && !isAirborne()
+	           && !belongToGround() && mSpine->getTime() != 0
+	           && mActorType != ACTOR_TYPE_NPC_PEACH
+	           && isNerveMaybeDontMovement()
+#ifdef SMS_PORT_AURORA
+	           // w15: an NPC run here for other players keeps moving out of our sight
+	           && !port_mp_npc_keep_moving(this)
+#endif
+	           && !checkLiveFlag(TBaseNPC::LIVE_FLAG_SINK_BOTTOM)) {
+		TNPCManager* manager = (TNPCManager*)mManager;
+		f32 farClip          = gpConductor->unk84.mEnemyFarClip.get();
+		if (manager != nullptr)
+			farClip = *manager->unk58;
+
+		const JGeometry::TVec3<f32>& camAt  = gpCamera->unk148;
+		const JGeometry::TVec3<f32>& camPos = gpCamera->unk124;
+		s16 angle    = matan(camAt.z - camPos.z, camAt.x - camPos.x);
+		JGeometry::TVec3<f32> local_4C;
+		local_4C.set(gpCamera->unk124);
+#ifdef SMS_PORT
+		// widescreen: the 120-degree "camera can see it" cone grows with the wide view
+		// (0 extra at 4:3), so NPCs at the new screen edges keep moving
+		if (!MsIsInSight(local_4C, SHORTANGLE2DEG(angle), mPosition,
+		                 farClip + 500.0f,
+		                 120.0f
+		                     + PORTWideSightExtraDeg(gpCamera->mFovy,
+		                                             gpCamera->mAspect),
+		                 800.0f)) {
+#else
+		if (!MsIsInSight(local_4C, SHORTANGLE2DEG(angle), mPosition,
+		                 farClip + 500.0f, 120.0f, 800.0f)) {
+#endif
+			updateSquareToMario();
+			bVar5 = false;
+		}
+	}
+
+	if (!bVar5) {
+		offLiveFlag(LIVE_FLAG_UNK20000 | LIVE_FLAG_UNK40000);
+		return;
+	}
+
+	gpCurrentNpc = this;
+	if (cue & CUE_MOVE) {
+#ifdef SMS_PORT_AURORA
+		// Multiplayer NPC sync (w12, port_mp_npcs.cpp): an NPC run by another player takes its
+		// pose and animation from the network instead of moving itself; the talk-eligibility
+		// pass still runs, so talking to it stays local. 0 outside a session.
+		if (gPortMpNpcPuppets != 0 && port_mp_npc_puppet_move(this)) {
+			if (graphics->unk0 & 0x2)
+				changeNerveProc_();
+			goto portMpNpcMoveDone;
+		}
+#endif
+		moveObject();
+		if (graphics->unk0 & 0x2) {
+			changeNerveProc_();
+			if (mHolder == nullptr) {
+				if (isNerveWalk())
+					walkAnmRateChange_();
+				if (unkD0->getCurrentAnmKind() == NPC_ANM_KIND_UNK4) {
+					f32 rate = SMSGetAnmFrameRate();
+					mMActor->setFrameRate(
+					    MsClamp(
+					        mTurnSpeed * mIndividualParams->mTurnAnmRate.get()
+					            * rate,
+					        mIndividualParams->mTurnAnmMinRate.get() * rate,
+					        mIndividualParams->mTurnAnmMaxRate.get() * rate),
+					    ANM_TYPE_BCK);
+				}
+			}
+
+			mInbetweenCtrl->execPosInbetween(&mPosition);
+			if (unk1DC > 0) {
+				unk1DC -= 1;
+				if (unk1DC == 0 && mHolder == nullptr) {
+					offHitFilter(HIT_FILTER_NO_COLLISION);
+					offLiveFlag(LIVE_FLAG_UNK10000000);
+				}
+			}
+
+			if (!isJellyFishMare() && mActorType != ACTOR_TYPE_NPC_MONTE_MF)
+				setVariableDamageRadius_();
+
+			if (isPollutionNpcW1_())
+				unk174.a
+				    = mPollutionAmount * mIndividualParams->mPollutionMax.get();
+		}
+
+#ifdef SMS_PORT_AURORA
+	portMpNpcMoveDone:
+#endif
+		cue &= ~CUE_MOVE;
+	}
+
+	if (cue & CUE_CALC_ANIM) {
+		if (checkActionFlag(NPC_ACTION_BURNING)) {
+			if (SMSGetMSound()->gateCheck(MSD_SE_NPC_BURNING))
+				MSoundSESystem::MSoundSE::startSoundNpcActor(
+				    MSD_SE_NPC_BURNING, &mPosition, 0, nullptr, 0, 4);
+		}
+
+		if (!checkLiveFlag(LIVE_FLAG_UNK1000000 | LIVE_FLAG_HIDDEN
+		                   | LIVE_FLAG_CLIPPED_OUT))
+			emitParticle_();
+
+		bool r31 = false;
+
+		bool bVar12 = checkLiveFlag2(LIVE_FLAG_HIDDEN | LIVE_FLAG_CLIPPED_OUT
+		                             | LIVE_FLAG_DEAD)
+		              ? true : r31;
+		bool bVar6  = checkLiveFlag2(LIVE_FLAG_UNK1000000);
+
+		if (bVar12) {
+			r31 = true;
+			updateAnmSound();
+			execMotionBlendW1_();
+			mMActor->frameUpdate();
+			if (unk168 != nullptr && isPartsAnmNpcW1_()) {
+				unk168->partsFrameUpdate();
+			}
+		} else if (mHolder == nullptr) {
+			if (!isAirborne() && !belongToGround()
+			    && (isNerveMaybeDontCalcAnim0()
+			        || isNerveMaybeDontCalcAnim1())) {
+				f32 offDist = getAnmOffDistW1_();
+				f32 sqDist  = NpcSqDist(mPosition, gpCamera->unk124);
+				if (sqDist > CLBSquared(offDist)
+				    && !bVar6
+				    && mSpine->getTime() > 2) {
+					r31 = true;
+					execMotionBlendW1_();
+				}
+			}
+		}
+
+		if (bVar6 && !r31 && mMultiMtxEffect != nullptr) {
+			mMultiMtxEffect->flagOn(0x2);
+		}
+
+		if (r31) {
+			cue &= ~CUE_CALC_ANIM;
+		}
+	}
+
+	if ((cue & CUE_CALC_ANIM) && mMultiMtxEffect != nullptr) {
+		mMultiMtxEffect->setUserArea();
+		if (mActorType == ACTOR_TYPE_NPC_PEACH && mHolder != nullptr) {
+			mMultiMtxEffect->flagOn(0x2);
+		}
+	}
+
+	if (cue & CUE_ENTRY) {
+		offLiveFlag(LIVE_FLAG_UNK1000000);
+		f32 sqDist = NpcSqDist(mPosition, gpCamera->unk124);
+		if (sqDist > CLBSquared(mIndividualParams->mAllDLLockDist.get())
+		    && !isSunflower()) {
+			getModel()->lock();
+		} else {
+			mMActor->unlockDLIfNeed();
+		}
+	}
+
+	TSpineEnemy::perform(cue, graphics);
+	if (unk168 != nullptr)
+		unk168->partsPerform(cue, graphics);
+
+#ifdef SMS_ALPHA_DEBUG
+	if (cue & CUE_ENTRY) {
+		static TBaseNPC* sNpc = nullptr;
+		static int sEyeIdx    = -1;
+		static int sOtherIdx  = -1;
+		static int sNpcN      = 0;
+		J3DModel* model       = getModel();
+		if (sNpc == nullptr && model != nullptr) {
+			J3DModelData* data = model->getModelData();
+			JUTNameTab* names  = data->getMaterialName();
+			if (names != nullptr) {
+				for (u16 i = 0; i < data->getMaterialNum(); ++i) {
+					if (strcmp(names->getName(i), "_eye_mat") == 0) {
+						sEyeIdx = i;
+						sNpc    = this;
+					} else if (sOtherIdx < 0) {
+						sOtherIdx = i;
+					}
+				}
+				if (sNpc == nullptr)
+					sOtherIdx = -1;
+			}
+		}
+		if (sNpc == this && model != nullptr) {
+			int n = sNpcN++;
+			if (AD_shouldPrint(n)) {
+				OSReport("AD>EYE frame#%d npc=%08x type=%08x liveFlag=%08x "
+				         "pos=%d,%d,%d model=%08x mats=%d\n",
+				         n, (u32)this, mActorType, mLiveFlag, (int)mPosition.x,
+				         (int)mPosition.y, (int)mPosition.z, (u32)model,
+				         model->getModelData()->getMaterialNum());
+				AD_dumpMaterial("EYE", model, sEyeIdx, n < 2);
+				if (n == 0 && sOtherIdx >= 0)
+					AD_dumpMaterial("NPCBODY", model, sOtherIdx, 1);
+			}
+		}
+	}
+#endif
+}
+
+void TBaseNPC::setDummyConnectActor(const JDrama::TActor* param_1)
+{
+	if (mActorType != ACTOR_TYPE_NPC_DUMMY)
+		return;
+
+	mDummyConnectActor = param_1;
+	mPosition          = mDummyConnectActor->mPosition;
+	mRotation          = mDummyConnectActor->mRotation;
+}
+
+void TBaseNPC::setBalloonMessage(u32 param_1, s32 param_2)
+{
+	mBalloonCtrl->setNextMessage(param_1, param_2);
+}
+
+const GXColor* TBaseNPC::getPtrInitPollutionColor() const
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	const GXColor* result = nullptr;
+
+	if (isPollutionNpc()) {
+		result = &unk174;
+	} else if (mActorType != ACTOR_TYPE_NPC_MONTE_ME
+	           && (isSpecialMonte() || isSpecialMare())) {
+		result = &unk174;
+	}
+
+	return result;
+}

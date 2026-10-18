@@ -1,0 +1,20 @@
+# --link-all-source: units that stay linked from the ORIGINAL object (w5). One name per line.
+# (a) sources known not to match the US build (config/GMSE01/nonmatching.txt, first section)
+JSystem/J3D/J3DGraphBase/J3DTevs.cpp
+JSystem/JAudio/JASystem/JASBNKParser.cpp
+JSystem/JDrama/JDRRenderMode.cpp
+JSystem/JDrama/JDRResolution.cpp
+JSystem/JDrama/JDRVideo.cpp
+JSystem/dsptask.c
+Map/MapCollisionData.cpp
+System/Params.cpp
+System/PositionHolder.cpp
+TRK_MINNOW_DOLPHIN/debugger/embedded/MetroTRK/Os/dolphin/dolphin_trk.c
+dolphin/os/OS.c
+dolphin/os/OSInterrupt.c
+dolphin/os/OSRtc.c
+dolphin/os/OSSync.c
+dolphin/os/OSThread.c
+dolphin/os/OSTime.c
+JSystem/J3D/J3DGraphBase/J3DMaterial.cpp
+JSystem/JKernel/JKRAramHeap.cpp

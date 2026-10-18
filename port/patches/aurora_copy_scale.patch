@@ -1,0 +1,50 @@
+--- a/lib/dolphin/gx/GXFrameBuffer.cpp
++++ b/lib/dolphin/gx/GXFrameBuffer.cpp
+@@ -33,9 +33,45 @@
+ } // namespace
+ 
+ namespace aurora::gx {
++// SMS PC port patch (aurora_copy_scale.patch): the copy source rectangle is mapped with rounded
++// edges (map_logical_scissor rounds outwards), and a 1:1 copy gets exactly the source
++// rectangle's size. With outward rounding the source was one row/column larger than the scaled
++// destination whenever the scale left a fraction below one half (e.g. 512 logical rows at 4.286
++// target rows each = 2194.4 -> 2195 rows into 2194), so the copy was resampled; copies a game
++// draws back and copies again every frame (SMS's pollution maps) then drifted and blurred
++// until they were empty. Rounded edges keep a 1:1 copy and a nearest-sampled redraw exact.
++static gfx::ClipRect map_copy_rect(const gfx::ClipRect& logical) noexcept {
++  if (g_gxState.viewportPolicy == AURORA_VIEWPORT_NATIVE) {
++    return logical;
++  }
++  const auto [logicalFbWidth, logicalFbHeight] = logical_fb_size();
++  const auto [targetWidth, targetHeight] = gfx::get_render_target_size();
++  if (logicalFbWidth == 0 || logicalFbHeight == 0 || targetWidth == 0 || targetHeight == 0) {
++    return logical;
++  }
++  const float scaleX = static_cast<float>(targetWidth) / static_cast<float>(logicalFbWidth);
++  const float scaleY = static_cast<float>(targetHeight) / static_cast<float>(logicalFbHeight);
++  const auto edge = [](int32_t v, float scale, uint32_t limit) {
++    return std::clamp(static_cast<int32_t>(std::lround(static_cast<float>(v) * scale)), 0,
++                      static_cast<int32_t>(limit));
++  };
++  const int32_t left = edge(logical.x, scaleX, targetWidth);
++  const int32_t top = edge(logical.y, scaleY, targetHeight);
++  const int32_t right = std::max(edge(logical.x + logical.width, scaleX, targetWidth), left);
++  const int32_t bottom = std::max(edge(logical.y + logical.height, scaleY, targetHeight), top);
++  return {.x = left, .y = top, .width = right - left, .height = bottom - top};
++}
++
+ void copy_tex(const void* dest, GXBool clear) noexcept {
+-  const auto rect = map_logical_scissor(g_gxState.texCopySrc);
+-  const auto [dstWidth, dstHeight] = scale_copy_dst(g_gxState.texCopyDstWidth, g_gxState.texCopyDstHeight);
++  const auto rect = map_copy_rect(g_gxState.texCopySrc);
++  auto [dstWidth, dstHeight] = scale_copy_dst(g_gxState.texCopyDstWidth, g_gxState.texCopyDstHeight);
++  // (aurora_copy_scale.patch) 1:1 copies: exactly the source rectangle.
++  if (g_gxState.texCopyDstWidth == static_cast<u32>(g_gxState.texCopySrc.width) && rect.width > 0) {
++    dstWidth = static_cast<u32>(rect.width);
++  }
++  if (g_gxState.texCopyDstHeight == static_cast<u32>(g_gxState.texCopySrc.height) && rect.height > 0) {
++    dstHeight = static_cast<u32>(rect.height);
++  }
+   const auto texCopyFmt = g_gxState.texCopyFmt;
+ 
+   const GXState::CopyTextureKey key{

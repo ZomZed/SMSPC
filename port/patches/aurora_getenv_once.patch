@@ -1,0 +1,36 @@
+w12 (performance): the "SMS port: diagnostics" AURORA_BIGDRAWS checks in Aurora's FIFO processor
+called getenv() twice per draw (and once per frame in end_frame). The UCRT getenv takes the CRT lock
+and scans the whole environment block each time: ~70% of the FIFO processor's time in Delfino Plaza
+(40 ms per frame, 15 fps). Read the variable once. These hunks apply on top of the unrecorded
+AURORA_BIGDRAWS diagnostics that port_deps/aurora already carries (not in any patch file; they are
+not in port/patches/orig/).
+
+--- a/lib/gx/command_processor.cpp
++++ b/lib/gx/command_processor.cpp
+@@ -497,10 +497,13 @@ static void draw_prim(GXPrimitive prim, GXVtxFmt fmt, u16 vtxCount, ByteReader&
+     UNLIKELY { vtxSize = calc_vtx_size(fmt); }
+
+   u32 totalVtxBytes = vtxCount * vtxSize;
++  // SMS port (w12): read once. getenv takes the CRT lock and scans the whole environment
++  // block; called twice per draw it was ~70% of the FIFO processor's time (40 ms per plaza frame).
++  static const bool sBigDraws = getenv("AURORA_BIGDRAWS") != nullptr;
+   static u32 sDrawsSeen;
+-  if (getenv("AURORA_BIGDRAWS") && (++sDrawsSeen % 5000) == 0) // SMS port: diagnostics
++  if (sBigDraws && (++sDrawsSeen % 5000) == 0) // SMS port: diagnostics
+     fprintf(stderr, "[aurora] %u draws so far, this one %u vertices x %u bytes\n", sDrawsSeen, vtxCount, vtxSize);
+-  if (totalVtxBytes > (1u << 20) && getenv("AURORA_BIGDRAWS")) // SMS port: diagnostics
++  if (totalVtxBytes > (1u << 20) && sBigDraws) // SMS port: diagnostics
+     fprintf(stderr, "[aurora] big draw: %u vertices x %u bytes (fmt %u)\n", vtxCount, vtxSize, (unsigned)fmt);
+   if (totalVtxBytes > reader.remaining())
+     UNLIKELY { handle_draw_overrun(totalVtxBytes, reader); }
+--- a/lib/gfx/recording.cpp
++++ b/lib/gfx/recording.cpp
+@@ -617,7 +617,8 @@ void end_frame(const wgpu::CommandEncoder& cmd) {
+   frame.stats.lastStorageSize = frame.storage.size();
+   frame.stats.lastTextureUploadSize = frame.textureUpload.size();
+-  if (getenv("AURORA_BIGDRAWS")) // SMS port: diagnostics
++  static const bool sBigDraws = getenv("AURORA_BIGDRAWS") != nullptr; // SMS port: diagnostics (w12: read once)
++  if (sBigDraws)
+     fprintf(stderr, "[aurora] frame: %u draws (%u merged), verts %zu, uniforms %zu, indices %zu, storage %zu\n",
+             g_recorder.drawCallCount, g_recorder.mergedDrawCallCount, frame.verts.size(), frame.uniforms.size(),
+             frame.indices.size(), frame.storage.size());

@@ -1,0 +1,152 @@
+--- a/lib/gx/shader.cpp
++++ b/lib/gx/shader.cpp
+@@ -568,6 +568,13 @@
+     if (attr == GX_VA_CLR0 || attr == GX_VA_CLR1) {
+       return "vec4f(0.0, 0.0, 0.0, 0.0)"s;
+     }
++    if (attr >= GX_VA_TEX0 && attr <= GX_VA_TEX7) {
++      // A texgen reads a texture coordinate the vertex format does not carry:
++      // (0, 0), as on hardware (modelled by Dolphin's vertex shader generator).
++      Log.warn("texgen reads vertex attribute {} which the vertex format does not have; using (0, 0)",
++               underlying(attr));
++      return "vec2f(0.0, 0.0)"s;
++    }
+     UNLIKELY FATAL("unmapped vtx attr {}", underlying(attr));
+   }
+   if (attr == GX_VA_POS) {
+@@ -784,7 +791,10 @@
+     outVar = fmt::format("rast{}", i);
+     posVar = "in.mv_pos"sv;
+   } else {
+-    outVar = fmt::format("out.cc{}", i);
++    // SMS PC port patch (aurora_shader.patch): lit into a local (copied to out.ccN after both
++    // colour and alpha are done), so SRTG texgens can read it without loading from the shader
++    // output struct; that load made the AMD D3D12 driver crash in CreateGraphicsPipelineState.
++    outVar = fmt::format("cc{}_lit", i);
+     posVar = "mv_pos"sv;
+   }
+   std::string ambSrc, matSrc;
+@@ -1082,14 +1092,24 @@
+   std::array<bool, MaxTevRegs> alphaNormalized{};
+   for (u32 idx = 0; idx < config.tevStageCount; ++idx) {
+     const auto& stage = config.tevStages[idx];
++    const auto color_arg = [&](GXTevColorArg arg) {
++      auto value = color_arg_reg(arg, idx, config, stage);
++      if (tev_color_arg_is_normalized(arg, colorNormalized, alphaNormalized)) {
++        return fmt::format("vec3f({})", value);
++      }
++      return fmt::format("tev_overflow_vec3f({})", value);
++    };
++    // The alpha combiner's R8/GR16/BGR24 compare modes compare the colour combiner's
++    // A and B inputs (only A8 = RGB8 compares the alpha inputs), as on hardware
++    // (tevin_a/tevin_b carry the colour inputs in rgb and the alpha input in a).
++    // Captured before this stage's colour op writes its output register.
++    const bool alphaCompareUsesColor =
++        stage.alphaOp.op >= GX_TEV_COMP_R8_GT && stage.alphaOp.op <= GX_TEV_COMP_BGR24_EQ;
++    if (alphaCompareUsesColor) {
++      fragmentFn += fmt::format("\n    let tev{0}_ca = {1};\n    let tev{0}_cb = {2};", idx,
++                                color_arg(stage.colorPass.a), color_arg(stage.colorPass.b));
++    }
+     {
+-      const auto color_arg = [&](GXTevColorArg arg) {
+-        auto value = color_arg_reg(arg, idx, config, stage);
+-        if (tev_color_arg_is_normalized(arg, colorNormalized, alphaNormalized)) {
+-          return fmt::format("vec3f({})", value);
+-        }
+-        return fmt::format("tev_overflow_vec3f({})", value);
+-      };
+       std::string_view outReg = regName[stage.colorOp.outReg];
+       std::string op = tev_color_op(stage.colorOp.op, tev_bias(stage.colorOp.bias), tev_scale(stage.colorOp.scale),
+                                     stage.colorOp.clamp, color_arg(stage.colorPass.a), color_arg(stage.colorPass.b),
+@@ -1106,9 +1126,17 @@
+         return fmt::format("tev_overflow_f32({})", value);
+       };
+       std::string_view outReg = regName[stage.alphaOp.outReg];
+-      std::string op = tev_alpha_op(stage.alphaOp.op, tev_bias(stage.alphaOp.bias), tev_scale(stage.alphaOp.scale),
+-                                    stage.alphaOp.clamp, alpha_arg(stage.alphaPass.a), alpha_arg(stage.alphaPass.b),
+-                                    alpha_arg(stage.alphaPass.c), alpha_arg_reg(stage.alphaPass.d, idx, config, stage));
++      std::string op = alphaCompareUsesColor
++                           ? tev_alpha_op(stage.alphaOp.op, tev_bias(stage.alphaOp.bias),
++                                          tev_scale(stage.alphaOp.scale), stage.alphaOp.clamp,
++                                          fmt::format("tev{}_ca", idx), fmt::format("tev{}_cb", idx),
++                                          alpha_arg(stage.alphaPass.c),
++                                          alpha_arg_reg(stage.alphaPass.d, idx, config, stage))
++                           : tev_alpha_op(stage.alphaOp.op, tev_bias(stage.alphaOp.bias),
++                                          tev_scale(stage.alphaOp.scale), stage.alphaOp.clamp,
++                                          alpha_arg(stage.alphaPass.a), alpha_arg(stage.alphaPass.b),
++                                          alpha_arg(stage.alphaPass.c),
++                                          alpha_arg_reg(stage.alphaPass.d, idx, config, stage));
+       fragmentFn += fmt::format("\n    {0}.a = {1};", outReg, op);
+       alphaNormalized[stage.alphaOp.outReg] = stage.alphaOp.clamp;
+     }
+@@ -1200,8 +1228,10 @@
+       fragmentFnPre += lighting_func(config, cca, i, true);
+     } else {
+       vtxOutAttrs += fmt::format("\n    @location({}) cc{}: vec4f,", vtxOutIdx++, i);
++      vtxXfrAttrs += fmt::format("\n    var cc{}_lit: vec4f;", i);
+       vtxXfrAttrs += lighting_func(config, cc, i, false);
+       vtxXfrAttrs += lighting_func(config, cca, i, true);
++      vtxXfrAttrs += fmt::format("\n    out.cc{0} = cc{0}_lit;", i);
+       fragmentFnPre += fmt::format("\n    var rast{0} = in.cc{0};", i);
+     }
+   }
+@@ -1240,14 +1270,40 @@
+       vtxXfrAttrs += fmt::format("\n    var tc{} = vec4f({}, 1.0);", i, vtx_attr(config, GX_VA_POS));
+     } else if (tcg.src == GX_TG_NRM) {
+       vtxXfrAttrs += fmt::format("\n    var tc{} = vec4f({}, 1.0);", i, vtx_attr(config, GX_VA_NRM));
+-    } else if (tcg.src == GX_TG_COLOR0) {
+-      vtxXfrAttrs += fmt::format("\n    var tc{} = {};", i, vtx_attr(config, GX_VA_CLR0));
+-    } else if (tcg.src == GX_TG_COLOR1) {
+-      vtxXfrAttrs += fmt::format("\n    var tc{} = {};", i, vtx_attr(config, GX_VA_CLR1));
++    } else if (tcg.src == GX_TG_COLOR0 || tcg.src == GX_TG_COLOR1) {
++      // SMS PC port patch (aurora_shader.patch): GX_TG_SRTG takes S/T from the colour channel's
++      // *lit* output (as Dolphin does: o.colors_N), not from the raw vertex colour. Used for
++      // lighting-driven texture lookups (e.g. Mario's diving helmet highlight); with the vertex
++      // colour (often absent: zero) the lookup collapsed to the texture's corner texel.
++      const u32 chan = tcg.src - GX_TG_COLOR0;
++      if (UsePerPixelLighting) {
++        vtxXfrAttrs += fmt::format("\n    var tc{} = {};", i, vtx_attr(config, GXAttr(GX_VA_CLR0 + chan)));
++      } else {
++        vtxXfrAttrs += fmt::format("\n    var tc{} = clamp(cc{}_lit, vec4f(0.0), vec4f(1.0));", i, chan);
++      }
+     } else if (tcg.src == GX_TG_BINRM) {
+       vtxXfrAttrs += fmt::format("\n    var tc{} = vec4f({}, 1.0);", i, nbt_slice_local(NbtSlice::B));
+     } else if (tcg.src == GX_TG_TANGENT) {
+       vtxXfrAttrs += fmt::format("\n    var tc{} = vec4f({}, 1.0);", i, nbt_slice_local(NbtSlice::T));
++    } else if (tcg.src == GX_MAX_TEXGENSRC) {
++      // A TEV stage reads a texture coordinate at or beyond numTexGens, which the
++      // rasterizer never generated. Hardware (as modelled by Dolphin) then uses
++      // coordinate (0, 0).
++      {
++        std::string stages;
++        for (u32 s = 0; s < config.tevStageCount; ++s) {
++          stages += fmt::format(" [{}: tc{} map{} ind{}]", s, static_cast<int>(config.tevStages[s].texCoordId),
++                                static_cast<int>(config.tevStages[s].texMapId),
++                                static_cast<int>(config.tevStages[s].indTexMtxId));
++        }
++        u32 generated = 0;
++        while (generated < config.tcgs.size() && config.tcgs[generated].src != GX_MAX_TEXGENSRC) {
++          ++generated;
++        }
++        Log.warn("TEV reads texcoord {} which is not generated ({} texgens); using (0, 0). Stages:{}", i,
++                 generated, stages);
++      }
++      vtxXfrAttrs += fmt::format("\n    var tc{} = vec4f(0.0, 0.0, 1.0, 1.0);", i);
+     } else
+       UNLIKELY FATAL("unhandled tcg src {}", underlying(tcg.src));
+     if (tcg.type == GX_TG_MTX2x4 || tcg.type == GX_TG_MTX3x4) {
+--- a/lib/gx/shader_info.cpp
++++ b/lib/gx/shader_info.cpp
+@@ -304,6 +304,12 @@
+     if (tcg.type >= GX_TG_BUMP0 && tcg.type <= GX_TG_BUMP7) {
+       info.sampledTexCoords.set(tcg.embossSrc);
+       info.lightingEnabled = true;
++    }
++    // SMS PC port patch (aurora_shader.patch): a GX_TG_SRTG texgen reads the colour channel's
++    // lit output (R, G), so that channel (lighting, material/ambient uniforms) must be
++    // computed even when no TEV stage rasterizes it.
++    if (tcg.src == GX_TG_COLOR0 || tcg.src == GX_TG_COLOR1) {
++      info.sampledColorChannels.set(tcg.src - GX_TG_COLOR0);
+     }
+   }
+ 

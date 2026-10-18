@@ -1,0 +1,1501 @@
+#include <MoveBG/Item.hpp>
+#include <MoveBG/ItemManager.hpp>
+#include <Map/MapMirror.hpp>
+#include <Map/Map.hpp>
+#include <Map/MapData.hpp>
+#include <MSound/MSound.hpp>
+#include <MSound/MSoundSE.hpp>
+#include <System/Application.hpp>
+#include <System/StageUtil.hpp>
+#include <System/FlagManager.hpp>
+#include <System/MarDirector.hpp>
+#include <System/EmitterViewObj.hpp>
+#include <System/Particles.hpp>
+#include <Strategic/MirrorActor.hpp>
+#include <Strategic/question.hpp>
+#include <Player/MarioAccess.hpp>
+#include <Player/WaterGun.hpp>
+#include <Player/Yoshi.hpp>
+#include <M3DUtil/MActor.hpp>
+#include <M3DUtil/MActorUtil.hpp>
+#include <Strategic/ObjModel.hpp>
+#include <Camera/Camera.hpp>
+#include <Camera/CameraMapTool.hpp>
+#include <MarioUtil/LightUtil.hpp>
+#include <MarioUtil/PacketUtil.hpp>
+#include <GC2D/GCConsole2.hpp>
+#include <MarioUtil/RandomUtil.hpp>
+#include <MarioUtil/MathUtil.hpp>
+#include <JSystem/JDrama/JDRNameRefGen.hpp>
+#include <JSystem/JParticle/JPAEmitter.hpp>
+#include <JSystem/JParticle/JPAResourceManager.hpp>
+#include <JSystem/J3D/J3DGraphAnimator/J3DModel.hpp>
+#include <JSystem/J3D/J3DGraphLoader/J3DModelLoaderFlags.hpp>
+
+// rogue includes needed for matching sinit & bss
+#include <MSound/MSSetSound.hpp>
+#include <MSound/MSoundBGM.hpp>
+#include <M3DUtil/InfectiousStrings.hpp>
+#ifdef SMS_PORT
+#include <stdlib.h>
+extern "C" u32 port_frame_count(void);  // port_main.cpp
+extern "C" float gPortGoalPos[3];       // port_bosstrace.cpp (SMS_PORT_BOSSTRACE debug)
+extern "C" unsigned gPortGoalFrame;
+#endif
+
+#ifdef SMS_PORT_AURORA
+extern "C" int port_mp_world_runs(void); // port/src/port_mp_world.cpp (multiplayer)
+#endif
+
+f32 TItem::mAppearedScaleSpeed = 0.01f;
+
+void TItem::appeared()
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	if (checkMapObjFlag(MAP_OBJ_FLAG_DISAPPEARING) && !isStateTimerEngaged()) {
+		if (mContainer != nullptr)
+			mContainer->receiveMessage(this, HIT_MESSAGE_UNK5);
+
+		if (isActorType(ACTOR_TYPE_COIN_RED)
+		    || isActorType(ACTOR_TYPE_COIN_BLUE)) {
+			SMSGetMSound()->startSoundActor(MSD_SE_SY_COIN_DISAPPEAR,
+			                                &mPosition, 0, nullptr, 0, 4);
+		}
+	}
+
+	TMapObjGeneral::appeared();
+}
+
+void TItem::taken(THitActor* param_1)
+{
+	param_1->receiveMessage(this, HIT_MESSAGE_ATTACK);
+	kill();
+	if (checkMapObjFlag(MAP_OBJ_FLAG_RESPAWNING)) {
+		makeObjDefault();
+		appear();
+	}
+}
+
+void TItem::touchPlayer(THitActor* param_1)
+{
+	if ((param_1->isActorType(ACTOR_TYPE_MARIO)
+	     || param_1->isActorType(ACTOR_TYPE_YOSHI_TONGUE))
+	    && !checkHitFilter(HIT_FILTER_NO_COLLISION))
+		taken(param_1);
+}
+
+BOOL TItem::receiveMessage(THitActor* sender, u32 message)
+{
+	if (message == HIT_MESSAGE_SPRAYED_BY_WATER)
+		return false;
+
+	if (message == HIT_MESSAGE_UNKB) {
+		taken(sender);
+		return true;
+	}
+
+	return TMapObjGeneral::receiveMessage(sender, message);
+}
+
+void TItem::calcRootMatrix()
+{
+	if (!checkMapObjFlag(MAP_OBJ_FLAG_UNK8000000))
+		TMapObjGeneral::calcRootMatrix();
+}
+
+void TItem::calc()
+{
+    // FAKEMATCH(frame): 32 bytes; real construct unknown
+    volatile u32 pad[8]; (void)pad;
+	if (!checkMapObjFlag(MAP_OBJ_FLAG_UNK4000000) && !isState(STATE_HOLDING)) {
+		MtxPtr src = gpItemManager->unk40;
+
+		MtxPtr mtx;
+		if (checkMapObjFlag(MAP_OBJ_FLAG_UNK100))
+			mtx = getModel()->getAnmMtx(0);
+		else
+			mtx = getModel()->getBaseTRMtx();
+
+		mtx[0][0] = src[0][0];
+		mtx[0][1] = src[0][1];
+		mtx[0][2] = src[0][2];
+		mtx[0][3] = mPosition.x;
+
+		mtx[1][0] = src[1][0];
+		mtx[1][1] = src[1][1];
+		mtx[1][2] = src[1][2];
+		mtx[1][3] = mPosition.y;
+
+		mtx[2][0] = src[2][0];
+		mtx[2][1] = src[2][1];
+		mtx[2][2] = src[2][2];
+		mtx[2][3] = mPosition.z;
+	}
+
+	if (isState(STATE_HOLDING) && checkMapObjFlag(MAP_OBJ_FLAG_UNK100)) {
+		if (isActorType(ACTOR_TYPE_ROCKET_NOZZLE_ITEM)
+		    || isActorType(ACTOR_TYPE_BACK_NOZZLE_ITEM))
+			calcRootMatrix();
+		else
+			TMapObjGeneral::calcRootMatrix();
+	}
+}
+
+void TItem::appearing()
+{
+	if (checkMapObjFlag(MAP_OBJ_FLAG_UNK2000000)) {
+		if (mScaling.x < 2.0f) {
+			mScaling.add((Vec) { mAppearedScaleSpeed * 2.0f,
+			                     mAppearedScaleSpeed * 2.0f,
+			                     mAppearedScaleSpeed * 2.0f });
+		} else {
+			makeObjAppeared();
+			onHitFilter(HIT_FILTER_NO_COLLISION);
+			offMapObjFlag(MAP_OBJ_FLAG_DISAPPEARING);
+		}
+	} else {
+		TMapObjGeneral::appearing();
+	}
+}
+
+void TItem::killByTimer(int param_1)
+{
+	unk14C      = param_1;
+	mStateTimer = unk150;
+
+	offMapObjFlag(MAP_OBJ_FLAG_UNK10000000);
+	onHitFilter(HIT_FILTER_NO_COLLISION);
+	offMapObjFlag(MAP_OBJ_FLAG_DISAPPEARING);
+}
+
+void TItem::appear()
+{
+	TMapObjGeneral::appear();
+	onHitFilter(HIT_FILTER_NO_COLLISION);
+	mStateTimer = unk150;
+	offMapObjFlag(MAP_OBJ_FLAG_DISAPPEARING);
+}
+
+void TItem::perform(u32 cue, JDrama::TGraphics* graphics)
+{
+	if (checkLiveFlag(LIVE_FLAG_DEAD))
+		return;
+
+	if ((cue & CUE_MOVE) && checkHitFilter(HIT_FILTER_NO_COLLISION)
+	    && !isStateTimerEngaged()) {
+		offHitFilter(HIT_FILTER_NO_COLLISION);
+		if (!checkMapObjFlag(MAP_OBJ_FLAG_UNK10000000)) {
+			onMapObjFlag(MAP_OBJ_FLAG_DISAPPEARING);
+			mStateTimer = unk14C;
+		}
+	}
+
+	TMapObjGeneral::perform(cue, graphics);
+}
+
+void TItem::initMapObj()
+{
+	TMapObjGeneral::initMapObj();
+	unk14C = 480;
+	unk150 = 120;
+}
+
+void TItem::load(JSUMemoryInputStream& stream)
+{
+	TMapObjGeneral::load(stream);
+	onMapObjFlag(MAP_OBJ_FLAG_UNK10000000);
+}
+
+TItem::TItem(const char* name)
+    : TMapObjGeneral(name)
+    , mContainer(nullptr)
+    , unk14C(0)
+    , unk150(0)
+{
+}
+
+#ifdef SMS_PORT_AURORA
+// port/src/port_mp_game.cpp (w10): multiplayer shared objectives; inert outside a
+// multiplayer session with shared objectives on.
+extern "C" void port_mp_objective_taken(void* item);
+// port/src/port_mp_objectives_extra.cpp (w8, P1b): load-time and run-time coins.
+extern "C" void port_mp_objx_taken(void* item);
+// port/src/port_mp_mapreact.cpp (w11): coins that signs / the weathervane dropped.
+extern "C" void port_mp_mapreact_coin_taken(void* coin);
+#endif
+
+void TCoin::taken(THitActor* param_1)
+{
+#ifdef SMS_PORT_AURORA
+	port_mp_objective_taken(this);
+	port_mp_objx_taken(this); // w8 (P1b)
+	port_mp_mapreact_coin_taken(this); // w11
+#endif
+	u8 thing = SMSGetApplication()->mCurrArea.getStage();
+	TFlagManager::getInstance()->incGoldCoinFlag(SMS_getShineStage(thing), 1);
+
+	SMSGetMSound()->startSoundActor(MSD_SE_SY_COIN, &mPosition, 0, nullptr, 0,
+	                                4);
+
+	if (mContainer)
+		mContainer->receiveMessage(this, HIT_MESSAGE_UNK8);
+
+	if (TFlagManager::smInstance->getFlag(MSF_GOLD_COIN_COUNT) == 100) {
+		TShine* shine = static_cast<TShine*>(
+		    JDrama::TNameRefGen::search("シャイン（１００枚コイン用）"));
+
+		gpItemManager->makeShineAppearWithDemo(
+		    "シャイン（１００枚コイン用）",
+		    "シャイン（１００枚コイン用）カメラ", mPosition.x, mPosition.y,
+		    mPosition.z);
+	}
+
+	TItem::taken(param_1);
+}
+
+void TCoin::makeObjDead()
+{
+	TItem::makeObjDead();
+	if (unk154)
+		unk154->unk1A |= 1;
+}
+
+void TCoin::appearWithoutSound()
+{
+    // FAKEMATCH(frame): 16 bytes; real construct unknown
+    volatile u32 pad[4]; (void)pad;
+	TItem::appear();
+	gpMarioParticleManager->emitAndBindToMtxPtr(
+	    MAPOBJ_MS_WATCOIN_KIRA, getModel()->getAnmMtx(0), 0, this);
+	if (isActorType(ACTOR_TYPE_COIN))
+		offMapObjFlag(MAP_OBJ_FLAG_UNK10000000);
+}
+
+void TCoin::appear()
+{
+    // FAKEMATCH(frame): 32 bytes; real construct unknown
+    volatile u32 pad[8]; (void)pad;
+	if (isActorType(ACTOR_TYPE_COIN_BLUE)) {
+		if (!TFlagManager::smInstance->getBlueCoinFlag(
+		        gpMarDirector->getCurrentMap(), mEventId))
+			SMSGetMSound()->startSoundSystemSE(MSD_SE_SY_TIMECOIN_APPEAR, 0,
+			                                   nullptr, 0);
+	} else {
+		SMSGetMSound()->startSoundSystemSE(MSD_SE_SY_COIN_APPEAR, 0, nullptr,
+		                                   0);
+	}
+
+	appearWithoutSound();
+}
+
+void TCoin::makeObjAppeared()
+{
+	TItem::makeObjAppeared();
+	if (unk154)
+		unk154->unk1A &= ~1;
+}
+
+void TCoin::perform(u32 cue, JDrama::TGraphics* graphics)
+{
+	if (checkLiveFlag(LIVE_FLAG_DEAD))
+		return;
+
+	if ((cue & CUE_MOVE) && checkLiveFlag(LIVE_FLAG_UNK10)) {
+
+#ifdef SMS_PORT_AURORA
+		// multiplayer: a talk doesn't stop the world (port_mp_world.cpp)
+		if (gpMarDirector->isTalkModeNow() && !gpMarDirector->isDemoModeNow() && !port_mp_world_runs())
+#else
+		if (gpMarDirector->isTalkModeNow() && !gpMarDirector->isDemoModeNow())
+#endif
+			return;
+
+		if (isStateTimerEngaged()) {
+			--mStateTimer;
+		} else {
+			if (checkHitFilter(HIT_FILTER_NO_COLLISION)) {
+				offHitFilter(HIT_FILTER_NO_COLLISION);
+				if (!checkMapObjFlag(MAP_OBJ_FLAG_UNK10000000)) {
+					onMapObjFlag(MAP_OBJ_FLAG_DISAPPEARING);
+					mStateTimer = unk14C;
+				}
+			} else {
+				if (!checkMapObjFlag(MAP_OBJ_FLAG_UNK10000000)) {
+					if (mContainer != nullptr)
+						mContainer->receiveMessage(this, HIT_MESSAGE_UNK5);
+					makeObjDead();
+				}
+			}
+		}
+
+		if (getColNum())
+			for (int i = 0; i < getColNum(); ++i)
+				touchActor(mCollisions[i]);
+
+	} else {
+		if ((cue & CUE_CALC_VIEW) && getMActor() == nullptr) {
+			gpQuestionManager->request(mPosition, 60.0f);
+		}
+
+		TItem::perform(cue, graphics);
+	}
+}
+
+void TCoin::loadAfter()
+{
+	TItem::loadAfter();
+	if (!gpMirrorModelManager->isInMirror(mPosition))
+		return;
+
+	if (gpMarDirector->getCurrentMap() == 2) {
+		const TBGCheckData* check;
+		gpMap->checkGround(mPosition, &check);
+		if (!check->isWaterSurface())
+			return;
+	}
+
+	unk154 = new TMirrorActor("コインin鏡");
+	unk154->init(getModel(), 0x18);
+}
+
+void TCoin::initMapObj()
+{
+	TItem::initMapObj();
+	SMS_LoadParticle("/scene/mapObj/ms_watcoin_kira.jpa", 0x58);
+}
+
+TCoin::TCoin(const char* name)
+    : TItem(name)
+    , unk154(0)
+{
+}
+
+void TFlowerCoin::load(JSUMemoryInputStream& stream)
+{
+	TCoin::load(stream);
+	stream >> unk158;
+}
+
+void TCoinEmpty::warning() { }
+
+void TCoinEmpty::appear() { }
+
+void TCoinEmpty::makeObjAppeared() { }
+
+void TCoinEmpty::kill() { }
+
+TCoinEmpty::TCoinEmpty(const char* name)
+    : TCoin(name)
+{
+}
+
+void TCoinRed::taken(THitActor* param_1)
+{
+#ifdef SMS_PORT_AURORA
+	port_mp_objective_taken(this);
+	port_mp_objx_taken(this); // w8 (P1b)
+	port_mp_mapreact_coin_taken(this); // w11
+#endif
+	TFlagManager::getInstance()->incFlag(MSF_RED_COIN_COUNT, 1);
+
+	SMSGetMSound()->startSoundActor(MSD_SE_SY_RED_COIN_GET, &mPosition, 0,
+	                                nullptr, 0, 4);
+
+	if (mContainer)
+		mContainer->receiveMessage(this, HIT_MESSAGE_UNK8);
+
+	TItem::taken(param_1);
+}
+
+TCoinRed::TCoinRed(const char* name)
+    : TCoin(name)
+{
+	unk158.zero();
+}
+
+void TCoinBlue::makeObjAppeared()
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	if (TFlagManager::getInstance()->getBlueCoinFlag(
+	        gpMarDirector->getCurrentMap(), getEventId()))
+		return;
+
+	TCoin::makeObjAppeared();
+}
+
+void TCoinBlue::taken(THitActor* param_1)
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+#ifdef SMS_PORT_AURORA
+	port_mp_objective_taken(this);
+#endif
+	SMSGetMarDirector()->fireGetBlueCoin(this);
+
+	if (mContainer)
+		mContainer->receiveMessage(this, HIT_MESSAGE_UNK8);
+
+	TItem::taken(param_1);
+}
+
+void TCoinBlue::loadBeforeInit(JSUMemoryInputStream& stream)
+{
+	s32 eventId;
+	stream >> eventId;
+	if (eventId == -1)
+		eventId = 0;
+	setEventId(eventId);
+}
+
+void TCoinBlue::load(JSUMemoryInputStream& stream)
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	TCoin::load(stream);
+	if (TFlagManager::getInstance()->getBlueCoinFlag(
+	        gpMarDirector->getCurrentMap(), getEventId()))
+		makeObjDead();
+}
+
+TCoinBlue::TCoinBlue(const char* name)
+    : TCoin(name)
+{
+}
+
+int TShine::mPromiLife[4]  = { 30, 15, 0, 0 };
+f32 TShine::mSenkoRate[4]  = { 0.15f, 0.1f, 0.05f, 0.025f };
+f32 TShine::mKiraRate[4]   = { 1.0f, 0.6f, 0.3f, 0.1f };
+f32 TShine::mBowRate[4]    = { 1.0f, 1.0f, 0.0f, 0.0f };
+f32 TShine::mCircleRateY   = 0.5f;
+f32 TShine::mUpSpeed       = 1.0f;
+f32 TShine::mSpeedDownRate = 0.99f;
+
+void TShine::calc()
+{
+	MtxPtr mtxPos = getMActor()->getModel()->getAnmMtx(2);
+
+	if (checkLiveFlag(LIVE_FLAG_UNK200 | LIVE_FLAG_CLIPPED_OUT
+	                  | LIVE_FLAG_DEAD))
+		return;
+
+	unk198 = gpMarioParticleManager->emitAndBindToMtxPtr(
+	    PARTICLE_MS_SHINE_SENKO, mtxPos, 1, this);
+	unk19C = gpMarioParticleManager->emitAndBindToMtxPtr(PARTICLE_MS_SHINE_KIRA,
+	                                                     mtxPos, 1, this);
+	if (unk1B4 == 0) {
+		unk194 = gpMarioParticleManager->emitAndBindToMtxPtr(
+		    PARTICLE_MS_SHINE_PROMI, mtxPos, 1, this);
+		unk1A0 = gpMarioParticleManager->emitAndBindToMtxPtr(
+		    PARTICLE_MS_SHINE_BOW, mtxPos, 1, this);
+	}
+
+	f32 dist2 = gpCamera->unk124.squared(mPosition);
+	f32 dist  = JGeometry::TUtil<f32>::sqrt(dist2);
+
+	s16 promiLife;
+	f32 senkoRate, kiraRate, bowRate;
+	if (dist < 2000.0f) {
+		promiLife = mPromiLife[0];
+		kiraRate  = mKiraRate[0];
+		bowRate   = mBowRate[0];
+		senkoRate = mSenkoRate[0];
+	} else if (dist < 4000.0f) {
+		promiLife = mPromiLife[1];
+		kiraRate  = mKiraRate[1];
+		bowRate   = mBowRate[1];
+		senkoRate = mSenkoRate[1];
+	} else if (dist < 6000.0f) {
+		promiLife = mPromiLife[2];
+		kiraRate  = mKiraRate[2];
+		bowRate   = mBowRate[2];
+		senkoRate = mSenkoRate[2];
+	} else {
+		promiLife = mPromiLife[3];
+		kiraRate  = mKiraRate[3];
+		bowRate   = mBowRate[3];
+		senkoRate = mSenkoRate[3];
+	}
+
+	if (unk194) {
+		unk194->setLifeTime(promiLife);
+		unk194->setGlobalScale(unk1A8);
+	}
+	if (unk198) {
+		unk198->setRate(senkoRate);
+		unk198->setGlobalScale(unk1A8);
+	}
+	if (unk19C) {
+		unk19C->setRate(kiraRate);
+		unk19C->setGlobalScale(unk1A8);
+	}
+	if (unk1A0) {
+		unk1A0->setRate(bowRate);
+		unk1A0->setGlobalScale(unk1A8);
+	}
+	unk1A4 = 1;
+}
+
+void TShine::movingCircle()
+{
+    // FAKEMATCH(frame): 24 bytes; real construct unknown
+    volatile u32 pad[6]; (void)pad;
+	// TODO: hack, remove
+	(void)0;
+	(void)0;
+
+	f32 prevY = mPosition.y;
+	unk158 += 180.0f / (f32)unk168;
+
+	f32 tmp = (f32)(unk168 - mStateTimer) / (f32)unk168;
+
+	mPosition.x += unk17C.x;
+
+	mPosition.y = unk160 * MsSin(unk158)
+	              + (tmp * (mInitialPosition.y - unk164) + unk164);
+	unk188 = mPosition.y - prevY;
+
+	mPosition.z += unk17C.z;
+	mRotation.y += 7.0f;
+	MsWrap(mRotation.y, 0.0f, 360.0f);
+
+	if (!isStateTimerEngaged()) {
+		unk16C      = 7.0f;
+		mStateTimer = unk178;
+		mState      = STATE_UNKF;
+	}
+}
+
+void TShine::movingUp()
+{
+	mPosition.y += mUpSpeed;
+	if (unk154 == 3) {
+		mRotation.y += 7.0f;
+		// Result discarded, as in the ROM.
+		MsWrap(mRotation.y, 0.0f, 360.0f);
+	}
+	if (isStateTimerEngaged())
+		return;
+
+	if (unk154 == 3) {
+		mStateTimer = unk170;
+		mState      = STATE_MOVING_DOWN;
+	} else {
+		unk164      = mPosition.y;
+		mStateTimer = unk168;
+		mState      = STATE_MOVING_CIRCLE;
+	}
+}
+
+void TShine::movingDown()
+{
+	mPosition.y -= mUpSpeed;
+	mRotation.y += 7.0f;
+	// Result discarded, as in the ROM.
+	MsWrap(mRotation.y, 0.0f, 360.0f);
+	if (isStateTimerEngaged())
+		return;
+	unk16C      = 7.0f;
+	mStateTimer = unk178;
+	mState      = STATE_UNKF;
+}
+
+void TShine::control()
+{
+	if (!isState(0x10))
+		TMapObjGeneral::control();
+
+	if (isState(0x10)) {
+		mPosition.set(SMS_GetMarioPos());
+		return;
+	}
+
+#ifdef SMS_PORT
+	{
+		// SMS_PORT_BOSSTRACE (debug, w5): Shine state changes, and the position of a
+		// collectible Shine as the PADSCRIPT bots' goal (port_bosstrace.cpp).
+		static const bool sOn = getenv("SMS_PORT_BOSSTRACE") != nullptr;
+		if (sOn) {
+			static const void* sWho[32];
+			static u32 sLast[32];
+			int slot = -1;
+			for (int i = 0; i < 32 && slot < 0; ++i)
+				if (sWho[i] == this || sWho[i] == nullptr)
+					slot = i;
+			if (slot >= 0 && (sWho[slot] != this || sLast[slot] != (u32)mState)) {
+				OSReport("[boss] f%u shine %p state %x -> %x pos %.0f %.0f %.0f\n", port_frame_count(),
+				         (void*)this, sWho[slot] == this ? sLast[slot] : 0xFFFFu, (u32)mState, mPosition.x,
+				         mPosition.y, mPosition.z);
+				sWho[slot]  = this;
+				sLast[slot] = mState;
+			}
+			if (mState == STATE_NORMAL || mState == STATE_UNK11) {
+				gPortGoalPos[0] = mPosition.x;
+				gPortGoalPos[1] = mPosition.y;
+				gPortGoalPos[2] = mPosition.z;
+				gPortGoalFrame  = port_frame_count();
+			}
+		}
+	}
+#endif
+
+	switch (mState) {
+	case STATE_NORMAL: {
+		mRotation.y += unk16C;
+		SMSGetMSound()->startSoundActor(MSD_SE_SHINE_EXIST, &mPosition, 0,
+		                                nullptr, 0, 4);
+
+		J3DModel* model      = getMActor()->getModel();
+		MtxPtr mtx           = model->getAnmMtx(2);
+		const GXColor& color = (GXColor) { 0xff, 0xff, 0xff, 0xff };
+		JGeometry::TVec3<f32> trans(mtx[0][3], mtx[1][3], mtx[2][3]);
+		gpLightManager->setEffectLightColor(color);
+		gpLightManager->setEffectLightPos(trans);
+	} break;
+
+	case STATE_UNKB:
+		if (isStateTimerEngaged())
+			break;
+		unkF8 &= 0xF7FFFEFF;
+		mStateTimer = unk170;
+		mState      = STATE_MOVING_UP;
+		break;
+
+	case STATE_MOVING_UP:
+		SMSGetMSound()->startSoundActor(MSD_SE_SHINE_EXIST, &mPosition, 0,
+		                                nullptr, 0, 4);
+		movingUp();
+		break;
+
+	case STATE_MOVING_DOWN:
+		SMSGetMSound()->startSoundActor(MSD_SE_SHINE_EXIST, &mPosition, 0,
+		                                nullptr, 0, 4);
+		movingDown();
+		break;
+
+	case STATE_MOVING_CIRCLE:
+		SMSGetMSound()->startSoundActor(MSD_SE_SHINE_EXIST, &mPosition, 0,
+		                                nullptr, 0, 4);
+		movingCircle();
+		break;
+
+	case STATE_UNKF: {
+		SMSGetMSound()->startSoundActor(MSD_SE_SHINE_EXIST, &mPosition, 0,
+		                                nullptr, 0, 4);
+		if (mPosition.y > mInitialPosition.y) {
+			mPosition.y += unk188;
+			unk188 *= mSpeedDownRate;
+		} else {
+			mPosition.y = mInitialPosition.y;
+		}
+		if (unk16C > 2.0f)
+			unk16C -= 0.1f;
+		else
+			unk16C = 2.0f;
+		mRotation.y += unk16C;
+		// Huh? Result discarded?
+		MsWrap(mRotation.y, 0.0f, 360.0f);
+
+		if (isStateTimerEngaged())
+			break;
+		if (unkF8 & 0x20000000)
+			MSBgm::setTrackVolume(0, 1.0f, 10, 0);
+		offHitFilter(HIT_FILTER_NO_COLLISION);
+		mState = STATE_UNK11;
+	} break;
+
+	case STATE_UNK11:
+		mRotation.y += unk16C;
+		// Huh? Result discarded?
+		MsWrap(mRotation.y, 0.0f, 360.0f);
+		SMSGetMSound()->startSoundActor(MSD_SE_SHINE_EXIST, &mPosition, 0,
+		                                nullptr, 0, 4);
+		break;
+
+	case STATE_UNK12: {
+		if (gpCamera->isDemoCamera())
+			break;
+		if (isStateTimerEngaged())
+			break;
+		appearWithDemo("シャイン（いきなり出現）カメラ");
+		mState = STATE_UNK11;
+	} break;
+	}
+}
+
+void TShine::perform(u32 cue, JDrama::TGraphics* graphics)
+{
+	if ((cue & CUE_CALC_ANIM) && !checkLiveFlag(LIVE_FLAG_DEAD)) {
+		if (!isState(STATE_NORMAL))
+			offLiveFlag(LIVE_FLAG_UNK200);
+	}
+	TMapObjGeneral::perform(cue, graphics);
+}
+
+BOOL TShine::receiveMessage(THitActor* sender, u32 message)
+{
+	unkF8 &= 0xF7FFFFFF;
+	mPosition.set(SMS_GetMarioPos());
+	mRotation.y = 180.0f * (f32)SMS_GetMarioAngleY() / 32768.0f;
+
+	MsMtxSetXYZRPH(getModel()->getBaseTRMtx(), mPosition.x,
+	               mPosition.y - mYOffset, mPosition.z, mRotation.x,
+	               mRotation.y, mRotation.z);
+
+	if (SMS_IsMarioOnYoshi()) {
+		if (unk1B4)
+			getMActor()->setBck("shine_empty_demo_shine_get_yo");
+		else
+			getMActor()->setBck("shine_demo_shine_get_yo");
+	} else {
+		if (unk1B4)
+			getMActor()->setBck("shine_empty_demo_shine_get");
+		else
+			getMActor()->setBck("shine_demo_shine_get");
+	}
+
+	unk1A8.set(0.5f, 0.5f, 0.5f);
+	mState = STATE_UNK10;
+	return TRUE;
+}
+
+void TShine::touchPlayer(THitActor* actor)
+{
+	actor->receiveMessage(this, HIT_MESSAGE_ATTACK);
+	gpLightManager->setEffectLightPos2(200000.0f, 500000.0f, 200000.0f);
+	SMSGetMSound()->startSoundActor(MSD_SE_SY_GET_SHINE, &mPosition, 0, nullptr,
+	                                0, 4);
+	getMActor()->setBck("shine_float");
+	onHitFilter(HIT_FILTER_NO_COLLISION);
+}
+
+void TShine::appearWithTime(int param_1, int param_2, int param_3, int param_4)
+{
+	TItem::appear();
+	TFlagManager::smInstance->setBool(true, MSF_SHINE_SPAWNED);
+
+	if (param_2 >= 0)
+		unk174 = param_2;
+	if (param_3 >= 0)
+		unk170 = param_3;
+	if (param_4 >= 0)
+		unk178 = param_4;
+
+	unk168 = param_1 - (unk174 + unk170 + unk178);
+	unk158 = 0.0f;
+
+	f32 yDelta = mInitialPosition.y - (mUpSpeed * (f32)unk170 + mPosition.y);
+
+	unk17C.x = (mInitialPosition.x - mPosition.x) / (f32)unk168;
+	unk17C.y = yDelta / (f32)unk168;
+	unk17C.z = (mInitialPosition.z - mPosition.z) / (f32)unk168;
+
+	unk15C = getDistanceXZ(mInitialPosition);
+	if (unk15C == 0.0f)
+		unk15C = 1000.0f;
+	if (yDelta > 0.0f)
+		unk15C += fabsf(yDelta);
+	unk160 = unk15C * mCircleRateY;
+
+	SMSGetMSound()->startSoundActor(MSD_SE_SHINE_APPEAR, &mPosition, 0, nullptr,
+	                                0, 4);
+#ifdef SMS_PORT
+	if (SMS_BEHAVIOUR_PAL_FAMILY()) // w13
+		MSBgm::startBGM(MSD_BGM_KUPPA);
+#elif defined(VERSION_GMSP01)
+	// US ROM starts the shine-appear fanfare here (0x8001002D).
+	MSBgm::startBGM(MSD_BGM_KUPPA);
+#endif
+
+	mStateTimer = unk174;
+	mState      = STATE_UNKB;
+	onHitFilter(HIT_FILTER_NO_COLLISION);
+}
+
+s32 TShine::appearWithTimeCallback(uintptr_t param_1, u32 param_2)
+{
+	TShine* shine = (TShine*)param_1;
+	if (param_2 == 0) {
+		shine->appearWithTime(shine->unk18C, -1, -1, -1);
+		gpMarDirector->onDemoFlag(
+		    TMarDirector::DEMO_FLAG_SHINE_GET_STOP_THE_WORLD);
+	} else if (param_2 == 1) {
+		gpMarDirector->offDemoFlag(
+		    TMarDirector::DEMO_FLAG_SHINE_GET_STOP_THE_WORLD);
+	}
+	return 0;
+}
+
+void TShine::appearSimple(int param_1)
+{
+    // FAKEMATCH(frame): 16 bytes; real construct unknown
+    volatile u32 pad[4]; (void)pad;
+	TItem::appear();
+	TFlagManager::smInstance->setBool(true, MSF_SHINE_SPAWNED);
+
+	unk174   = 60;
+	unk170   = param_1;
+	unk178   = 60;
+	unk154   = 3;
+	unk158   = 0.0f;
+	unk15C   = 0.0f;
+	unk160   = 0.0f;
+	mUpSpeed = 2.0f;
+
+	mInitialPosition = mPosition;
+
+	SMSGetMSound()->startSoundActor(MSD_SE_SHINE_APPEAR, &mPosition, 0, nullptr,
+	                                0, 4);
+#ifdef SMS_PORT
+	if (SMS_BEHAVIOUR_PAL_FAMILY()) // w13
+		MSBgm::startBGM(MSD_BGM_KUPPA);
+#elif defined(VERSION_GMSP01)
+	// US ROM starts the shine-appear fanfare here (0x8001002D).
+	MSBgm::startBGM(MSD_BGM_KUPPA);
+#endif
+
+	mStateTimer = unk174;
+	mState      = STATE_UNKB;
+	onHitFilter(HIT_FILTER_NO_COLLISION);
+}
+
+void TShine::appearWithDemo(const char* param_1)
+{
+	unk18C = static_cast<TCameraMapTool*>(JDrama::TNameRefGen::search(param_1))
+	             ->mDemoLengthFrames;
+	SMSGetMarDirector()->fireStartDemoCamera(
+	    param_1, &mPosition, -1, 0.0f, true, appearWithTimeCallback,
+	    (uintptr_t)this, nullptr, JDrama::TFlagT<u16>());
+}
+
+void TShine::kill()
+{
+	TMapObjGeneral::kill();
+	unk154 = 1;
+}
+
+void TShine::makeMActors()
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	mMActorKeeper                    = new TMActorKeeper(mManager, 1);
+	mMActorKeeper->mModelLoaderFlags = J3DMLF_MaterialPEFull
+	                                   | J3DMLF_UseUniqueMaterials
+	                                   | (2 << J3DMLF_TevStageNumShift);
+	MActor* result;
+	if (TFlagManager::smInstance->getShineFlag(mEventId)
+	    && strcmp("シャイン（マニ屋用）", getName()) != 0) {
+		result = initMActor("shine_empty.bmd", nullptr, getSDLModelFlag());
+		unk1B4 = 1;
+	} else {
+		result = initMActor("shine.bmd", nullptr, getSDLModelFlag());
+	}
+	mMActor = result;
+}
+
+void TShine::initMapObj()
+{
+	TItem::initMapObj();
+	unk1A4 = 0;
+	unk1A8.set(1.0f, 1.0f, 1.0f);
+	unk170 = 240;
+	unk174 = 0;
+	unk178 = 240;
+}
+
+void TShine::loadAfter()
+{
+	TMapObjGeneral::loadAfter();
+	if (unk154 == 2) {
+		mStateTimer = 240;
+		mState      = STATE_UNK12;
+	} else if (unk154 == 1) {
+		makeObjDead();
+	}
+}
+
+void TShine::loadBeforeInit(JSUMemoryInputStream& stream)
+{
+	char name[0x20];
+	stream.readString(name, sizeof(name));
+	s32 v;
+	if (strcmp("normal", name) == 0)
+		unk154 = 0;
+	else if (strcmp("quickly", name) == 0)
+		unk154 = 2;
+	else
+		unk154 = 1;
+
+	s32 eventId;
+	stream >> eventId;
+	if (eventId == -1)
+		eventId = 120;
+	setEventId(eventId);
+	stream >> v;
+	eventId = v;
+	if (1 + v >= 2)
+		eventId = -1;
+	unk190 = 1 + eventId;
+}
+
+TShine::TShine(const char* name)
+    : TItem(name)
+    , unk154(0)
+    , unk158(0.0f)
+    , unk15C(0.0f)
+    , unk160(0.0f)
+    , unk164(0.0f)
+    , unk168(0)
+    , unk16C(2.0f)
+    , unk188(0.0f)
+    , unk18C(0)
+    , unk190(0)
+    , unk194(0)
+    , unk198(0)
+    , unk19C(0)
+    , unk1A0(0)
+    , unk1B4(0)
+{
+	unk17C.zero();
+	unk1A8.zero();
+}
+
+void TEggYoshi::decideRandomLoveFruit()
+{
+    // FAKEMATCH(frame): 64 bytes; real construct unknown
+    volatile u32 pad[16]; (void)pad;
+	u8 map = gpMarDirector->mMap;
+
+	if (map == 7 && gpMarDirector->unk7D == 1) {
+		unk14C = ACTOR_TYPE_FRUIT_PINE;
+		return;
+	}
+
+	if (map == 3) {
+		unk14C = ACTOR_TYPE_FRUIT_DURIAN;
+		return;
+	}
+
+	if (map == 1 && strcmp(getName(), "ヨッシーの卵（影マリオ用）") == 0) {
+		unk14C = ACTOR_TYPE_FRUIT_BANANA;
+		return;
+	}
+
+	int r = 4 * MsRandF();
+	switch (r) {
+	case 0:
+		unk14C = ACTOR_TYPE_FRUIT_BANANA;
+		break;
+	case 1:
+		unk14C = ACTOR_TYPE_FRUIT_PAPAYA;
+		break;
+	case 2:
+		unk14C = ACTOR_TYPE_FRUIT_PINE;
+		break;
+	default:
+		unk14C = ACTOR_TYPE_FRUIT_COCONUT;
+		break;
+	}
+}
+
+void TEggYoshi::startBalloonAnim()
+{
+	switch (unk14C) {
+	case ACTOR_TYPE_FRUIT_BANANA:
+		unk148->getFrameCtrl(ANM_TYPE_BTP)->setFrame(1.0f);
+		break;
+	case ACTOR_TYPE_FRUIT_DURIAN:
+		unk148->getFrameCtrl(ANM_TYPE_BTP)->setFrame(3.0f);
+		break;
+	case ACTOR_TYPE_FRUIT_PAPAYA:
+		unk148->getFrameCtrl(ANM_TYPE_BTP)->setFrame(5.0f);
+		break;
+	case ACTOR_TYPE_FRUIT_PINE:
+		unk148->getFrameCtrl(ANM_TYPE_BTP)->setFrame(7.0f);
+		break;
+	case ACTOR_TYPE_FRUIT_COCONUT:
+		unk148->getFrameCtrl(ANM_TYPE_BTP)->setFrame(9.0f);
+		break;
+	}
+}
+
+void TEggYoshi::touchFruit(THitActor* fruit)
+{
+	if (isState(0xE) || isState(STATE_HOLDING))
+		return;
+
+	if (unk14C == (u32)fruit->mActorType) {
+		startAnim(1);
+		unk148->getFrameCtrl(ANM_TYPE_BTP)->setFrame(11.0f);
+		mRotation.y = (360.0f / 65536.0f)
+		              * matan(fruit->mPosition.z - mPosition.z,
+		                      fruit->mPosition.x - mPosition.x);
+		mState = 0xB;
+		unk150 = fruit;
+		SMSGetMSound()->startSoundSystemSE(MSD_SE_SY_COLLECT_YOSHI, 0, nullptr,
+		                                   0);
+	} else if (animIsFinished()) {
+		startAnim(2);
+		unk148->getFrameCtrl(ANM_TYPE_BTP)->setFrame(12.0f);
+		SMSGetMSound()->startSoundSystemSE(MSD_SE_SY_NOT_COLLECT_YOSHI, 0,
+		                                   nullptr, 0);
+		mState = 0xD;
+	}
+}
+
+void TEggYoshi::touchActor(THitActor* other)
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	if (!isState(STATE_NORMAL) && !isState(0xD))
+		return;
+
+	if (other->isActorType(ACTOR_TYPE_MARIO)) {
+		TTakeActor* casted = static_cast<TTakeActor*>(other);
+		if (casted->getHeldObject()
+		    && TMapObjBase::isFruit(casted->getHeldObject()))
+			touchFruit(casted->getHeldObject());
+	}
+
+	if (TMapObjBase::isFruit(other))
+		touchFruit(other);
+}
+
+void TEggYoshi::control()
+{
+	TMapObjBase::control();
+
+	switch (mState) {
+	case 0xD:
+		if (animIsFinished()) {
+			startAnim(0);
+			startBalloonAnim();
+			mState = STATE_NORMAL;
+		}
+		break;
+	case 0xB:
+		if (animIsFinished()) {
+			startAnim(3);
+			TYoshi* yoshi = SMS_GetYoshi();
+			if (!yoshi->isHatched()) {
+				JGeometry::TVec3<f32> pos = mPosition;
+				yoshi->appearFromEgg(pos, mRotation.y, this);
+				yoshi->setEggYoshiPtr(this);
+			}
+			mState = 0xC;
+		}
+		break;
+	case 0xC:
+		if (animIsFinished()) {
+			makeObjDead();
+			mState = STATE_DEAD;
+		}
+		break;
+	case 0xF: {
+		JGeometry::TVec3<f32> v = mVelocity;
+		if (v.y == 0.0f)
+			mState = 0x10;
+		break;
+	}
+	case 0x0:
+	case 0x1:
+	case 0x2:
+	case 0x3:
+	case 0x4:
+	case 0x5:
+	case 0x6:
+	case 0x7:
+	case 0x8:
+	case 0x9:
+	case 0xA:
+	case 0xE:
+	case 0x10:
+		break;
+	}
+}
+
+void TEggYoshi::perform(u32 cue, JDrama::TGraphics* graphics)
+{
+    // FAKEMATCH(frame): 24 bytes; real construct unknown
+    volatile u32 pad[6]; (void)pad;
+	TMapObjGeneral::perform(cue, graphics);
+
+	if (!isState(0xC) && !isState(STATE_DEAD) && !isState(STATE_HOLDING)
+	    && !isState(STATE_APPEARING) && !isState(0xE) && !isState(0xF)
+	    && !isState(0x10)) {
+		if (cue & CUE_CALC_ANIM)
+			unk148->getModel()->setBaseTRMtx(getModel()->getAnmMtx(0));
+
+		unk148->perform(cue, graphics);
+	}
+}
+
+void TEggYoshi::startFruit()
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	receiveMessage(nullptr, HIT_MESSAGE_UNK10);
+	if (isState(0) || isState(0xE) || isState(0xF) || isState(0x10))
+		receiveMessage(nullptr, HIT_MESSAGE_UNK10);
+}
+
+BOOL TEggYoshi::receiveMessage(THitActor* sender, u32 message)
+{
+	if (message == HIT_MESSAGE_TAKE) {
+		hold((TTakeActor*)sender);
+		return TRUE;
+	}
+
+	if (message == HIT_MESSAGE_THROWN || message == HIT_MESSAGE_UNK8) {
+		mVelocity.y = 10.0f;
+		offLiveFlag(LIVE_FLAG_UNK10);
+		mState = 0xF;
+		return TRUE;
+	}
+
+	if (message == HIT_MESSAGE_UNK10) {
+		JGeometry::TVec3<f32> v = mVelocity;
+		makeObjAppeared();
+		mVelocity.y = v.y;
+		offLiveFlag(LIVE_FLAG_UNK10);
+		decideRandomLoveFruit();
+		startBalloonAnim();
+		mState = STATE_NORMAL;
+		return TRUE;
+	}
+
+	if (message == HIT_MESSAGE_PUT) {
+		makeObjAppeared();
+		decideRandomLoveFruit();
+		startBalloonAnim();
+	}
+
+	return FALSE;
+}
+
+void TEggYoshi::load(JSUMemoryInputStream& stream)
+{
+    // FAKEMATCH(frame): 24 bytes; real construct unknown
+    volatile u32 pad[6]; (void)pad;
+	TMapObjBase::load(stream);
+
+	if (strcmp(unkF4, "eggYoshiEvent") == 0) {
+		if (TFlagManager::getInstance()->getFlag(MSF_SHADOW_MARIO_EVENT) == 1) {
+			mState = 0xE;
+		} else {
+			makeObjDead();
+			return;
+		}
+	} else if (gpMarDirector->mMap == 1) {
+		if (!TFlagManager::getInstance()->getBool(MSF_YOSHI_UNLOCKED)) {
+			makeObjDead();
+			return;
+		}
+	} else if (!TFlagManager::getInstance()->getShineFlag(0x21)) {
+		makeObjDead();
+		return;
+	}
+
+	unk148 = SMS_MakeMActorWithAnmData(
+	    "/scene/mapObj/eggYoshi_fukidashi.bmd", mManager->getMActorAnmData(), 3,
+	    J3DMLF_MaterialPEFull | J3DMLF_UseUniqueMaterials
+	        | (1 << J3DMLF_TevStageNumShift));
+	MtxPtr src = getModel()->getAnmMtx(0);
+	PSMTXCopy(src, unk148->getModel()->getBaseTRMtx());
+	unk148->setBck("eggyoshi_fukidashi_wait");
+	unk148->setBtp("eggyoshi_fukidashi");
+	unk148->getFrameCtrl(ANM_TYPE_BTP)->setRate(0.0f);
+
+	decideRandomLoveFruit();
+
+	if (!isState(0xE))
+		startBalloonAnim();
+}
+
+TEggYoshi::TEggYoshi(const char* name)
+    : TMapObjGeneral(name)
+    , unk148(nullptr)
+    , unk14C(0)
+    , unk150(nullptr)
+{
+}
+
+void TItemNozzle::touchPlayer(THitActor* param_1)
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	if (isState(STATE_HOLDING))
+		return;
+
+	if (SMS_IsMarioOnYoshi())
+		return;
+
+	if ((param_1->isActorType(ACTOR_TYPE_MARIO)
+	     || param_1->isActorType(ACTOR_TYPE_YOSHI_TONGUE))
+	    && !checkHitFilter(HIT_FILTER_NO_COLLISION))
+		taken(param_1);
+
+	int boxKind;
+	if (isActorType(ACTOR_TYPE_WATERGUN_ITEM))
+		boxKind = 4;
+	else if (isActorType(ACTOR_TYPE_ROCKET_NOZZLE_ITEM))
+		boxKind = 1;
+	else if (isActorType(ACTOR_TYPE_BACK_NOZZLE_ITEM))
+		boxKind = 5;
+	else
+		boxKind = 4;
+
+	SMSGetMSound()->startSoundActor(MSD_SE_SY_GET_NOZZLE, &mPosition, 0,
+	                                nullptr, 0, 4);
+	gpItemManager->resetNozzleBoxesModel(boxKind);
+	gpMarDirector->fireGetNozzle(this);
+}
+
+void TItemNozzle::put()
+{
+	offHitFilter(HIT_FILTER_NO_COLLISION);
+	mState = STATE_NORMAL;
+}
+
+BOOL TItemNozzle::receiveMessage(THitActor* sender, u32 message)
+{
+	if (message == HIT_MESSAGE_TAKE) {
+		hold((TTakeActor*)sender);
+		return TRUE;
+	}
+
+	if (message == HIT_MESSAGE_THROWN) {
+		mVelocity.set(0.0f, 20.0f, 0.0f);
+		offLiveFlag(LIVE_FLAG_UNK10);
+		onHitFilter(HIT_FILTER_NO_COLLISION);
+		mState = 0xB;
+		return TRUE;
+	}
+
+	return TItem::receiveMessage(sender, message);
+}
+
+void TItemNozzle::appearing()
+{
+	if (!checkLiveFlag(LIVE_FLAG_UNK10))
+		return;
+
+	mState = STATE_NORMAL;
+	offHitFilter(HIT_FILTER_NO_COLLISION);
+}
+
+void TItemNozzle::control() { TMapObjGeneral::control(); }
+
+void TItemNozzle::calcRootMatrix()
+{
+    // FAKEMATCH(frame): 16 bytes; real construct unknown
+    volatile u32 pad[4]; (void)pad;
+	if (isState(STATE_HOLDING) && mHolder != nullptr) {
+		MtxPtr src = mHolder->getTakingMtx();
+		MtxPtr dst = getModel()->getAnmMtx(0);
+		MTXCopy(src, dst);
+		if (isActorType(ACTOR_TYPE_ROCKET_NOZZLE_ITEM))
+			dst[1][3] += 50.0f;
+		else
+			dst[1][3] += 30.0f;
+		mPosition.set(dst[0][3], dst[1][3], dst[2][3]);
+	} else if (!checkMapObjFlag(MAP_OBJ_FLAG_UNK8000000)) {
+		TMapObjGeneral::calcRootMatrix();
+	}
+}
+
+void TItemNozzle::initMapObj()
+{
+	TItem::initMapObj();
+	unk14C = 7200;
+}
+
+void TItemNozzle::load(JSUMemoryInputStream& stream)
+{
+	TMapObjBase::load(stream);
+	onMapObjFlag(MAP_OBJ_FLAG_UNK10000000);
+	if (strcmp(unkF4, "rocket_nozzle_item") == 0) {
+		if (TFlagManager::smInstance->getFlag(MSF_SHADOW_MARIO_EVENT) != 3)
+			makeObjDead();
+	} else if (strcmp(unkF4, "back_nozzle_item") == 0) {
+		if (TFlagManager::smInstance->getFlag(MSF_SHADOW_MARIO_EVENT) != 2)
+			makeObjDead();
+	}
+}
+
+#ifdef SMS_PORT_AURORA
+// port/src/port_mp_events.cpp (w10): multiplayer world events; inert outside a session
+// with "Sync world events" on.
+extern "C" void port_mp_event_local(void* obj, void* sender, int kind);
+#endif
+
+void TNozzleBox::makeModelValid()
+{
+	if (!mContainedNozzleItem->checkLiveFlag(LIVE_FLAG_DEAD)) {
+		mContainedNozzleItem->kill();
+		appear();
+	}
+	makeObjAppeared();
+	offHitFilter(HIT_FILTER_NO_DAMAGE);
+	SMS_ShowAllShapePacket(getModel());
+	unk15C = true;
+}
+
+void TNozzleBox::makeModelInvalid()
+{
+	if (!mContainedNozzleItem->checkLiveFlag(LIVE_FLAG_DEAD)) {
+		mContainedNozzleItem->kill();
+		appear();
+	}
+	onHitFilter(HIT_FILTER_NO_DAMAGE);
+	startAnim(3);
+	unk15C = false;
+}
+
+void TNozzleBox::breaking()
+{
+	if (animIsFinished())
+		makeObjDead();
+}
+
+BOOL TNozzleBox::receiveMessage(THitActor* sender, u32 message)
+{
+	if (unk15C && sender->isActorType(ACTOR_TYPE_MARIO)
+	    && message == HIT_MESSAGE_TRAMPLE && !SMS_IsMarioHeadSlideAttack()) {
+		sender->receiveMessage(this, HIT_MESSAGE_ATTACK);
+#ifdef SMS_PORT_AURORA
+		port_mp_event_local(this, sender, 4); // w10: EV_NOZZLE_BOX
+#endif
+		throwObjToFront(mContainedNozzleItem, 50.0f, unk150, unk154);
+		SMSGetMSound()->startSoundSystemSE(0x3801, 0, nullptr, 0);
+		kill();
+		return TRUE;
+	}
+
+	if (message == HIT_MESSAGE_UNK5)
+		makeModelValid();
+
+	return FALSE;
+}
+
+void TNozzleBox::touchPlayer(THitActor*)
+{
+    // FAKEMATCH(frame): 32 bytes; real construct unknown
+    volatile u32 pad[8]; (void)pad;
+	if (mContainedNozzleType == TWaterGun::Hover
+	    && !TFlagManager::smInstance->getNozzleRight(
+	        gpMarDirector->getCurrentMap(), 0)
+	    && !TFlagManager::smInstance->getNozzleRight(
+	        gpMarDirector->getCurrentMap(), 1)
+	    && !unk166) {
+#ifdef VERSION_GMSP01
+		gpMarDirector->getConsole()->startAppearBalloon(0x5A, true);
+#else
+		gpMarDirector->getConsole()->startAppearBalloon(0xE0057, true);
+#endif
+		unk166 = true;
+	}
+	if (!unk15C && !unk166) {
+#ifdef VERSION_GMSP01
+		gpMarDirector->getConsole()->startAppearBalloon(0x59, true);
+#else
+		gpMarDirector->getConsole()->startAppearBalloon(0xE0056, true);
+#endif
+		unk166 = true;
+	}
+}
+
+void TNozzleBox::control()
+{
+	TMapObjGeneral::control();
+	if (mContainedNozzleType != TWaterGun::Hover && unk166 && mColCount == 0)
+		unk166 = false;
+}
+
+void TNozzleBox::loadAfter()
+{
+	TMapObjGeneral::loadAfter();
+	mContainedNozzleItem = (TItemNozzle*)TMapObjBaseManager::newAndRegisterObj(
+	    mContainedNozzleName);
+	mContainedNozzleItem->setContainer(this);
+	switch (mContainedNozzleType) {
+	case TWaterGun::Hover:
+		makeModelValid();
+		break;
+	case TWaterGun::Rocket:
+	case TWaterGun::Turbo:
+		if (unk15C) {
+			makeModelValid();
+		} else {
+			makeModelInvalid();
+		}
+		break;
+	}
+}
+
+void TNozzleBox::load(JSUMemoryInputStream& stream)
+{
+	TMapObjBase::load(stream);
+	char strBuf[0x20];
+	mContainedNozzleName = stream.readString();
+	stream.readString(strBuf, 0x20);
+	if (strcmp(strBuf, "valid") == 0)
+		unk15C = true;
+	else
+		unk15C = false;
+
+	if (strcmp(mContainedNozzleName, "normal_nozzle_item") == 0) {
+		mContainedNozzleType = TWaterGun::Hover;
+		unk15E.r             = 0;
+		unk15E.g             = 0;
+		unk15E.b             = 0xFF;
+	} else if (strcmp(mContainedNozzleName, "rocket_nozzle_item") == 0) {
+		mContainedNozzleType = TWaterGun::Rocket;
+		unk15E.r             = 0xFF;
+		unk15E.g             = 0;
+		unk15E.b             = 0;
+		if (TFlagManager::smInstance->getNozzleRight(gpMarDirector->mMap, 0)) {
+			unk15C = true;
+			unk166 = true;
+		}
+	} else if (strcmp(mContainedNozzleName, "back_nozzle_item") == 0) {
+		mContainedNozzleType = TWaterGun::Turbo;
+		unk15E.r             = 0x5A;
+		unk15E.g             = 0x5A;
+		unk15E.b             = 0x78;
+		if (TFlagManager::smInstance->getNozzleRight(gpMarDirector->mMap, 1)) {
+			unk15C = true;
+			unk166 = true;
+		}
+	}
+
+	stream >> unk150;
+	unk150 *= 0.02f;
+	stream >> unk154;
+	if (unk154 < 0.0f)
+		unk154 = 20.0f;
+
+	initPacketMatColor(getModel(), GX_TEVREG1, &unk15E);
+	startAnim(3);
+	initPacketMatColor(getModel(), GX_TEVREG1, &unk15E);
+	startAnim(2);
+	initPacketMatColor(getModel(), GX_TEVREG1, &unk15E);
+	startAnim(0);
+}
+
+TNozzleBox::TNozzleBox(const char* name)
+    : TMapObjGeneral(name)
+    , mContainedNozzleType(0)
+    , mContainedNozzleItem(nullptr)
+    , unk150(0.0f)
+    , unk154(0.0f)
+    , mContainedNozzleName(nullptr)
+    , unk15C(true)
+    , unk166(false)
+{
+	unk15E.r = 0xFF;
+	unk15E.g = 0xFF;
+	unk15E.b = 0xFF;
+	unk15E.a = 0x64;
+}

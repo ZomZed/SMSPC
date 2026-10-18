@@ -1,0 +1,184 @@
+--- a/include/aurora/gfx.hpp
++++ b/include/aurora/gfx.hpp
+@@ -195,6 +195,18 @@
+ /// Increments on aurora_end_frame.
+ uint32_t current_frame() noexcept;
+ 
++/// SMS PC port patch (aurora_present_capture.patch): one-shot capture of the presented
++/// picture, i.e. the swapchain texture exactly as the window shows it (present viewport,
++/// letterboxing, resample/post-processing and the ImGui overlay). Arms the next
++/// aurora_end_frame; the callback runs later on whichever thread completes the buffer map,
++/// with rows of 4-byte texels in `format` (a BGRA8/RGBA8 surface format), `bytesPerRow`
++/// apart (padded to 256). Returns false when the surface cannot be copied
++/// from (no CopySrc usage) or a capture is already armed. The callback is not called if the
++/// frame is not presented; arm again then.
++using PresentCaptureCallback = void (*)(void* userdata, const uint8_t* pixels, uint32_t width, uint32_t height,
++                                        uint32_t bytesPerRow, wgpu::TextureFormat format);
++bool request_present_capture(PresentCaptureCallback callback, void* userdata) noexcept;
++
+ /// Blocks until the render worker has drained its queue. After this returns,
+ /// no draw callback is executing or queued to execute; used before unloading
+ /// code that registered draw types. Callable from the game thread only.
+--- a/lib/webgpu/gpu.cpp
++++ b/lib/webgpu/gpu.cpp
+@@ -1160,7 +1160,10 @@
+       .surfaceConfiguration =
+           wgpu::SurfaceConfiguration{
+               .format = surfaceFormat,
+-              .usage = wgpu::TextureUsage::RenderAttachment,
++              // SMS PC port patch (aurora_present_capture.patch): CopySrc when the surface
++              // allows it, for gfx::request_present_capture.
++              .usage = wgpu::TextureUsage::RenderAttachment |
++                       (g_surfaceCapabilities.usages & wgpu::TextureUsage::CopySrc),
+               .width = size.native_fb_width,
+               .height = size.native_fb_height,
+               .presentMode = presentMode,
+--- a/lib/aurora.cpp
++++ b/lib/aurora.cpp
+@@ -26,6 +26,9 @@
+ #include "window.hpp"
+ 
+ #include <SDL3/SDL_filesystem.h>
++#include <memory>
++#include <mutex>
++#include <utility>
+ #include <magic_enum.hpp>
+ 
+ #include "system_info.hpp"
+@@ -60,6 +63,75 @@
+   const auto scissorRight = clamp_scissor_coord(std::ceil(viewport.left + viewport.width), surfaceWidth);
+   const auto scissorBottom = clamp_scissor_coord(std::ceil(viewport.top + viewport.height), surfaceHeight);
+   pass.SetScissorRect(scissorX, scissorY, scissorRight - scissorX, scissorBottom - scissorY);
++}
++
++// SMS PC port patch (aurora_present_capture.patch): armed by gfx::request_present_capture,
++// taken by the next end_frame.
++struct PresentCapture {
++  gfx::PresentCaptureCallback callback = nullptr;
++  void* userdata = nullptr;
++};
++std::mutex g_presentCaptureMutex;
++PresentCapture g_presentCapture;
++
++struct PresentCaptureReadback {
++  PresentCapture request;
++  wgpu::Buffer buffer;
++  uint32_t width = 0;
++  uint32_t height = 0;
++  uint32_t bytesPerRow = 0;
++  wgpu::TextureFormat format = wgpu::TextureFormat::Undefined;
++};
++
++// Render worker, after the present blit and ImGui: copies the surface texture.
++std::shared_ptr<PresentCaptureReadback> encode_present_capture(const wgpu::CommandEncoder& encoder,
++                                                               const wgpu::Texture& texture,
++                                                               const PresentCapture& request) {
++  if (request.callback == nullptr ||
++      !(webgpu::g_graphicsConfig.surfaceConfiguration.usage & wgpu::TextureUsage::CopySrc)) {
++    return nullptr;
++  }
++  auto rb = std::make_shared<PresentCaptureReadback>();
++  rb->request = request;
++  rb->width = texture.GetWidth();
++  rb->height = texture.GetHeight();
++  rb->format = texture.GetFormat();
++  rb->bytesPerRow = (rb->width * 4 + 255) & ~255u;
++  const wgpu::BufferDescriptor bd{
++      .label = "Present capture readback",
++      .usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst,
++      .size = static_cast<uint64_t>(rb->bytesPerRow) * rb->height,
++  };
++  rb->buffer = g_device.CreateBuffer(&bd);
++  const wgpu::TexelCopyTextureInfo src{.texture = texture};
++  const wgpu::TexelCopyBufferInfo dst{
++      .layout = {.offset = 0, .bytesPerRow = rb->bytesPerRow, .rowsPerImage = rb->height},
++      .buffer = rb->buffer,
++  };
++  const wgpu::Extent3D size{rb->width, rb->height, 1};
++  encoder.CopyTextureToBuffer(&src, &dst, &size);
++  return rb;
++}
++
++// Render worker, after submit.
++void map_present_capture(const std::shared_ptr<PresentCaptureReadback>& rb) {
++  if (!rb) {
++    return;
++  }
++  const size_t bytes = static_cast<size_t>(rb->bytesPerRow) * rb->height;
++  rb->buffer.MapAsync(wgpu::MapMode::Read, 0, bytes, wgpu::CallbackMode::AllowSpontaneous,
++                      [rb, bytes](wgpu::MapAsyncStatus status, wgpu::StringView) {
++                        if (status == wgpu::MapAsyncStatus::Success) {
++                          const auto* data = static_cast<const uint8_t*>(rb->buffer.GetConstMappedRange(0, bytes));
++                          if (data != nullptr) {
++                            rb->request.callback(rb->request.userdata, data, rb->width, rb->height, rb->bytesPerRow,
++                                                 rb->format);
++                          }
++                          rb->buffer.Unmap();
++                        } else {
++                          Log.warn("Present capture: buffer map failed");
++                        }
++                      });
+ }
+ #endif
+ 
+@@ -286,7 +358,14 @@
+   }
+ #endif
+ 
+-  gfx::end_frame([rmlBindGroup = std::move(rmlBindGroup), rmlOverlay, viewport,
++  // SMS PC port patch (aurora_present_capture.patch): a capture armed for this frame.
++  PresentCapture presentCapture;
++  {
++    std::lock_guard lock(g_presentCaptureMutex);
++    presentCapture = std::exchange(g_presentCapture, PresentCapture{});
++  }
++
++  gfx::end_frame([rmlBindGroup = std::move(rmlBindGroup), rmlOverlay, viewport, presentCapture,
+                   imguiDrawData = std::move(imguiDrawData)](
+                      wgpu::CommandEncoder& encoder, std::vector<gfx::AfterSubmitCallback> afterSubmitCallbacks) {
+     wgpu::Texture currentTexture;
+@@ -307,6 +386,7 @@
+     }
+ 
+     const bool canPresent = currentTexture && currentView;
++    std::shared_ptr<PresentCaptureReadback> presentCaptureReadback; // aurora_present_capture.patch
+     if (canPresent) {
+       wgpu::BindGroup presentBindGroup;
+       if (rmlBindGroup && !rmlOverlay) {
+@@ -364,6 +444,8 @@
+         imgui::render(pass, imguiDrawData);
+         pass.End();
+       }
++      // aurora_present_capture.patch: the picture exactly as presented.
++      presentCaptureReadback = encode_present_capture(encoder, currentTexture, presentCapture);
+     } else {
+       Log.info("Skipping present; window not presentable");
+     }
+@@ -374,6 +456,7 @@
+       ZoneScopedN("Queue Submit");
+       g_queue.Submit(1, &buffer);
+     }
++    map_present_capture(presentCaptureReadback); // aurora_present_capture.patch
+     webgpu::gpu_prof::after_submit();
+     if (canPresent && g_surface) {
+       ZoneScopedN("Present");
+@@ -481,3 +564,19 @@
+ }
+ void aurora_set_timescale(float scale) { aurora::time::set_scale(scale); }
+ float aurora_get_timescale() { return aurora::time::scale(); }
++
++#ifdef AURORA_ENABLE_GX
++// SMS PC port patch (aurora_present_capture.patch), see aurora/gfx.hpp.
++bool aurora::gfx::request_present_capture(PresentCaptureCallback callback, void* userdata) noexcept {
++  if (callback == nullptr ||
++      !(aurora::webgpu::g_graphicsConfig.surfaceConfiguration.usage & wgpu::TextureUsage::CopySrc)) {
++    return false;
++  }
++  std::lock_guard lock(aurora::g_presentCaptureMutex);
++  if (aurora::g_presentCapture.callback != nullptr) {
++    return false;
++  }
++  aurora::g_presentCapture = {.callback = callback, .userdata = userdata};
++  return true;
++}
++#endif

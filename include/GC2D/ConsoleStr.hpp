@@ -1,0 +1,104 @@
+#ifndef GC2D_CONSOLE_STR_HPP
+#define GC2D_CONSOLE_STR_HPP
+
+#include <JSystem/JDrama/JDRViewObj.hpp>
+#include <JSystem/JUtility/JUTPoint.hpp>
+
+class J2DSetScreen;
+class TExPane;
+class J2DTextBox;
+class TBoundPane;
+class JPABaseEmitter;
+
+class TConsoleStr : public JDrama::TViewObj {
+public:
+	TConsoleStr(const char* name = "<ConsoleStr>");
+	f32 getWipeCloseTime();
+	void load(JSUMemoryInputStream&);
+	void loadAfter();
+	void perform(u32 cue, JDrama::TGraphics* graphics);
+	void startAppearReady();
+	void startAppearGo();
+	void startAppearShineGet();
+	void startAppearMiss();
+	void startAppearScenario();
+	bool processReady(int);
+	bool processGo(float);
+	bool processShineGet(int);
+	bool processMiss(int);
+	bool processScenario(int);
+	void startCloseWipe(bool);
+	void startOpenWipe();
+
+	// TODO: wrong types
+	static JUTPoint cShineGetRight1;
+	static JUTPoint cShineGetLeft1;
+	static JUTPoint cShineGetRight2;
+	static JUTPoint cShineGetLeft2;
+	static JUTPoint cShineGetRight3;
+	static JUTPoint cShineGetLeft3;
+
+	enum {
+		STATE_UNK0 = 0x0,
+		STATE_UNK1 = 0x1,
+		STATE_UNK2 = 0x2,
+		STATE_UNK3 = 0x3,
+		STATE_UNK4 = 0x4,
+		STATE_UNK5 = 0x5,
+		STATE_UNK6 = 0x6,
+		STATE_UNK7 = 0x7,
+		STATE_UNK8 = 0x8,
+	};
+
+public:
+#if defined(VERSION_GMSP01) && !defined(VERSION_GMSE01)
+	// PAL: "GO!", "SHINE GET!" and "TOO BAD!" have as many letter panes as the
+	// console language needs (load()); the offsets below are PAL's.
+	/* 0x10 */ int mGoNum;
+	/* 0x14 */ int mShineGetNum;
+	/* 0x18 */ int mMissNum;
+	/* 0x1C */ int mMissRotation[12]; // each 'ms' letter's rotation in the layout
+	/* 0x4C */ J2DSetScreen* unk10;
+	/* 0x50 */ J2DSetScreen* unk14;
+	/* 0x54 */ f32 unk18;
+	/* 0x58 */ int unk1C;
+	/* 0x5C */ s32 unk20;
+	/* 0x60 */ u32 unk24;
+	/* 0x64 */ TBoundPane* unk28[11];
+	/* 0x90 */ JUTPoint unk34[11][22];
+	/* 0x820 */ TBoundPane* unk244[11];
+	/* 0x84C */ TBoundPane* unk268[12];
+#else
+	/* 0x10 */ J2DSetScreen* unk10;
+	/* 0x14 */ J2DSetScreen* unk14;
+	/* 0x18 */ f32 unk18;
+	/* 0x1C */ int unk1C;
+	/* 0x20 */ s32 unk20;
+	/* 0x24 */ u32 unk24;
+	/* 0x28 */ TBoundPane* unk28[3];
+	/* 0x34 */ JUTPoint unk34[3][22];
+#ifdef VERSION_GMSE01
+	// US: 6 'sg' panes and 7 'ms' panes; every later field moves back by 4
+	/* 0x244 */ TBoundPane* unk244[6];
+	/* 0x25C */ TBoundPane* unk268[7];
+#else
+	/* 0x244 */ TBoundPane* unk244[9];
+	/* 0x268 */ TBoundPane* unk268[5];
+#endif
+#endif
+	/* 0x27C */ TExPane* unk27C[5];
+	/* 0x290 */ TExPane* unk290[2];
+	/* 0x298 */ TExPane* unk298[2];
+	/* 0x2A0 */ J2DTextBox* unk2A0[2];
+	/* 0x2A8 */ u8 unk2A8;
+	/* 0x2A9 */ u8 unk2A9;
+#if defined(VERSION_GMSP01) && !defined(VERSION_GMSE01)
+	/* 0x8AC */ JPABaseEmitter* unk2AC[11];
+#else
+	/* 0x2AC */ JPABaseEmitter* unk2AC[3];
+#endif
+	/* 0x2B8 */ int unk2B8;
+	/* 0x2BC */ int unk2BC;
+};
+
+#endif

@@ -1,0 +1,194 @@
+--- a/lib/dolphin/vi/vi_internal.hpp
++++ b/lib/dolphin/vi/vi_internal.hpp
+@@ -9,4 +9,8 @@
+ namespace aurora::vi {
+ void configure(const GXRenderModeObj* rm) noexcept;
+ Vec2<uint32_t> configured_fb_size() noexcept;
++// SMS PC port patch (aurora_efb_size.patch): size of the whole EFB in logical pixels (the
++// GameCube's is 640x528 whatever the render mode). The configured frame buffer is its
++// top-left part and is what gets presented.
++Vec2<uint32_t> efb_size() noexcept;
+ } // namespace aurora::vi
+--- a/lib/dolphin/vi/vi.cpp
++++ b/lib/dolphin/vi/vi.cpp
+@@ -4,6 +4,7 @@
+ #include "aurora/math.hpp"
+ #include "vi_internal.hpp"
+ 
++#include <algorithm>
+ #include <optional>
+ 
+ namespace aurora::vi {
+@@ -30,7 +31,16 @@
+ 
+ Vec2<uint32_t> configured_fb_size() noexcept {
+   return render_mode_size();
+-}} // namespace aurora::vi
++}
++
++// SMS PC port patch (aurora_efb_size.patch): games draw into and copy from any part of the
++// 640x528 EFB before the display copy (Super Mario Sunshine's 512x512 pollution maps on a
++// 640x448 render mode), so the EFB render target covers at least that much.
++Vec2<uint32_t> efb_size() noexcept {
++  const auto size = render_mode_size();
++  return {std::max<uint32_t>(size.x, 640), std::max<uint32_t>(size.y, 528)};
++}
++} // namespace aurora::vi
+ 
+ extern "C" {
+ void VIInit() {}
+--- a/lib/gx/gx.cpp
++++ b/lib/gx/gx.cpp
+@@ -311,7 +311,8 @@
+ }
+ 
+ Vec2<uint32_t> logical_fb_size() noexcept {
+-  return gfx::is_offscreen() ? gfx::get_render_target_size() : vi::configured_fb_size();
++  // SMS PC port patch (aurora_efb_size.patch): the EFB render target covers the whole EFB.
++  return gfx::is_offscreen() ? gfx::get_render_target_size() : vi::efb_size();
+ }
+ 
+ gfx::Viewport map_logical_viewport(const gfx::Viewport& logicalViewport) noexcept {
+--- a/lib/webgpu/gpu.hpp
++++ b/lib/webgpu/gpu.hpp
+@@ -70,6 +70,11 @@
+ TextureWithSampler create_render_texture(uint32_t width, uint32_t height, bool multisampled);
+ bool enable_normal_buffer();
+ const TextureWithSampler& present_source() noexcept;
++// SMS PC port patch (aurora_efb_size.patch): the EFB render target covers the whole EFB
++// (vi::efb_size); only its top-left part, the configured frame buffer, is presented.
++// Size of that part in render-target pixels.
++uint32_t present_content_width() noexcept;
++uint32_t present_content_height() noexcept;
+ wgpu::BindGroup create_copy_bind_group(const TextureWithSampler& source);
+ void set_resampler(AuroraSampler sampler) noexcept;
+ AuroraSampler get_resampler() noexcept;
+--- a/lib/webgpu/gpu.cpp
++++ b/lib/webgpu/gpu.cpp
+@@ -23,6 +23,7 @@
+ #include "../gfx/render_worker.hpp"
+ #include "../internal.hpp"
+ #include "../window.hpp"
++#include "../dolphin/vi/vi_internal.hpp"
+ #include "gpu_prof.hpp"
+ 
+ #ifdef WEBGPU_DAWN
+@@ -98,6 +99,10 @@
+   uint32_t samplerMode = 0;
+   float frameWidth = 0.f;
+   float frameHeight = 0.f;
++  float pad = 0.f;
++  // SMS PC port patch (aurora_efb_size.patch): presented fraction of the source.
++  float contentScaleX = 1.f;
++  float contentScaleY = 1.f;
+ };
+ 
+ constexpr std::string_view resampleShaderSource = R"(
+@@ -105,6 +110,7 @@
+     sampler_mode: u32,
+     frame_width: f32,
+     frame_height: f32,
++    content_scale: vec2<f32>,
+ };
+ 
+ struct VertexOutput {
+@@ -145,7 +151,7 @@
+ }
+ 
+ fn sample_area(frag_position: vec4<f32>) -> vec4<f32> {
+-    let source_size = vec2<f32>(textureDimensions(t));
++    let source_size = vec2<f32>(textureDimensions(t)) * uniforms.content_scale;
+     let target_size = max(vec2<f32>(uniforms.frame_width, uniforms.frame_height), vec2<f32>(1.0, 1.0));
+ 
+     let source_min = clamp((frag_position.xy - vec2<f32>(0.5, 0.5)) / target_size,
+@@ -186,7 +192,11 @@
+ 
+ @fragment
+ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
+-    var color = textureSample(t, s, in.uv);
++    // (aurora_efb_size.patch) Clamped half a texel inside the presented part, so bilinear
++    // upscaling never blends in the EFB rows/columns below/right of it.
++    let half_texel = 0.5 / vec2<f32>(textureDimensions(t));
++    var color = textureSample(t, s, clamp(in.uv * uniforms.content_scale, half_texel,
++                                          uniforms.content_scale - half_texel));
+     if (uniforms.sampler_mode == 1u) {
+         color = sample_area(in.position);
+     }
+@@ -318,6 +328,16 @@
+ 
+ const TextureWithSampler& present_source() noexcept {
+   return g_graphicsConfig.msaaSamples > 1 ? g_frameBufferResolved : g_frameBuffer;
++}
++
++// SMS PC port patch (aurora_efb_size.patch), see gpu.hpp.
++static uint32_t g_presentContentWidth = 0;
++static uint32_t g_presentContentHeight = 0;
++uint32_t present_content_width() noexcept {
++  return g_presentContentWidth != 0 ? g_presentContentWidth : present_source().size.width;
++}
++uint32_t present_content_height() noexcept {
++  return g_presentContentHeight != 0 ? g_presentContentHeight : present_source().size.height;
+ }
+ 
+ void set_resampler(AuroraSampler sampler) noexcept {
+@@ -683,6 +703,8 @@
+       .samplerMode = sampler_mode(g_Resampler),
+       .frameWidth = static_cast<float>(width),
+       .frameHeight = static_cast<float>(height),
++      .contentScaleX = static_cast<float>(present_content_width()) / static_cast<float>(source.size.width),
++      .contentScaleY = static_cast<float>(present_content_height()) / static_cast<float>(source.size.height),
+   };
+   AURORA_ASSERT(gfx::render_worker::is_worker_thread(), "Present resample queue write must run on the render worker");
+   g_queue.WriteBuffer(g_ResampleUniformBuffer, 0, &uniform, sizeof(uniform));
+@@ -1124,6 +1146,20 @@
+   if (!g_surface || !g_device || width == 0 || height == 0 || nativeHeight == 0 || nativeWidth == 0) {
+     return;
+   }
++  // SMS PC port patch (aurora_efb_size.patch): width x height is the presented frame buffer;
++  // the EFB render target extends it to the whole EFB at the same scale.
++  {
++    const auto display = vi::configured_fb_size();
++    const auto efb = vi::efb_size();
++    g_presentContentWidth = width;
++    g_presentContentHeight = height;
++    if (display.x != 0 && display.y != 0) {
++      // Rounded up: the configured part must map to at least the presented size, or its last
++      // row/column is outside every rasterised pixel at non-integer scales (a black line).
++      width = static_cast<uint32_t>(std::ceil(static_cast<double>(width) * efb.x / display.x - 1e-6));
++      height = static_cast<uint32_t>(std::ceil(static_cast<double>(height) * efb.y / display.y - 1e-6));
++    }
++  }
+   const bool sizeChanged = g_graphicsConfig.surfaceConfiguration.width != nativeWidth ||
+                            g_graphicsConfig.surfaceConfiguration.height != nativeHeight ||
+                            g_frameBuffer.size.width != width || g_frameBuffer.size.height != height;
+--- a/lib/aurora.cpp
++++ b/lib/aurora.cpp
+@@ -270,10 +270,11 @@
+   gfx::finish();
+   auto imguiDrawData = imgui::freeze();
+ 
+-  const auto& presentSource = webgpu::present_source();
++  // SMS PC port patch (aurora_efb_size.patch): present only the configured part of the EFB.
+   const auto viewport = webgpu::calculate_present_viewport(webgpu::g_graphicsConfig.surfaceConfiguration.width,
+                                                            webgpu::g_graphicsConfig.surfaceConfiguration.height,
+-                                                           presentSource.size.width, presentSource.size.height);
++                                                           webgpu::present_content_width(),
++                                                           webgpu::present_content_height());
+ 
+   wgpu::BindGroup rmlBindGroup;
+   bool rmlOverlay = false;
+--- a/lib/window.cpp
++++ b/lib/window.cpp
+@@ -112,6 +112,12 @@
+ void resize_swapchain() noexcept {
+   const auto size = get_window_size();
+   if (size == g_windowSize) {
++#ifdef AURORA_ENABLE_GX
++    // SMS PC port patch (aurora_efb_size.patch): the EFB render target also follows the
++    // render mode (vi::efb_size vs the configured frame buffer), which can change while the
++    // window size does not; this is a no-op when nothing changed.
++    webgpu::resize_swapchain(size.fb_width, size.fb_height, size.native_fb_width, size.native_fb_height);
++#endif
+     return;
+   }
+   if (size.scale != g_windowSize.scale) {

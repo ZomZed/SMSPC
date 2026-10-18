@@ -1,0 +1,535 @@
+#include <Strategic/LiveActor.hpp>
+#include <Strategic/ObjModel.hpp>
+#include <Strategic/question.hpp>
+#include <Strategic/Spine.hpp>
+#include <Strategic/spcinterp.hpp>
+#include <Strategic/Binder.hpp>
+#include <System/MarDirector.hpp>
+#include <MarioUtil/MtxUtil.hpp>
+#include <M3DUtil/MActor.hpp>
+#include <M3DUtil/LodAnm.hpp>
+#include <MarioUtil/ShadowUtil.hpp>
+#include <Map/MapData.hpp>
+#include <Map/Map.hpp>
+#include <Map/MapCollisionManager.hpp>
+#include <Map/MapCollisionEntry.hpp>
+#include <Enemy/Conductor.hpp>
+#include <MSound/MAnmSound.hpp>
+#include <JSystem/JDrama/JDRNameRefGen.hpp>
+#include <JSystem/J3D/J3DGraphAnimator/J3DModel.hpp>
+#include <JSystem/J3D/J3DGraphAnimator/J3DAnimation.hpp>
+#include <JSystem/JKernel/JKRFileLoader.hpp>
+
+// rogue includes needed for matching sinit & bss
+#include <MSound/MSSetSound.hpp>
+#include <MSound/MSoundBGM.hpp>
+
+#ifdef SMS_PORT
+extern "C" void port_trace_actor(const char*, const char*, const char*, float, float, float);
+#endif
+
+f32 TLiveActor::mVelocityMinY = -40.0f;
+
+TLiveActor::TLiveActor(const char* name)
+    : TTakeActor(name)
+{
+	mManager       = nullptr;
+	mMActor        = nullptr;
+	mMActorKeeper  = nullptr;
+	mInstanceIndex = 0;
+	mAnmSound      = nullptr;
+	mAnmSoundPath  = nullptr;
+	mBinder        = nullptr;
+	mSpine         = nullptr;
+	unk90          = nullptr;
+
+	mPositionDelta.setAll(0.0f);
+	mRotationDelta.setAll(0.0f);
+
+	mVelocity.set(0.0f, 0.0f, 0.0f);
+
+	mScaledBodyRadius    = 10.0f;
+	mBodyRadius          = 25.0f;
+	mHeadHeight          = 50.0f;
+	mGroundPlane         = nullptr;
+	mGroundHeight        = 0.0f;
+	mGravity             = 0.15f;
+	unkD0                = nullptr;
+	mGroundActor         = nullptr;
+	mGroundActorYaw      = 0.0f;
+	unkE8                = 1;
+	mMapCollisionManager = nullptr;
+	mLiveFlag            = LIVE_FLAG_UNK100;
+
+	mRidePos.zero();
+
+	mGroundPlane = TMap::getIllegalCheckData();
+	if (SMSGetMarDirector()->getCurrentMap() != 8)
+		mLiveFlag |= LIVE_FLAG_UNK2000;
+}
+
+TLiveActor::~TLiveActor() { }
+
+void TLiveActor::calcRidePos()
+{
+	if (!mGroundActor)
+		return;
+
+	Mtx mtx;
+	if (!mGroundActor->getRootJointMtx())
+		SMS_GetActorMtx(*mGroundActor, mtx);
+	else
+		MTXCopy(*mGroundActor->getRootJointMtx(), mtx);
+	MTXInverse(mtx, mtx);
+	MTXMultVec(mtx, &mPosition, &mRidePos);
+}
+
+BOOL TLiveActor::belongToGround() const
+{
+	if (mGroundPlane && mGroundPlane->isLegal()
+	    && mGroundPlane->getActor() != nullptr && !isAirborne())
+		return true;
+
+	return false;
+}
+
+void TLiveActor::calcRideMomentum()
+{
+	if (unkE8 == 0)
+		return;
+
+	if (belongToGround()) {
+		if (mGroundActor == nullptr
+		    || mGroundActor != mGroundPlane->getActor()) {
+			mGroundActor = mGroundPlane->getActor();
+			calcRidePos();
+
+			if (unkE8 >= 2 && mGroundActor != nullptr)
+				mGroundActorYaw = mGroundActor->mRotation.y;
+		} else {
+			Mtx mtx;
+			if (!mGroundActor->getRootJointMtx())
+				SMS_GetActorMtx(*mGroundActor, mtx);
+			else
+				MTXCopy(*mGroundActor->getRootJointMtx(), mtx);
+
+			// Did they call this function calcRideMomentum because they
+			// didn't know the difference between momentum and velocity?
+			JGeometry::TVec3<f32> rideVelocity;
+			// mRidePos is from last frame here
+			MTXMultVec(mtx, &mRidePos, &rideVelocity);
+			rideVelocity -= mPosition;
+			mPositionDelta += rideVelocity;
+
+			if (unkE8 >= 2) {
+				mRotationDelta.y
+				    += MsAngleDiff(mGroundActor->mRotation.y, mGroundActorYaw);
+				mGroundActorYaw = mGroundActor->mRotation.y;
+			}
+		}
+	} else {
+		mGroundActor = nullptr;
+	}
+}
+
+J3DModel* TLiveActor::getModel() const { return mMActor->mModel; }
+
+Mtx* TLiveActor::getRootJointMtx() const { return nullptr; }
+
+void TLiveActor::initLodAnm(const TLodAnmIndex* param_1, int param_2,
+                            f32 param_3)
+{
+	if (!unkD0)
+		unkD0 = new TLodAnm(this, param_1, param_2, param_3);
+}
+
+void TLiveActor::init(TLiveManager* manager)
+{
+	if (!manager) {
+		if (TObjChara* chara = (TObjChara*)mCharacter) {
+			mMActorKeeper = new TMActorKeeper(nullptr, 1);
+			// TODO: could be TSMSSmplChara instead
+			mMActor = mMActorKeeper->createMActorFromDefaultBmd(
+			    chara->getFolder(), 0);
+		}
+		gpConductor->registerAloneActor(this);
+	} else {
+		mManager      = manager;
+		mMActorKeeper = new TMActorKeeper(mManager, 1);
+		mManager->manageActor(this);
+		mMActor = mMActorKeeper->createMActorFromNthData(0, 0);
+	}
+
+	initHitActor(0, 1, 0, mBodyRadius, mHeadHeight, mBodyRadius, mHeadHeight);
+
+	onHitFilter(HIT_FILTER_NO_COLLISION);
+	offLiveFlag(LIVE_FLAG_FORCE_SHADOW);
+
+	if (!mAnmSound)
+		initAnmSound();
+}
+
+void TLiveActor::load(JSUMemoryInputStream& stream)
+{
+	JDrama::TActor::load(stream);
+
+	char buffer[256];
+	stream.readString(buffer, 256);
+	TLiveManager* mgr
+	    = static_cast<TLiveManager*>(JDrama::TNameRefGen::search(buffer));
+#ifdef SMS_PORT
+	// w12: SMS_PORT_TRACE=obj object list (port_trace_actor in Application.cpp), read-only
+	port_trace_actor("live", "-", getName(), mPosition.x, mPosition.y, mPosition.z);
+#endif
+
+	mGroundPlane = TMap::getIllegalCheckData();
+
+	init(mgr);
+}
+
+void TLiveActor::bind()
+{
+	if (checkLiveFlag(LIVE_FLAG_UNK10))
+		return;
+
+	if (mBinder != nullptr) {
+		mBinder->bind(this);
+		return;
+	}
+
+	JGeometry::TVec3<f32> nextPos = mPosition;
+	nextPos += mPositionDelta;
+	nextPos += mVelocity;
+
+	// Apply gravity & air resistance
+	mVelocity.y -= getGravityY();
+	if (mVelocity.y < -40.0f)
+		mVelocity.y = -40.0f;
+
+	// Handle vertical collisions
+	{
+		if (checkLiveFlag(LIVE_FLAG_UNK1000)) {
+			mGroundHeight = gpMap->checkGroundIgnoreWaterSurface(
+			    nextPos.x, nextPos.y + mHeadHeight, nextPos.z, &mGroundPlane);
+		} else {
+			mGroundHeight = gpMap->checkGround(
+			    nextPos.x, nextPos.y + mHeadHeight, nextPos.z, &mGroundPlane);
+		}
+		mGroundHeight += 1.0f;
+
+		// Will we hit the ground next frame?
+		if (nextPos.y <= mGroundHeight + 0.05f) {
+			if (mGroundPlane->isIllegalData())
+				kill();
+			offLiveFlag(LIVE_FLAG_AIRBORNE);
+			mVelocity.set(0.0f, 0.0f, 0.0f);
+			nextPos.y = mGroundHeight;
+		} else {
+			onLiveFlag(LIVE_FLAG_AIRBORNE);
+		}
+	}
+
+	// Handle horizontal collisions
+	gpMap->isTouchedOneWallAndMoveXZ(&nextPos.x, nextPos.y + mHeadHeight,
+	                                 &nextPos.z, mBodyRadius);
+
+	// We're done, this is the displacement for this frame
+	mPositionDelta = nextPos - mPosition;
+}
+
+void TLiveActor::control()
+{
+	if (unk90 == nullptr || unk90->mStepsToDo == 0) {
+		if (mSpine)
+			mSpine->update();
+	} else if (!mSpine) {
+		if (unk90 != nullptr && unk90->mStepsToDo != 0)
+			unk90->update();
+	} else if (mSpine->getCurrentNerve() != nullptr
+	           || mSpine->getVertebraeCount() > 0) {
+		mSpine->update();
+	} else {
+		unk90->update();
+	}
+}
+
+void TLiveActor::calcRootMatrix()
+{
+	J3DModel* model = mMActor->getModel();
+	MsMtxSetXYZRPH(model->getBaseTRMtx(), mPosition.x, mPosition.y, mPosition.z,
+	               mRotation.x, mRotation.y, mRotation.z);
+	model->setBaseScale(mScaling);
+}
+
+void TLiveActor::kill()
+{
+	mLiveFlag |= LIVE_FLAG_DEAD;
+	mLiveFlag |= LIVE_FLAG_UNK40;
+}
+
+BOOL TLiveActor::receiveMessage(THitActor*, u32) { return FALSE; }
+
+u32 TLiveActor::getShadowType() { return SHADOW_TYPE_CIRCLE; }
+
+void TLiveActor::setGroundCollision()
+{
+	if (!mMapCollisionManager)
+		return;
+
+	mMapCollisionManager->moveActiveCollisionSRT(mPosition, mRotation,
+	                                             mScaling);
+}
+
+void TLiveActor::moveObject()
+{
+	ensureTakeSituation();
+
+	mPositionDelta.zero();
+	mRotationDelta.zero();
+
+	control();
+	calcRideMomentum();
+	bind();
+
+	mPosition += mPositionDelta;
+	mRotation += mRotationDelta;
+
+	setGroundCollision();
+	calcRidePos();
+}
+
+void TLiveActor::requestShadow()
+{
+	if (mLiveFlag & (LIVE_FLAG_DEAD | LIVE_FLAG_HIDDEN | LIVE_FLAG_UNK8))
+		return;
+
+	if (!(mLiveFlag & (LIVE_FLAG_UNK200 | LIVE_FLAG_CLIPPED_OUT))
+	    || (mLiveFlag & LIVE_FLAG_FORCE_SHADOW)) {
+		TCircleShadowRequest shadow;
+
+		shadow.mPosition = mPosition;
+
+		if (!isAirborne()) {
+			shadow.mPosition.y       = mGroundHeight;
+			shadow.mNeedsGroundCheck = false;
+		}
+
+		shadow.mRadiusX = shadow.mRadiusZ = mScaledBodyRadius;
+
+		shadow.mShadowType = getShadowType();
+		shadow.mRotationY  = mRotation.y;
+
+		if (mLiveFlag & LIVE_FLAG_FORCE_SHADOW) {
+			gpBindShadowManager->forceRequest(shadow, getActorType());
+		} else {
+			gpBindShadowManager->request(shadow, getActorType());
+		}
+	}
+
+	if (!(mLiveFlag & (LIVE_FLAG_UNK200 | LIVE_FLAG_CLIPPED_OUT))
+	    && !isHitCategory(HIT_CATEGORY_MAP_OBJECT)) {
+		gpQuestionManager->request(mPosition, mScaledBodyRadius);
+	}
+}
+
+void TLiveActor::drawObject(JDrama::TGraphics*)
+{
+	if (mLiveFlag & (LIVE_FLAG_DEAD | LIVE_FLAG_HIDDEN) || !mMActor)
+		return;
+
+	mMActor->setLightData(mGroundPlane, mPosition);
+	mMActor->entry();
+}
+
+#ifdef SMS_PORT_AURORA
+// Multiplayer object sync (task board P8, port_mp_objects.cpp): while any actor is driven by
+// another player (gPortMpObjPuppets > 0), port_mp_obj_puppet_move() gives such an actor its
+// pose from the network instead of its own movement. 0 outside a session: single player
+// takes the plain path below.
+extern "C" int gPortMpObjPuppets;
+extern "C" int port_mp_obj_puppet_move(TLiveActor* actor);
+#endif
+
+void TLiveActor::perform(u32 cue, JDrama::TGraphics* graphics)
+{
+	if (mLiveFlag & (LIVE_FLAG_UNK200 | LIVE_FLAG_DEAD))
+		return;
+
+#ifdef SMS_PORT_AURORA
+	if ((cue & CUE_MOVE) && (gPortMpObjPuppets == 0 || !port_mp_obj_puppet_move(this)))
+		moveObject();
+#else
+	if (cue & CUE_MOVE)
+		moveObject();
+#endif
+
+	if (cue & CUE_CALC_ANIM)
+		updateAnmSound();
+
+	if (mMActor) {
+#if defined(VERSION_GMSP01) && !defined(VERSION_GMSE01)
+		f32 frame;
+#endif
+		if (cue & CUE_CALC_ANIM) {
+			mMActor->frameUpdate();
+#if defined(VERSION_GMSP01) && !defined(VERSION_GMSE01)
+			if (mLiveFlag & LIVE_FLAG_CALC_INT_FRAME) {
+				J3DFrameCtrl* ctrl = mMActor->getFrameCtrl(0);
+				frame              = ctrl->getFrame();
+				ctrl->setFrame((int)frame);
+			}
+#endif
+		}
+
+		if (cue & CUE_CALC_VIEW)
+			requestShadow();
+
+		if (!(mLiveFlag & (LIVE_FLAG_HIDDEN | LIVE_FLAG_CLIPPED_OUT))) {
+			if (cue & CUE_CALC_ANIM) {
+				calcRootMatrix();
+				mMActor->calc();
+#if defined(VERSION_GMSP01) && !defined(VERSION_GMSE01)
+				if (mLiveFlag & LIVE_FLAG_CALC_INT_FRAME)
+					mMActor->getFrameCtrl(0)->setFrame(frame);
+#endif
+			}
+
+			if (cue & CUE_CALC_VIEW)
+				mMActor->viewCalc();
+
+			if (cue & CUE_ENTRY)
+				drawObject(graphics);
+		}
+	}
+}
+
+void TLiveActor::performOnlyDraw(u32 cue, JDrama::TGraphics* graphics)
+{
+	if (mLiveFlag & (LIVE_FLAG_UNK200 | LIVE_FLAG_DEAD))
+		return;
+	if (!mMActor)
+		return;
+
+	if (cue & CUE_CALC_VIEW)
+		requestShadow();
+
+	if (!(mLiveFlag & (LIVE_FLAG_HIDDEN | LIVE_FLAG_CLIPPED_OUT))) {
+		if (cue & CUE_CALC_ANIM) {
+			calcRootMatrix();
+			mMActor->calc();
+		}
+
+		if (cue & CUE_CALC_VIEW)
+			mMActor->viewCalc();
+
+		if (cue & CUE_ENTRY)
+			drawObject(graphics);
+	}
+}
+
+JGeometry::TVec3<f32>
+TLiveActor::calcVelocityToJumpToY(const JGeometry::TVec3<f32>& param_1,
+                                  f32 speed, f32 gravity) const
+{
+	JGeometry::TVec3<f32> vec;
+	SMSCalcJumpVelocityY(param_1, mPosition, speed, gravity, -40.0f, &vec);
+	return vec;
+}
+
+f32 TLiveActor::getGravityY() const { return mGravity; }
+
+BOOL TLiveActor::hasMapCollision() const
+{
+	return mMapCollisionManager ? 1 : 0;
+}
+
+int TLiveActor::getJointTransByIndex(int param_1,
+                                     JGeometry::TVec3<f32>* param_2) const
+{
+	if (mMActor == nullptr) {
+		*param_2 = mPosition;
+		return -1;
+	}
+
+	if (mLiveFlag & LIVE_FLAG_CLIPPED_OUT) {
+		*param_2 = mPosition;
+		return param_1;
+	}
+
+	MtxPtr mtx = mMActor->mModel->getAnmMtx(param_1);
+	param_2->set(mtx[0][3], mtx[1][3], mtx[2][3]);
+	return param_1;
+}
+
+JGeometry::TVec3<f32> TLiveActor::getFocalPoint() const { return mPosition; }
+
+MtxPtr TLiveActor::getTakingMtx()
+{
+	if (!mMActor)
+		return nullptr;
+
+	return mMActor->getModel()->getBaseTRMtx();
+}
+
+void TLiveActor::initAnmSound()
+{
+	if (mAnmSound)
+		return;
+
+	if (isHitCategory(HIT_CATEGORY_NPC))
+		mAnmSound = new MAnmSoundNPC(SMSGetMSound());
+	else
+		mAnmSound = new MAnmSound(SMSGetMSound());
+
+	mAnmSound->initAnmSound(nullptr, 1, 0.0f);
+}
+
+void TLiveActor::updateAnmSound()
+{
+	if (!mAnmSound)
+		return;
+	if (!mAnmSoundPath)
+		return;
+
+	J3DFrameCtrl* ctrl = mMActor->getFrameCtrl(ANM_TYPE_BCK);
+	mAnmSound->animeLoop(&mPosition, ctrl->getFrame(), ctrl->getRate(), 0, 4);
+}
+
+void TLiveActor::setAnmSound(const char* path)
+{
+	if (!mAnmSound)
+		OSPanic(
+		    __FILE__,
+		    VERSION_SELECT(GMSJ01(0x385), GMSE01(0x386), GMSP01_ONLY(0x385)),
+		    "TLiveActor[%s] : mAnmSound == NULL\n", mName);
+
+	mAnmSoundPath = path;
+
+	if (mAnmSoundPath != nullptr) {
+		void* res = JKRFileLoader::getGlbResource(mAnmSoundPath);
+		mAnmSound->initAnmSound(res, 1, 0.0f);
+	} else {
+		mAnmSound->initAnmSound(nullptr, 1, 0.0f);
+	}
+}
+
+void TLiveActor::setCurAnmSound()
+{
+	const char* name = nullptr;
+
+	if (mMActor) {
+		int idx = mMActor->getCurAnmIdx(ANM_TYPE_BCK);
+		if (idx >= 0)
+			name = getBas(idx);
+	}
+
+	setAnmSound(name);
+}
+
+const char** TLiveActor::getBasNameTable() const { return nullptr; }
+
+void TLiveActor::stopAnmSound()
+{
+	if (mAnmSound && mAnmSoundPath)
+		mAnmSound->stop();
+}

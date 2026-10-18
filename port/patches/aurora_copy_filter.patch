@@ -1,0 +1,187 @@
+--- a/include/dolphin/gx/GXAurora.h
++++ b/include/dolphin/gx/GXAurora.h
+@@ -78,6 +78,8 @@
+ #define GX_AURORA_BEGIN_OFFSCREEN 0x0039
+ 
+ #define GX_AURORA_END_OFFSCREEN 0x003A
++// SMS PC port patch (aurora_copy_filter.patch): GXSetCopyFilter's vertical filter.
++#define GX_AURORA_LOAD_COPY_FILTER 0x003B
+ 
+ /**
+  * Draw primitives with the vertex count derived from a byte length, as written by
+--- a/lib/gx/gx.hpp
++++ b/lib/gx/gx.hpp
+@@ -405,6 +405,9 @@
+   u32 texCopyDstWidth = 0;
+   u32 texCopyDstHeight = 0;
+   bool texCopyDstWide = false;
++  // SMS PC port patch (aurora_copy_filter.patch): GXSetCopyFilter vertical filter weights
++  // (out of 64) for the lines above, at and below, packed as bytes; 0 = off.
++  u32 copyVFilter = 0;
+   const void* texCopyDest = nullptr;
+   absl::flat_hash_map<const void*, CopyTextureRef> copyTextures;
+   absl::flat_hash_map<CopyTextureKey, CopyTextureRef> copyTextureCache;
+--- a/lib/gx/command_processor.cpp
++++ b/lib/gx/command_processor.cpp
+@@ -689,6 +689,8 @@
+     g_gxState.texCopyFmt = static_cast<GXTexFmt>(reader.read<u32>());
+     reader.skip(1); // mipmap is not implemented, but remains part of the command payload
+     g_gxState.texCopyDstWide = true;
++  } else if (subCmd == GX_AURORA_LOAD_COPY_FILTER) { // SMS PC port patch (aurora_copy_filter.patch)
++    g_gxState.copyVFilter = reader.read<u32>();
+   } else if (subCmd == GX_AURORA_LOAD_COPY_DEST) {
+     g_gxState.texCopyDest = reinterpret_cast<const void*>(reader.read<u64>());
+   } else if (subCmd == GX_AURORA_REQUEST_DEPTH_SNAPSHOT) {
+--- a/lib/dolphin/gx/GXFrameBuffer.cpp
++++ b/lib/dolphin/gx/GXFrameBuffer.cpp
+@@ -59,8 +59,15 @@
+   const auto clearColor = clear && g_gxState.colorUpdate;
+   const auto clearAlpha = clear && g_gxState.alphaUpdate && efb_has_alpha(g_gxState.pixelFmt);
+   const auto clearDepth = clear && g_gxState.depthUpdate;
++  // SMS PC port patch (aurora_copy_filter.patch): vertical copy filter, one logical EFB line
++  // in render-target pixels.
++  const auto [logicalW, logicalH] = logical_fb_size();
++  const auto [targetW, targetH] = gfx::get_render_target_size();
++  const float lineHeight =
++      logicalH != 0 ? static_cast<float>(targetH) / static_cast<float>(logicalH) : 1.f;
+   gfx::resolve_pass_into(handle.handle, rect, clearColor, clearAlpha, clearDepth, g_gxState.clearColor,
+-                         clear_depth_value(), texCopyFmt, g_gxState.pixelFmt);
++                         clear_depth_value(), texCopyFmt, g_gxState.pixelFmt,
++                         gx::is_depth_format(texCopyFmt) ? 0u : g_gxState.copyVFilter, lineHeight);
+   ++handle.revision;
+   g_gxState.copyTextures[dest] = handle;
+   texture::invalidate_bindings();
+@@ -199,7 +206,25 @@
+   __gx->bpSent = 1;
+ }
+ 
+-void GXSetCopyFilter(GXBool aa, u8 sample_pattern[12][2], GXBool vf, u8 vfilter[7]) {}
++// SMS PC port patch (aurora_copy_filter.patch): the vertical filter of texture copies. The
++// seven coefficients weight the lines above (0, 1), at (2, 3, 4) and below (5, 6) each output
++// line, out of 64. vf == GX_FALSE is the hardware default {0, 0, 21, 22, 21, 0, 0}, i.e. no
++// filter. The anti-aliasing sample pattern has no meaning for the single-sampled EFB.
++void GXSetCopyFilter(GXBool aa, u8 sample_pattern[12][2], GXBool vf, u8 vfilter[7]) {
++  (void)aa;
++  (void)sample_pattern;
++  u32 packed = 0;
++  if (vf != GX_FALSE && vfilter != nullptr) {
++    const u32 above = vfilter[0] + vfilter[1];
++    const u32 at = vfilter[2] + vfilter[3] + vfilter[4];
++    const u32 below = vfilter[5] + vfilter[6];
++    if (above != 0 || below != 0 || at != 64) {
++      packed = std::min(above, 255u) | (std::min(at, 255u) << 8) | (std::min(below, 255u) << 16) | (1u << 24);
++    }
++  }
++  GX_WRITE_AURORA(GX_AURORA_LOAD_COPY_FILTER);
++  GX_WRITE_U32(packed);
++}
+ 
+ void GXSetDispCopyGamma(GXGamma gamma) {}
+ 
+--- a/lib/gfx/recording.hpp
++++ b/lib/gfx/recording.hpp
+@@ -100,7 +100,10 @@
+ 
+ void resolve_pass_into(TextureHandle texture, ClipRect rect, bool clearColor, bool clearAlpha, bool clearDepth,
+                        Vec4<float> clearColorValue, float clearDepthValue, GXTexFmt resolveFormat,
+-                       GXPixelFmt sourceFormat);
++                       GXPixelFmt sourceFormat,
++                       // SMS PC port patch (aurora_copy_filter.patch): packed GXSetCopyFilter
++                       // weights (0 = off) and one source line in render-target pixels.
++                       uint32_t vfilter = 0, float vfilterLine = 1.f);
+ uint32_t align_uniform(uint32_t value);
+ Vec2<uint32_t> get_render_target_size() noexcept;
+ void set_viewport(const Viewport& viewport) noexcept;
+--- a/lib/gfx/recording.cpp
++++ b/lib/gfx/recording.cpp
+@@ -825,19 +825,22 @@
+ 
+ void resolve_pass_into(TextureHandle texture, ClipRect rect, bool clearColor, bool clearAlpha, bool clearDepth,
+                        Vec4<float> clearColorValue, float clearDepthValue, GXTexFmt resolveFormat,
+-                       GXPixelFmt sourceFormat) {
++                       GXPixelFmt sourceFormat, uint32_t vfilter, float vfilterLine) {
+   // Resolve current render pass
+   auto& prevPass = current_render_passes()[g_recorder.currentRenderPass];
+   prevPass.resolveTarget = std::move(texture);
+   prevPass.resolveRect = rect;
+   prevPass.resolveFormat = resolveFormat;
+   prevPass.resolveSourceFormat = sourceFormat;
++  prevPass.resolveVFilter = vfilter; // SMS PC port patch (aurora_copy_filter.patch)
+   const auto srcW = static_cast<float>(prevPass.colorAttachments[SceneColorAttachmentIndex].size.width);
+   const auto srcH = static_cast<float>(prevPass.colorAttachments[SceneColorAttachmentIndex].size.height);
+   const tex_copy_conv::Uniforms uniforms{
+       .offset = {static_cast<float>(rect.x) / srcW, static_cast<float>(rect.y) / srcH},
+       .scale = {static_cast<float>(rect.width) / srcW, static_cast<float>(rect.height) / srcH},
+       .opaqueAlpha = !gx::efb_has_alpha(sourceFormat),
++      .vfilter = vfilter,
++      .vfilterStep = vfilterLine / srcH,
+   };
+   prevPass.resolveUniformRange = push_uniform(uniforms);
+   enqueue_pass(current_frame_packet(), g_recorder.currentRenderPass);
+--- a/lib/gfx/frame_packet.hpp
++++ b/lib/gfx/frame_packet.hpp
+@@ -90,6 +90,7 @@
+   GXPixelFmt resolveSourceFormat = GX_PF_RGBA6_Z24;
+   ClipRect resolveRect;
+   Range resolveUniformRange;
++  uint32_t resolveVFilter = 0; // SMS PC port patch (aurora_copy_filter.patch): non-zero forces the filtered blit
+   wgpu::Texture snapshotColorDst;
+   wgpu::TextureView snapshotDepthDst;
+   wgpu::Texture snapshotNormalDst;
+--- a/lib/gfx/tex_copy_conv.hpp
++++ b/lib/gfx/tex_copy_conv.hpp
+@@ -17,7 +17,12 @@
+   Vec2<float> offset;
+   Vec2<float> scale{1.f, 1.f};
+   uint32_t opaqueAlpha = 0;
+-  std::array<uint32_t, 3> _pad{};
++  // SMS PC port patch (aurora_copy_filter.patch): GXSetCopyFilter vertical filter, weights
++  // (out of 64) for the lines above/at/below packed as bytes 0..2 (0 = off), and one EFB line
++  // in source UV units.
++  uint32_t vfilter = 0;
++  float vfilterStep = 0.f;
++  uint32_t _pad = 0;
+ };
+ static_assert(sizeof(Uniforms) == 32);
+ 
+--- a/lib/gfx/tex_copy_conv.cpp
++++ b/lib/gfx/tex_copy_conv.cpp
+@@ -28,6 +28,8 @@
+     offset: vec2f,
+     scale: vec2f,
+     opaqueAlpha: u32,
++    vfilter: u32,
++    vfilterStep: f32,
+ };
+ @group(0) @binding(2) var<uniform> ubuf: Uniforms;
+ 
+@@ -55,7 +57,16 @@
+ }
+ 
+ fn sample_efb(uv: vec2f) -> vec4f {
+-    let c = textureSample(src, src_samp, uv);
++    var c = textureSample(src, src_samp, uv);
++    // SMS PC port patch (aurora_copy_filter.patch): GXSetCopyFilter's vertical filter over
++    // the EFB lines above, at and below (weights out of 64).
++    if (ubuf.vfilter != 0u) {
++        let w = vec3f(f32(ubuf.vfilter & 0xFFu), f32((ubuf.vfilter >> 8u) & 0xFFu),
++                      f32((ubuf.vfilter >> 16u) & 0xFFu)) / 64.0;
++        let up = textureSample(src, src_samp, uv - vec2f(0.0, ubuf.vfilterStep));
++        let down = textureSample(src, src_samp, uv + vec2f(0.0, ubuf.vfilterStep));
++        c = clamp(up * w.x + c * w.y + down * w.z, vec4f(0.0), vec4f(1.0));
++    }
+     return vec4f(c.rgb, select(c.a, 1.0, ubuf.opaqueAlpha != 0u));
+ }
+ 
+--- a/lib/gfx/encoding.cpp
++++ b/lib/gfx/encoding.cpp
+@@ -276,7 +276,8 @@
+         passInfo.resolveTarget->format == passInfo.colorAttachments[SceneColorAttachmentIndex].format;
+     if (needsConversion) {
+       tex_copy_conv::run(cmd, convReq);
+-    } else if (needsScaling || needsOpaqueAlpha || !sameFormat) {
++    } else if (needsScaling || needsOpaqueAlpha || !sameFormat || passInfo.resolveVFilter != 0) {
++      // (SMS PC port patch aurora_copy_filter.patch: a vertical copy filter needs the shader blit.)
+       tex_copy_conv::blit(cmd, convReq);
+     } else {
+       const webgpu::gpu_prof::Zone zone{cmd, "EFB copy"};

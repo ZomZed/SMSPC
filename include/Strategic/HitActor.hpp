@@ -1,0 +1,129 @@
+#ifndef STRATEGIC_HIT_ACTOR_HPP
+#define STRATEGIC_HIT_ACTOR_HPP
+
+#include <JSystem/JDrama/JDRActor.hpp>
+#include <Strategic/ActorTypes.hpp>
+
+enum THitMessageType {
+	HIT_MESSAGE_TRAMPLE          = 0x0,
+	HIT_MESSAGE_HIP_DROP         = 0x1,
+	HIT_MESSAGE_PUSH_UP          = 0x2,
+	HIT_MESSAGE_SUPER_HIP_DROP   = 0x3,
+	HIT_MESSAGE_TAKE             = 0x4,
+	HIT_MESSAGE_UNK5             = 0x5,
+	HIT_MESSAGE_PUT              = 0x6,
+	HIT_MESSAGE_THROWN           = 0x7,
+	HIT_MESSAGE_UNK8             = 0x8,
+	HIT_MESSAGE_UNK9             = 0x9,
+	HIT_MESSAGE_UNKA             = 0xA, // burn?
+	HIT_MESSAGE_UNKB             = 0xB,
+	HIT_MESSAGE_PUNCH            = 0xC,
+	HIT_MESSAGE_UNKD             = 0xD,
+	HIT_MESSAGE_ATTACK           = 0xE, // TODO: attack -> touch?!
+	HIT_MESSAGE_SPRAYED_BY_WATER = 0xF,
+	HIT_MESSAGE_UNK10            = 0x10,
+	HIT_MESSAGE_UNK11            = 0x11,
+	HIT_MESSAGE_UNK12            = 0x12,
+};
+
+enum THitFilterBits {
+	HIT_FILTER_NO_COLLISION = 0x1,
+	HIT_FILTER_NO_ATTACK    = 0x2,
+	HIT_FILTER_NO_DAMAGE    = 0x4,
+};
+
+class THitActor : public JDrama::TActor {
+public:
+	THitActor(const char* = "HitActor");
+
+	virtual ~THitActor() { }
+
+	virtual void perform(u32 cue, JDrama::TGraphics* graphics);
+	virtual BOOL receiveMessage(THitActor* sender, u32 message)
+	{
+		return false;
+	}
+
+	void initHitActor(u32 actor_type, u16 max_collisions, int hit_filter,
+	                  f32 attack_radius, f32 attack_height, f32 damage_radius,
+	                  f32 damage_height);
+	void calcEntryRadius();
+
+	// fabricated
+	u32 getActorType() const { return mActorType; }
+	u32 getHitCategory() const { return mActorType & HIT_CATEGORY_MASK; }
+	bool isHitCategory(u32 category) const
+	{
+		return mActorType & category ? true : false;
+	}
+	bool isActorType(u32 flag) const
+	{
+		return mActorType == flag ? true : false;
+	}
+
+	bool canAttack(THitActor* other) const
+	{
+		return checkHitFilter(other->getHitCategory()) ? true : false;
+	}
+
+	THitActor* getCollision(int i) { return mCollisions[i]; }
+	u16 getColNum() { return mColCount; }
+	bool checkHitFilter(u32 flag) const { return mHitFilter & flag; }
+	void onHitFilter(u32 flag) { mHitFilter |= flag; }
+	void offHitFilter(u32 flag) { mHitFilter &= ~flag; }
+	f32 getAttackRadius() const { return mAttackRadius; }
+	f32 getAttackHeight() const { return mAttackHeight; }
+	f32 getDamageRadius() const { return mDamageRadius; }
+	f32 getDamageHeight() const { return mDamageHeight; }
+
+	void setAttackRadius(f32 v)
+	{
+		mAttackRadius = v;
+		calcEntryRadius();
+	}
+	void setAttackHeight(f32 v)
+	{
+		mAttackHeight = v;
+		calcEntryRadius();
+	}
+	void setDamageRadius(f32 v)
+	{
+		mDamageRadius = v;
+		calcEntryRadius();
+	}
+	void setDamageHeight(f32 v)
+	{
+		mDamageHeight = v;
+		calcEntryRadius();
+	}
+	void setDamageParams(f32 damage_radius, f32 damage_height)
+	{
+		mDamageRadius = damage_radius;
+		mDamageHeight = damage_height;
+		calcEntryRadius();
+	}
+	void setHitParams(f32 attack_radius, f32 attack_height, f32 damage_radius,
+	                  f32 damage_height)
+	{
+		mAttackRadius = attack_radius;
+		mAttackHeight = attack_height;
+		mDamageRadius = damage_radius;
+		mDamageHeight = damage_height;
+		calcEntryRadius();
+	}
+	f32 getEntryRadius() const { return mEntryRadius; }
+
+public:
+	/* 0x44 */ THitActor** mCollisions;
+	/* 0x48 */ u16 mColCount;
+	/* 0x4A */ u16 mColCapacity;
+	/* 0x4C */ int mActorType;
+	/* 0x50 */ f32 mAttackRadius;
+	/* 0x54 */ f32 mAttackHeight;
+	/* 0x58 */ f32 mDamageRadius;
+	/* 0x5C */ f32 mDamageHeight;
+	/* 0x60 */ f32 mEntryRadius;
+	/* 0x64 */ u32 mHitFilter;
+};
+
+#endif

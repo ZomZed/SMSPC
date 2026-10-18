@@ -1,0 +1,1030 @@
+#include <MoveBG/MapObjBase.hpp>
+#include <MoveBG/MapObjTurn.hpp>
+#include <MoveBG/MapObjMessenger.hpp>
+#include <MoveBG/MapObjLibWave.hpp>
+#include <MoveBG/MapObjVibration.hpp>
+#include <MoveBG/MapObjWave.hpp>
+#include <MoveBG/MapObjTown.hpp>
+#include <Enemy/Conductor.hpp>
+#include <Enemy/EffectObj.hpp>
+#include <System/EmitterViewObj.hpp>
+#include <System/MarDirector.hpp>
+#include <Player/MarioAccess.hpp>
+#include <Player/ModelWaterManager.hpp>
+#include <MarioUtil/PacketUtil.hpp>
+#include <M3DUtil/MActor.hpp>
+#include <Map/Map.hpp>
+#include <Map/MapData.hpp>
+#include <Map/MapModel.hpp>
+#include <MoveBG/ItemManager.hpp>
+#include <MarioUtil/MathUtil.hpp>
+#include <JSystem/JMath.hpp>
+#include <Map/MapCollisionEntry.hpp>
+#include <JSystem/J3D/J3DGraphAnimator/J3DModel.hpp>
+#include <JSystem/J3D/J3DGraphAnimator/J3DJoint.hpp>
+#include <JSystem/JParticle/JPAEmitter.hpp>
+#include <JSystem/JParticle/JPAMath.hpp>
+#include <JSystem/JDrama/JDRNameRefGen.hpp>
+#include <JSystem/JGeometry/JGRotation3.hpp>
+#include <JSystem/JGeometry/JGMatrix33.hpp>
+#include <JSystem/JGeometry/JGMatrix34.hpp>
+#include <stdlib.h>
+#include <ctype.h>
+
+// rogue includes needed for matching sinit & bss
+#include <MSound/MSSetSound.hpp>
+#include <MSound/MSoundBGM.hpp>
+
+bool TMapObjBase::isHideObj(THitActor* param_1)
+{
+	if (param_1->isActorType(ACTOR_TYPE_HELP_ACTOR)
+	    || param_1->isActorType(ACTOR_TYPE_KOOPA_JR_SIGN_M)
+	    || param_1->isActorType(ACTOR_TYPE_CHIP_SHINE)
+	    || param_1->isActorType(ACTOR_TYPE_SIGN_CIRCLE)
+	    || param_1->isActorType(ACTOR_TYPE_SIGN_CROSS)
+	    || param_1->isActorType(ACTOR_TYPE_SIGN_TRIANGLE)
+	    || param_1->isActorType(ACTOR_TYPE_STAR_SIGN)
+	    || param_1->isActorType(ACTOR_TYPE_MAP_OBJ_TREE_SCALE))
+		return true;
+
+	return false;
+}
+
+bool TMapObjBase::isDemo()
+{
+	if (SMSGetMarDirector()->isTalkModeNow()
+	    || SMSGetMarDirector()->isDemoModeNow())
+		return true;
+	return false;
+}
+
+void TMapObjBase::loadHideObjInfo(JSUMemoryInputStream& stream, s32* param_2,
+                                  f32* appear_speed, f32* appear_y_speed,
+                                  s32* param_5)
+{
+	stream >> *param_2;
+	f32 val;
+	stream >> val;
+	*appear_speed = val * 0.06f;
+	stream >> val;
+	if (val < 0.0f)
+		val = 20.0f;
+	*appear_y_speed = val;
+	s32 val2;
+	stream >> val2;
+	if (val2 <= 0)
+		val2 = 1200;
+	else
+		val2 *= 10;
+	*param_5 = val2;
+}
+
+void TMapObjBase::checkOnManhole()
+{
+    // FAKEMATCH(frame): 32 bytes; real construct unknown
+    volatile u32 pad[8]; (void)pad;
+	mGroundHeight = gpMap->checkGround(mPosition.x, mPosition.y + 20.0f,
+	                                   mPosition.z, &mGroundPlane);
+	if (mGroundPlane->mActor
+	    && mGroundPlane->mActor->isActorType(ACTOR_TYPE_MANHOLE)) {
+		((TManhole*)mGroundPlane->mActor)->makeManholeUnuseful(this);
+	}
+}
+
+void TMapObjBase::throwObjToOverhead(TMapObjBase* param_1, f32 param_2,
+                                     f32 param_3) const
+{
+}
+
+void TMapObjBase::throwObjToFront(TMapObjBase* object, f32 y_offset, f32 speed,
+                                  f32 vertical_speed) const
+{
+	object->appear();
+	object->mPosition.set(mPosition.x, mPosition.y + y_offset, mPosition.z);
+	if (mMActor) {
+		MtxPtr mtx = getModel()->getAnmMtx(0);
+		object->mVelocity.set(mtx[0][2] * speed,
+		                      mtx[1][2] * speed + vertical_speed,
+		                      mtx[2][2] * speed);
+		object->offLiveFlag(LIVE_FLAG_UNK10);
+	} else {
+		Mtx mtx;
+		MsMtxSetRotRPH(mtx, mRotation.x, mRotation.y, mRotation.z);
+		object->mVelocity.set(mtx[0][2] * speed,
+		                      mtx[1][2] * speed + vertical_speed,
+		                      mtx[2][2] * speed);
+		object->offLiveFlag(LIVE_FLAG_UNK10);
+	}
+}
+
+void TMapObjBase::throwObjToFrontFromPoint(TMapObjBase* object,
+                                           const JGeometry::TVec3<f32>& point,
+                                           f32 speed, f32 y_speed) const
+{
+	object->appear();
+	object->mPosition.set(point);
+	if (mMActor) {
+		MtxPtr mtx = getModel()->getAnmMtx(0);
+		object->mVelocity.set(mtx[0][2] * speed, mtx[1][2] * speed + y_speed,
+		                      mtx[2][2] * speed);
+		object->offLiveFlag(LIVE_FLAG_UNK10);
+	} else {
+		Mtx mtx;
+		MsMtxSetRotRPH(mtx, mRotation.x, mRotation.y, mRotation.z);
+		object->mVelocity.set(mtx[0][2] * speed, mtx[1][2] * speed + y_speed,
+		                      mtx[2][2] * speed);
+		object->offLiveFlag(LIVE_FLAG_UNK10);
+	}
+}
+
+void TMapObjBase::throwObjFromPointWithRot(TMapObjBase* param_1,
+                                           const JGeometry::TVec3<f32>& param_2,
+                                           const JGeometry::TVec3<f32>& param_3,
+                                           f32 param_4, f32 param_5)
+{
+	param_1->appear();
+	param_1->mPosition.set(param_2);
+
+	Mtx mtx;
+	MsMtxSetRotRPH(mtx, param_3.x, param_3.y, param_3.z);
+	param_1->mVelocity.set(mtx[0][2] * param_4, mtx[1][2] * param_4 + param_5,
+	                       mtx[2][2] * param_4);
+	param_1->offLiveFlag(LIVE_FLAG_UNK10);
+}
+
+bool TMapObjBase::isCoin(THitActor* param_1)
+{
+	if (param_1->isActorType(ACTOR_TYPE_COIN)
+	    || param_1->isActorType(ACTOR_TYPE_COIN_RED)
+	    || param_1->isActorType(ACTOR_TYPE_COIN_BLUE))
+		return true;
+
+	return false;
+}
+
+bool TMapObjBase::isFruit(THitActor* param_1)
+{
+	if (param_1->isActorType(ACTOR_TYPE_FRUIT_COCONUT)
+	    || param_1->isActorType(ACTOR_TYPE_FRUIT_PAPAYA)
+	    || param_1->isActorType(ACTOR_TYPE_FRUIT_PINE)
+	    || param_1->isActorType(ACTOR_TYPE_FRUIT_DURIAN)
+	    || param_1->isActorType(ACTOR_TYPE_FRUIT_BANANA)
+	    || param_1->isActorType(ACTOR_TYPE_RED_PEPPER))
+		return true;
+	return false;
+}
+
+void TMapObjBase::initPacketMatColor(J3DModel* param_1, GXTevRegID param_2,
+                                     const GXColorS10* param_3)
+{
+	for (u16 i = 0; i < param_1->getModelData()->getMaterialNum(); ++i)
+		SMS_InitPacket_OneTevColor(param_1, i, param_2, param_3);
+}
+
+void TMapObjBase::startAllAnim(MActor* param_1, const char* param_2)
+{
+	char lowerCased[128];
+	makeLowerStr(param_2, lowerCased);
+
+	if (param_1->checkAnmFileExist(lowerCased, ANM_TYPE_BCK))
+		param_1->setBck(lowerCased);
+	if (param_1->checkAnmFileExist(lowerCased, ANM_TYPE_BRK))
+		param_1->setBrk(lowerCased);
+	if (param_1->checkAnmFileExist(lowerCased, ANM_TYPE_BPK))
+		param_1->setBpk(lowerCased);
+	if (param_1->checkAnmFileExist(lowerCased, ANM_TYPE_BTP))
+		param_1->setBtp(lowerCased);
+	if (param_1->checkAnmFileExist(lowerCased, ANM_TYPE_BTK))
+		param_1->setBtk(lowerCased);
+}
+
+void TMapObjBase::joinToGroup(const char* param_1, THitActor* param_2)
+{
+	// TODO: The group type here is a wild guess
+	static_cast<JDrama::TViewObjPtrListT<THitActor>*>(
+	    JDrama::TNameRefGen::search(param_1))
+	    ->push_back(param_2);
+}
+
+TMapCollisionWarp*
+TMapObjBase::newAndInitBuildingCollisionWarp(int param_1, TLiveActor* param_2)
+{
+	TMapCollisionWarp* warp = new TMapCollisionWarp;
+	char buffer[64];
+	snprintf(buffer, 64, "/scene/map/map/building%02d.col", param_1);
+	warp->init(buffer, 0, param_2);
+	return warp;
+}
+
+TMapCollisionMove*
+TMapObjBase::newAndInitBuildingCollisionMove(int param_1, TLiveActor* param_2)
+{
+	TMapCollisionMove* move = new TMapCollisionMove;
+	char buffer[64];
+	snprintf(buffer, 64, "/scene/map/map/building%02d.col", param_1);
+	move->init(buffer, 0, param_2);
+	return move;
+}
+
+TMapCollisionStatic* TMapObjBase::newAndInitBuildingCollisionStatic(int,
+                                                                    TLiveActor*)
+{
+#ifdef SMS_PORT
+	return nullptr; // UNUSED stub, not in the original binary
+#endif
+}
+
+J3DJoint* TMapObjBase::getBuildingJoint(int i)
+{
+	return getBuildingJointObj(i)->getJoint();
+}
+
+TJointObj* TMapObjBase::getBuildingJointObj(int i)
+{
+	return gpMap->getModelManager()->getJointModel(0)->getChild(0)->getChild(
+	    (u16)i);
+}
+
+void TMapObjBase::getMapMActor() { }
+
+void TMapObjBase::getMapModelData() { }
+
+J3DModel* TMapObjBase::getMapModel()
+{
+	return gpMap->getRootJointModel()->getModel();
+}
+
+void TMapObjBase::calcMap() { getMapModel()->calc(); }
+
+void TMapObjBase::setJointScaleZ(J3DJoint*, f32) { }
+
+void TMapObjBase::setJointScaleY(J3DJoint* joint, f32 scale)
+{
+	J3DTransformInfo& info = joint->getTransformInfo();
+	info.mScale.y          = scale;
+	joint->setTransformInfo(info);
+}
+
+void TMapObjBase::setJointScaleX(J3DJoint*, f32) { }
+
+void TMapObjBase::setJointScale(J3DJoint*, f32, f32, f32) { }
+
+f32 TMapObjBase::getJointScaleZ(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mScale.z;
+}
+
+f32 TMapObjBase::getJointScaleY(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mScale.y;
+}
+
+f32 TMapObjBase::getJointScaleX(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mScale.x;
+}
+
+void TMapObjBase::rotateJointZ(J3DJoint*, f32) { }
+
+void TMapObjBase::rotateJointY(J3DJoint*, f32) { }
+
+void TMapObjBase::rotateJointX(J3DJoint*, f32) { }
+
+void TMapObjBase::setJointRotateZ(J3DJoint*, short) { }
+
+void TMapObjBase::setJointRotateY(J3DJoint*, short) { }
+
+void TMapObjBase::setJointRotateX(J3DJoint*, short) { }
+
+void TMapObjBase::setJointRotate(J3DJoint*, short, short, short) { }
+
+f32 TMapObjBase::getJointRotateZ(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mRotation.z;
+}
+
+f32 TMapObjBase::getJointRotateY(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mRotation.y;
+}
+
+f32 TMapObjBase::getJointRotateX(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mRotation.x;
+}
+
+void TMapObjBase::setJointTransZ(J3DJoint* joint, f32 z)
+{
+	J3DTransformInfo& info = joint->getTransformInfo();
+	info.mTranslate.z      = z;
+	joint->setTransformInfo(info);
+}
+
+void TMapObjBase::setJointTransY(J3DJoint* joint, f32 y)
+{
+	J3DTransformInfo& info = joint->getTransformInfo();
+	info.mTranslate.y      = y;
+	joint->setTransformInfo(info);
+}
+
+void TMapObjBase::setJointTransX(J3DJoint* joint, f32 x)
+{
+	J3DTransformInfo& info = joint->getTransformInfo();
+	info.mTranslate.x      = x;
+	joint->setTransformInfo(info);
+}
+
+void TMapObjBase::setJointTrans(J3DJoint*, f32, f32, f32) { }
+
+f32 TMapObjBase::getJointTransZ(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mTranslate.z;
+}
+
+f32 TMapObjBase::getJointTransY(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mTranslate.y;
+}
+
+f32 TMapObjBase::getJointTransX(J3DJoint* joint)
+{
+	return joint->getTransformInfo().mTranslate.x;
+}
+
+void TMapObjBase::moveJoint(J3DJoint* joint, f32 x, f32 y, f32 z)
+{
+	J3DTransformInfo& info = joint->getTransformInfo();
+	info.mTranslate.x += x;
+	info.mTranslate.y += y;
+	info.mTranslate.z += z;
+	joint->setTransformInfo(info);
+}
+
+void TMapObjBase::makeLowerStr(const char* in, char* out)
+{
+	for (; *in; ++in, ++out)
+		*out = std::tolower(*in);
+	*out = 0;
+}
+
+void TMapObjBase::makeRootMtxRotZ(MtxPtr ptr)
+{
+	f32 fVar1 = sinf(mRotation.z * 0.017453294f);
+	f32 fVar2 = cosf(mRotation.z * 0.017453294f);
+
+	ptr[0][0] = fVar2;
+	ptr[0][1] = -fVar1;
+	ptr[0][2] = 0.0f;
+	ptr[0][3] = mPosition.x;
+
+	ptr[1][0] = fVar1;
+	ptr[1][1] = fVar2;
+	ptr[1][2] = 0.0f;
+	ptr[1][3] = mPosition.y - mYOffset;
+
+	ptr[2][0] = 0.0f;
+	ptr[2][1] = 0.0f;
+	ptr[2][2] = 1.0f;
+	ptr[2][3] = mPosition.z;
+}
+
+void TMapObjBase::setRootMtxRotZ()
+{
+    // FAKEMATCH(frame): 16 bytes; real construct unknown
+    volatile u32 pad[4]; (void)pad;
+	makeRootMtxRotZ(getModel()->getAnmMtx(0));
+}
+
+void TMapObjBase::makeRootMtxRotY(MtxPtr ptr)
+{
+	f32 fVar1 = sinf(mRotation.y * 0.017453294f);
+	f32 fVar2 = cosf(mRotation.y * 0.017453294f);
+
+	ptr[0][0] = fVar2;
+	ptr[0][1] = 0.0f;
+	ptr[0][2] = fVar1;
+	ptr[0][3] = mPosition.x;
+
+	ptr[1][0] = 0.0f;
+	ptr[1][1] = 1.0f;
+	ptr[1][2] = 0.0f;
+	ptr[1][3] = mPosition.y - mYOffset;
+
+	ptr[2][0] = -fVar1;
+	ptr[2][1] = 0.0f;
+	ptr[2][2] = fVar2;
+	ptr[2][3] = mPosition.z;
+}
+
+void TMapObjBase::setRootMtxRotY()
+{
+    // FAKEMATCH(frame): 16 bytes; real construct unknown
+    volatile u32 pad[4]; (void)pad;
+	makeRootMtxRotY(getModel()->getAnmMtx(0));
+}
+
+void TMapObjBase::makeRootMtxRotX(MtxPtr ptr)
+{
+    // FAKEMATCH(frame): 24 bytes; real construct unknown
+    volatile u32 pad[6]; (void)pad;
+	f32 fVar1 = sinf(mRotation.x * 0.017453294f);
+	f32 fVar2 = cosf(mRotation.x * 0.017453294f);
+
+	ptr[0][0] = 1.0f;
+	ptr[0][1] = 0.0f;
+	ptr[0][2] = 0.0f;
+	ptr[0][3] = mPosition.x;
+
+	ptr[1][0] = 0.0f;
+	ptr[1][1] = fVar2;
+	ptr[1][2] = -fVar1;
+	ptr[1][3] = mPosition.y - mYOffset;
+
+	ptr[2][0] = 0.0f;
+	ptr[2][1] = fVar1;
+	ptr[2][2] = fVar2;
+	ptr[2][3] = mPosition.z;
+}
+
+void TMapObjBase::setRootMtxRotX()
+{
+	makeRootMtxRotX(getModel()->getAnmMtx(0));
+}
+
+void TMapObjBase::updateRootMtxTrans()
+{
+	MtxPtr mtx = getModel()->getAnmMtx(0);
+	// BUG: oops, all coord go into the same matrix cell!
+	mtx[0][3] = mPosition.x;
+	mtx[0][3] = mPosition.y - mYOffset;
+	mtx[0][3] = mPosition.z;
+}
+
+void TMapObjBase::makeRootMtxTrans(MtxPtr) { }
+
+void TMapObjBase::setRootMtxTrans() { }
+
+void TMapObjBase::updateObjMtx()
+{
+    // FAKEMATCH(frame): 8 bytes; real construct unknown
+    volatile u32 pad[2]; (void)pad;
+	MsMtxSetXYZRPH(getModel()->getAnmMtx(0), mPosition.x,
+	               mPosition.y - mYOffset, mPosition.z, mRotation.x,
+	               mRotation.y, mRotation.z);
+}
+
+void TMapObjBase::concatOnlyRotFromLeft(MtxPtr param_1, MtxPtr param_2,
+                                        MtxPtr param_3)
+{
+	f32 fVar1 = param_2[0][3];
+	f32 fVar2 = param_2[1][3];
+	f32 fVar3 = param_2[2][3];
+
+	param_2[0][3] = 0.0f;
+	param_2[1][3] = 0.0f;
+	param_2[2][3] = 0.0f;
+
+	MTXConcat(param_1, param_2, param_3);
+
+	param_3[0][3] = fVar1;
+	param_3[1][3] = fVar2;
+	param_3[2][3] = fVar3;
+}
+
+void TMapObjBase::concatOnlyRotFromRight(MtxPtr param_1, MtxPtr param_2,
+                                         MtxPtr param_3)
+{
+	f32 fVar1 = param_1[0][3];
+	f32 fVar2 = param_1[1][3];
+	f32 fVar3 = param_1[2][3];
+
+	param_1[0][3] = 0.0f;
+	param_1[1][3] = 0.0f;
+	param_1[2][3] = 0.0f;
+
+	MTXConcat(param_1, param_2, param_3);
+
+	param_3[0][3] = fVar1;
+	param_3[1][3] = fVar2;
+	param_3[2][3] = fVar3;
+}
+
+void TMapObjBase::makeMtxRotByAxis(const JGeometry::TVec3<f32>& param_1,
+                                   f32 param_2, MtxPtr param_3)
+{
+	TPosition3f rotation;
+	rotation.identity();
+	rotation.setRotate(param_1, param_2);
+
+	MtxPtr m      = rotation;
+	param_3[0][0] = m[0][0];
+	param_3[0][1] = m[0][1];
+	param_3[0][2] = m[0][2];
+
+	param_3[1][0] = m[1][0];
+	param_3[1][1] = m[1][1];
+	param_3[1][2] = m[1][2];
+
+	param_3[2][0] = m[2][0];
+	param_3[2][1] = m[2][1];
+	param_3[2][2] = m[2][2];
+}
+
+void TMapObjBase::makeObjMtxRotByAxis(const JGeometry::TVec3<f32>& param_1,
+                                      f32 param_2, MtxPtr param_3) const
+{
+	makeMtxRotByAxis(param_1, param_2, param_3);
+	param_3[0][0] *= mScaling.x;
+	param_3[0][1] *= mScaling.y;
+	param_3[0][2] *= mScaling.z;
+	param_3[0][3] = mPosition.x;
+
+	param_3[1][0] *= mScaling.x;
+	param_3[1][1] *= mScaling.y;
+	param_3[1][2] *= mScaling.z;
+	param_3[1][3] = mPosition.y - mYOffset;
+
+	param_3[2][0] *= mScaling.x;
+	param_3[2][1] *= mScaling.y;
+	param_3[2][2] *= mScaling.z;
+	param_3[2][3] = mPosition.z;
+}
+
+void TMapObjBase::calcReflectingVelocity(const TBGCheckData* wall, f32 param_2,
+                                         JGeometry::TVec3<f32>* velocity) const
+{
+	f32 dot    = velocity->dot(wall->getNormal());
+	f32 factor = 1.0f + param_2;
+	velocity->x -= dot * wall->getNormal().x * factor;
+	velocity->y -= dot * wall->getNormal().y * factor;
+	velocity->z -= dot * wall->getNormal().z * factor;
+}
+
+void TMapObjBase::getVerticalVecToTargetXZ(f32 x, f32 z,
+                                           JGeometry::TVec3<f32>* vec) const
+{
+	getVerticalVecFromOffsetXZ(x - mPosition.x, z - mPosition.z, vec);
+}
+
+void TMapObjBase::getVerticalVecFromOffsetXZ(f32 x, f32 z,
+                                             JGeometry::TVec3<f32>* vec)
+{
+	getNormalVecFromOffsetXZ(x, z, vec);
+	rotateVecByAxisY(vec, 1.5707963f);
+}
+
+void TMapObjBase::rotateVecByAxisY(JGeometry::TVec3<f32>* vec, f32 angle)
+{
+	JGeometry::TRotation3<TMtx33f> rot;
+	rot.setEular(0.0f, angle, 0.0f);
+	rot.mult33(*vec);
+}
+
+void TMapObjBase::getNormalVecFromOffsetXZ(f32 x, f32 z,
+                                           JGeometry::TVec3<f32>* vec)
+{
+	vec->set(x, 0.0f, z);
+	MsVECNormalize(vec, vec);
+}
+
+void TMapObjBase::getNormalVecFromTargetXZ(f32 param_1, f32 param_2,
+                                           JGeometry::TVec3<f32>* param_3) const
+{
+	getNormalVecFromOffsetXZ(param_1 - mPosition.x, param_2 - mPosition.z,
+	                         param_3);
+}
+
+void TMapObjBase::getNormalVecFromOffset(f32 x, f32 y, f32 z,
+                                         JGeometry::TVec3<f32>* vec)
+{
+	vec->set(x, y, z);
+	MsVECNormalize(vec, vec);
+}
+
+void TMapObjBase::getNormalVecFromTarget(f32 param_1, f32 param_2, f32 param_3,
+                                         JGeometry::TVec3<f32>* param_4) const
+{
+	// BUG: copy-pasta from above but forgot to change x to y
+	getNormalVecFromOffset(param_1 - mPosition.x, param_2 - mPosition.x,
+	                       param_3 - mPosition.z, param_4);
+}
+
+void TMapObjBase::makeVecToLocalZ(f32 param_1,
+                                  JGeometry::TVec3<f32>* param_2) const
+{
+	Mtx mtx;
+	MsMtxSetRotRPH(mtx, mRotation.x, mRotation.y, mRotation.z);
+	param_2->x = 0.0f;
+	param_2->y = 0.0f;
+	param_2->z = param_1;
+	MTXMultVec(mtx, param_2, param_2);
+}
+
+void TMapObjBase::makeVecToLocalX(f32 param_1,
+                                  JGeometry::TVec3<f32>* param_2) const
+{
+	Mtx mtx;
+	MsMtxSetRotRPH(mtx, mRotation.x, mRotation.y, mRotation.z);
+	param_2->x = param_1;
+	param_2->y = 0.0f;
+	param_2->z = 0.0f;
+	MTXMultVec(mtx, param_2, param_2);
+}
+
+f32 TMapObjBase::getRotYFromAxisX(const JGeometry::TVec3<f32>& param_1) const
+{
+	return std::atan2f(param_1.z - mPosition.z, param_1.x - mPosition.x);
+}
+
+f32 TMapObjBase::getRotYFromAxisZ(const JGeometry::TVec3<f32>& param_1) const
+{
+	return std::atan2f(param_1.z - mPosition.z, param_1.x - mPosition.x);
+}
+
+f32 TMapObjBase::getDistanceXZ(const JGeometry::TVec3<f32>& param_1) const
+{
+	f32 dx = param_1.x - mPosition.x;
+	f32 dz = param_1.z - mPosition.z;
+	return MsSqrtf(dx * dx + dz * dz);
+}
+
+f32 TMapObjBase::getDistance(const JGeometry::TVec3<f32>& param_1) const
+{
+	f32 dx = param_1.x - mPosition.x;
+	f32 dy = param_1.y - (mPosition.y - mYOffset);
+	f32 dz = param_1.z - mPosition.z;
+	return MsSqrtf(dx * dx + dy * dy + dz * dz);
+}
+
+int TMapObjBase::getWaterID(THitActor* actor)
+{
+#ifdef SMS_PORT
+	// The actor is TModelWaterManager::mStaticHitActor, whose word at 0x68 is
+	// the particle index (TWaterHitActor::unk68). Read it as that 32-bit field
+	// instead of an 8-byte mHolder pointer that overlaps it only by luck.
+	return ((TWaterHitActor*)actor)->unk68;
+#else
+	return (intptr_t)((TTakeActor*)actor)->mHolder;
+#endif
+}
+
+const TBGCheckData* TMapObjBase::getWaterPlane(THitActor* actor)
+{
+	return gpModelWaterManager->unk2914[getWaterID(actor)];
+}
+
+const JGeometry::TVec3<f32>& TMapObjBase::getWaterSpeed(THitActor* actor)
+{
+	return gpModelWaterManager->mParticleVelocitySOA[getWaterID(actor)];
+}
+
+const JGeometry::TVec3<f32>& TMapObjBase::getWaterPos(THitActor* actor)
+{
+	return gpModelWaterManager->mParticlePositionSOA[getWaterID(actor)];
+}
+
+BOOL TMapObjBase::waterHitPlane(THitActor* actor)
+{
+	int idx                   = getWaterID(actor);
+	const TBGCheckData* plane = gpModelWaterManager->unk2914[idx];
+	if (plane == nullptr)
+		return FALSE;
+	{
+		const JGeometry::TVec3<f32>& v
+		    = gpModelWaterManager->mParticleVelocitySOA[idx];
+		if (v.x == 0.0f && v.z == 0.0f)
+			return FALSE;
+	}
+
+	{
+		const JGeometry::TVec3<f32>& v
+		    = gpModelWaterManager->mParticleVelocitySOA[idx];
+		if (v.x * plane->mNormal.x > 0.0f || v.z * plane->mNormal.z > 0.0f)
+			return FALSE;
+	}
+
+	return TRUE;
+}
+
+void TMapObjBase::sendMsg(u32 param_1, u32 param_2)
+{
+	for (int i = 0; i < getColNum(); ++i) {
+		THitActor* col = getCollision(i);
+		if (col->isActorType(param_1))
+			col->receiveMessage(this, param_2);
+	}
+}
+
+void TMapObjBase::sendMsgToAll(u32) { }
+
+void TMapObjBase::actorIsOn(TLiveActor*) const { }
+
+bool TMapObjBase::marioIsOn(const TLiveActor* param_1)
+{
+	if (SMS_GetMarioGrPlane()->getActor() == param_1
+	    && SMS_IsMarioTouchGround4cm())
+		return true;
+
+	return false;
+}
+
+bool TMapObjBase::marioIsOn() const
+{
+	if (SMS_GetMarioGrPlane()->getActor() == this
+	    && SMS_IsMarioTouchGround4cm())
+		return true;
+
+	return false;
+}
+
+bool TMapObjBase::marioHeadAttack() const
+{
+	if (SMS_GetMarioPos().y < (mPosition.y - mYOffset)
+	    && SMS_IsMarioStatusTypeJumping() && SMS_GetMarioSpeedY() > 0.0f)
+		return true;
+	return false;
+}
+
+bool TMapObjBase::marioHipAttack() const
+{
+	if (SMS_GetMarioGrPlane()->getActor() == this && SMS_IsMarioStatusHipDrop()
+	    && (SMS_GetMarioPos().y + SMS_GetMarioSpeedY()) < SMS_GetMarioGrLevel())
+		return true;
+	return false;
+}
+
+void TMapObjBase::emitColumnWater()
+{
+	TEffectColumWater* eff
+	    = (TEffectColumWater*)gpConductor->makeOneEnemyAppear(
+	        mPosition, "エフェクト水柱マネージャー", 0);
+	if (eff)
+		eff->generate(mPosition, mScaling);
+}
+
+void TMapObjBase::emitAndSRT(s32 param_1, u8 param_2,
+                             const JGeometry::TVec3<f32>* param_3,
+                             const JGeometry::TVec3<f32>& param_4,
+                             const JGeometry::TVec3<f32>& param_5)
+{
+	JPABaseEmitter* emitter
+	    = gpMarioParticleManager->emit(param_1, param_3, param_2, param_3);
+
+	if (emitter) {
+		emitter->setRotation(param_4.x, param_4.y, param_4.z);
+		emitter->setGlobalScale(param_5);
+	}
+}
+
+void TMapObjBase::emitAndRotateScale(s32 param_1, u8 param_2,
+                                     const JGeometry::TVec3<f32>* param_3) const
+{
+	JPABaseEmitter* emitter
+	    = gpMarioParticleManager->emit(param_1, param_3, param_2, this);
+
+	if (emitter) {
+		emitter->setRotation(mRotation.x / 180.0f * 32768.0f,
+		                     mRotation.y / 180.0f * 32768.0f,
+		                     mRotation.z / 180.0f * 32768.0f);
+		emitter->setGlobalScale(mScaling);
+	}
+}
+
+JPABaseEmitter*
+TMapObjBase::emitAndScale(s32 param_1, u8 param_2,
+                          const JGeometry::TVec3<f32>* param_3) const
+{
+	JPABaseEmitter* emitter
+	    = gpMarioParticleManager->emit(param_1, param_3, param_2, this);
+
+	if (emitter) {
+		emitter->setGlobalScale(mScaling);
+	}
+
+	return emitter;
+}
+
+JPABaseEmitter*
+TMapObjBase::emitAndBindScale(s32 param_1, u8 param_2,
+                              const JGeometry::TVec3<f32>* param_3,
+                              const JGeometry::TVec3<f32>& param_4) const
+{
+	JPABaseEmitter* emitter = gpMarioParticleManager->emitAndBindToPosPtr(
+	    param_1, param_3, param_2, this);
+
+	if (emitter) {
+		emitter->setGlobalScale(param_4);
+	}
+
+	return emitter;
+}
+
+JPABaseEmitter*
+TMapObjBase::emitAndScale(s32 param_1, u8 param_2,
+                          const JGeometry::TVec3<f32>* param_3,
+                          const JGeometry::TVec3<f32>& param_4) const
+{
+	JPABaseEmitter* emitter
+	    = gpMarioParticleManager->emit(param_1, param_3, param_2, this);
+
+	if (emitter) {
+		emitter->setGlobalScale(param_4);
+	}
+
+	return emitter;
+}
+
+JPABaseEmitter* TMapObjBase::emitAndRotate(s32, u8,
+                                           const JGeometry::TVec3<f32>*) const
+{
+#ifdef SMS_PORT
+	return nullptr; // UNUSED stub (only emitAndRotateScale exists in the original)
+#endif
+}
+
+void TMapObjVibration::startSlowly(f32) { }
+
+void TMapObjVibration::startQuickly(f32) { }
+
+void TMapObjVibration::movement() { }
+
+TMapObjVibration::TMapObjVibration() { }
+
+void TMapObjLibWave::push()
+{
+	unk8 += unk10;
+	if (unk8 > unkC)
+		unk8 = unkC;
+}
+
+f32 TMapObjLibWave::getCurrentHeight(f32 param_1, f32 param_2) const
+{
+	return gpMapObjWave->getWaveHeight(param_1, param_2) - unk8;
+}
+
+f32 TMapObjLibWave::mWaveSpeed = 0.7f;
+
+void TMapObjLibWave::movement()
+{
+	if (unk8 > 0.0f) {
+		unk8 -= unk14;
+		if (unk8 < 0.0f)
+			unk8 = 0.0f;
+	}
+
+	unk0 += mWaveSpeed;
+
+	if (unk0 > 360.0f)
+		unk0 -= 360.0f;
+}
+
+TMapObjLibWave::TMapObjLibWave(f32 param_1, f32 param_2, f32 param_3,
+                               f32 param_4)
+{
+	unk0  = rand() * (1.0f / (RAND_MAX + 1)) * 360.0f;
+	unk4  = param_1;
+	unk8  = 0.0f;
+	unkC  = param_2;
+	unk10 = param_3;
+	unk14 = param_4;
+}
+
+BOOL TMapObjMessenger::receiveMessage(THitActor* sender, u32 message)
+{
+	return unk68->receiveMessage(sender, message);
+}
+
+TMapObjMessenger::TMapObjMessenger(const char* name)
+    : THitActor(name)
+    , unk68(0)
+{
+}
+
+u32 TMapObjTurn::touchWater(THitActor*)
+{
+	if (fabsf(unk158) < unk164) {
+		unk158 += unk15C;
+	} else if (unk168) {
+		TMapObjBase* obj;
+		if (mHiddenObj->isActorType(ACTOR_TYPE_COIN))
+			obj = gpItemManager->makeObjAppear(ACTOR_TYPE_COIN);
+		else
+			obj = mHiddenObj;
+
+		if (obj) {
+			throwObjToFront(obj, 200.0f, mAppearSpeed, mAppearYSpeed);
+			unk168 = 0;
+		}
+	}
+	return 1;
+}
+
+void TMapObjTurn::turn()
+{
+	unk154 += unk158;
+	unk154 = MsWrap(unk154, 0.0f, 360.0f);
+	if (checkMapObjFlag(MAP_OBJ_FLAG_ENABLE_WALL_COLLISION)) {
+		if ((int)fabsf(unk154) % 180 == 0)
+			unk158 = 0.0f;
+		else if (fabsf(unk158) > fabsf(unk160))
+			unk158 -= unk160;
+	} else {
+		unk158 -= unk160;
+		if (fabsf(unk158) < fabsf(unk160))
+			unk158 = 0.0f;
+	}
+}
+
+void TMapObjTurn::control()
+{
+	TMapObjBase::control();
+	if (unk158 == 0.0f)
+		return;
+
+	turn();
+	Mtx yRot;
+	Mtx mtx;
+	MtxPtr ptr = mtx;
+	switch (unk150) {
+	case 0:
+		mRotation.x = MsWrap(unk154 + mInitialRotation.x, 0.0f, 360.0f);
+		MsMtxSetRotX(ptr, mRotation.x);
+		if (mRotation.y != 0.0f) {
+			MsMtxSetRotX(ptr, mRotation.x);
+			MsMtxSetRotY(yRot, mRotation.y);
+			MTXConcat(yRot, ptr, ptr);
+		} else {
+			MsMtxSetRotX(ptr, mRotation.x);
+		}
+		break;
+
+	case 1:
+		mRotation.y = MsWrap(unk154 + mInitialRotation.y, 0.0f, 360.0f);
+		MsMtxSetRotY(ptr, mRotation.y);
+		break;
+
+	case 2:
+		mRotation.z = MsWrap(unk154 + mInitialRotation.z, 0.0f, 360.0f);
+		MsMtxSetRotZ(ptr, mRotation.z);
+		if (mRotation.y != 0.0f) {
+			MsMtxSetRotZ(ptr, mRotation.z);
+			MsMtxSetRotY(yRot, mRotation.y);
+			MTXConcat(yRot, ptr, ptr);
+		} else {
+			MsMtxSetRotZ(ptr, mRotation.z);
+		}
+		break;
+	}
+
+	ptr[0][3]  = mPosition.x;
+	ptr[1][3]  = mPosition.y;
+	ptr[2][3]  = mPosition.z;
+	ptr[1][3] -= mYOffset;
+	getModel()->setAnmMtx(0, ptr);
+}
+
+BOOL TMapObjTurn::receiveMessage(THitActor* sender, u32 message)
+{
+	u32 result;
+	if (message == HIT_MESSAGE_UNK5
+	    && (sender->isActorType(ACTOR_TYPE_COIN)
+	        || sender->isActorType(ACTOR_TYPE_COIN_RED)
+	        || sender->isActorType(ACTOR_TYPE_COIN_BLUE))) {
+		unk168 = 1;
+		result = 1;
+	} else {
+		// BUG: should've been THideObjBase?
+		result = TMapObjBase::receiveMessage(sender, message);
+	}
+	return result;
+}
+
+void TMapObjTurn::loadAfter()
+{
+	THideObjBase::loadAfter();
+	if (mHiddenObj)
+		unk168 = 1;
+}
+
+void TMapObjTurn::initMapObj()
+{
+	THideObjBase::initMapObj();
+	if (isActorType(ACTOR_TYPE_DPT_WEATHERCOCK)) {
+		unk150 = 1;
+		unk15C = 0.5f;
+		unk164 = 10.0f;
+		unk160 = 0.01f;
+	}
+}
+
+TMapObjTurn::TMapObjTurn(const char* name)
+    : THideObjBase(name)
+    , unk150(0)
+    , unk154(0.0f)
+    , unk158(0.0f)
+    , unk15C(0.0f)
+    , unk160(0.0f)
+    , unk164(0.0f)
+    , unk168(0)
+{
+}
