@@ -1,105 +1,58 @@
-Super Mario Sunshine
-[![Build Status]][actions] [![Code Progress]][progress] [![Discord Badge]][discord]
-=============
-[<img src="https://decomp.dev/doldecomp/sms.svg?w=512&h=256" width="512" height="256">][Progress]
-=============
+# Super Mario Sunshine — PC Port (unofficial)
 
-[Build Status]: https://github.com/doldecomp/sms/actions/workflows/build.yml/badge.svg
-[actions]: https://github.com/doldecomp/sms/actions/workflows/build.yml
-[Code Progress]: https://decomp.dev/doldecomp/sms.svg?mode=shield&measure=code&label=Code
-[progress]: https://decomp.dev/doldecomp/sms
-[Discord Badge]: https://img.shields.io/discord/727908905392275526?color=%237289DA&logo=discord&logoColor=%23FFFFFF
-[discord]: https://discord.gg/hKx3FJJgrV
+A native Windows port of Super Mario Sunshine, built from the community
+[decompilation](https://github.com/doldecomp/sms) and the [Aurora](https://github.com/encounter/aurora)
+GameCube/Wii platform layer (WebGPU: Direct3D 12 / Vulkan).
 
-## PC port (unofficial)
+> **No game assets, Nintendo code or data are included.** You need your own legally obtained copy of the
+> game (GameCube, NTSC-U `GMSE01`). Everything the game shows or plays is loaded from your disc image at runtime.
 
-This fork also contains an unofficial Windows port (`port/`) built on the decompiled source and
-[Aurora](https://github.com/encounter/aurora). **It contains no game assets and no Nintendo code or
-data.** To build or play it you need your own legally obtained copy of the game (GameCube disc image,
-NTSC-U `GMSE01`); everything the game shows or plays is read from that image at runtime. Do not open
-issues or pull requests containing game files, ROMs/ISOs, extracted assets or links to them.
+## Features
 
-Building: see `port/AURORA.md` (Aurora + its dependencies are not included; the `port/patches/*.patch`
-files apply on top of a clean Aurora checkout). The exe icon is generated from your own disc with `python port/tools/make_icon.py <disc files/data folder>`.
+- Runs natively on Windows at any resolution, with widescreen support
+- High and unlimited frame rates with frame interpolation (the game logic still runs at its original speed)
+- Graphics options: internal resolution scale, MSAA, FXAA, anisotropic and trilinear filtering
+- Controller, keyboard and mouse support, plus an optional free camera
+- Online multiplayer through a lobby server (`port/server/` contains the server so anyone can host one)
+- Discord Rich Presence (current area, Shines, Blue Coins) with join invites
+- Built-in bug reporter: press **F9** (or crash) to save the last 20 seconds as video + log
+- Faithful to the original: the game code is the decompiled original, original bugs included
 
-This project is not affiliated with or endorsed by Nintendo. Super Mario Sunshine is a trademark of
-Nintendo.
+## Requirements
 
-A work-in-progress decompilation of Super Mario Sunshine.
+- Windows 10/11 (x64) with a Direct3D 12 or Vulkan capable GPU
+- Your own Super Mario Sunshine disc image (NTSC-U `GMSE01`), dumped from your disc
 
-This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
+## Building
 
-Supported versions:
+The port builds from source; see [`port/AURORA.md`](port/AURORA.md) for the full toolchain setup.
+In short:
 
-- `GMSJ01`: Rev 0 (JPN)
-- `GMSP01`: Rev 0 (PAL)
+1. Build Aurora (not included) and apply the patches in [`port/patches/`](port/patches/) on top of a clean checkout.
+2. Run `python port/tools/build_aurora.py --stubs -j 20`.
+3. Point the game at your disc image (`disc =` in `port_settings.ini`) and start `sms_port.exe`.
 
-Dependencies
-============
+The exe icon can be generated from your own disc with `python port/tools/make_icon.py <disc files/data folder>`.
 
-Windows
---------
+## Repository layout
 
-On Windows, it's **highly recommended** to use native tooling. WSL or msys2 are **not** required.  
-When running under WSL, [objdiff](#diffing) is unable to get filesystem notifications for automatic rebuilds.
+| Path | Contents |
+| --- | --- |
+| `src/`, `include/`, `libs/` | The decompiled game (matching decompilation, see [docs/DECOMP_README.md](docs/DECOMP_README.md)) |
+| `port/src/` | PC platform code: input, audio, rendering glue, multiplayer, Discord, settings |
+| `port/patches/` | Patches for Aurora |
+| `port/server/` | Lobby / relay server for online play (Python, no dependencies) |
+| `docs/` | Decompilation and contributor documentation |
 
-- Install [Python](https://www.python.org/downloads/) and add it to `%PATH%`.
-  - Also available from the [Windows Store](https://apps.microsoft.com/store/detail/python-311/9NRWMJP3717K).
-- Download [ninja](https://github.com/ninja-build/ninja/releases) and add it to `%PATH%`.
-  - Quick install via pip: `pip install ninja`
+## Credits
 
-macOS
-------
+- The [doldecomp/sms](https://github.com/doldecomp/sms) decompilation project and its contributors
+- [Aurora](https://github.com/encounter/aurora) by Luke Street (MIT)
 
-- Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages):
+## Legal
 
-  ```sh
-  brew install ninja
-  ```
+This is an unofficial fan project, not affiliated with or endorsed by Nintendo. Super Mario Sunshine is a
+trademark of Nintendo. Do not open issues or pull requests containing game files, disc images, extracted
+assets or links to them; they will be removed.
 
-[wibo](https://github.com/decompals/wibo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
-
-Linux
-------
-
-- Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages).
-
-[wibo](https://github.com/decompals/wibo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
-
-Building
-========
-
-- Clone the repository:
-
-  ```sh
-  git clone https://github.com/doldecomp/sms.git
-  ```
-
-- Copy your game's disc image to `orig/GMSJ01`. (Or the appropriate version folder.)
-  - Supported formats: ISO (GCM), RVZ, WIA, WBFS, CISO, NFS, GCZ, TGC
-  - After the initial build, the disc image can be deleted to save space.
-
-- Configure:
-
-  ```sh
-  python configure.py
-  ```
-
-  To use a version other than `GMSJ01` (JPN), specify it with `--version`.
-
-- Build:
-
-  ```sh
-  ninja
-  ```
-
-Diffing
-=======
-
-Once the initial build succeeds, an `objdiff.json` should exist in the project root.
-
-Download the latest release from [encounter/objdiff](https://github.com/encounter/objdiff). Under project settings, set `Project directory`. The configuration should be loaded automatically.
-
-Select an object from the left sidebar to begin diffing. Changes to the project will rebuild automatically: changes to source files, headers, `configure.py`, `splits.txt` or `symbols.txt`.
-
-![](assets/objdiff.png)
+The decompiled source is released under [CC0-1.0](LICENSE).
