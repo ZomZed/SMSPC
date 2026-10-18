@@ -671,6 +671,8 @@ def main():
                     help="w13: game code for this disc region (US: port/build_aurora/sms_port.exe, "
                          "JP: port/build_aurora_jp/sms_port_jp.exe, EU: port/build_aurora_eu/"
                          "sms_port_eu.exe); 'all' builds jp, eu and us (then --package ships all three)")
+    ap.add_argument("--no-icon", action="store_true",
+                    help="link without the Shine icon (public builds: the icon is Nintendo artwork)")
     ap.add_argument("-j", type=int, default=0)
     a = ap.parse_args()
 
@@ -719,7 +721,7 @@ def main():
         missing_libs = [l for l in extra_libs if not Path(l).exists()]
         if missing_libs:
             print("Aurora component libs failed to build:", missing_libs)
-        icon_res = compile_icon_res(env)  # Shine icon (Explorer, taskbar, window)
+        icon_res = None if a.no_icon else compile_icon_res(env)  # Shine icon (Explorer, taskbar, window)
         ok, llog = link(good + ([icon_res] if icon_res else []), libs, env, a.allow_multiple)
         (OUT / "link.log").write_text(llog, encoding="utf-8")
         undef = sorted(set(re.findall(r"undefined symbol: (\S+)", llog)))
