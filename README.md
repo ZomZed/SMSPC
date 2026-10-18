@@ -18,6 +18,19 @@ GameCube/Wii platform layer (WebGPU: Direct3D 12 / Vulkan).
 - Built-in bug reporter: press **F9** (or crash) to save the last 20 seconds as video + log
 - Faithful to the original: the game code is the decompiled original, original bugs included
 
+## Screenshots
+
+| Multiplayer | Customization |
+| --- | --- |
+| ![Multiplayer hub: Customize and Online Play](docs/screenshots/multiplayer.png) | ![Customize your Mario: colours, presets, emotes](docs/screenshots/customize.png) |
+| **Online lobby** | **Port settings** |
+| ![Online lobby in Delfino Plaza with chat and emotes](docs/screenshots/lobby.webp) | ![Settings menu: display, graphics, controls, audio](docs/screenshots/settings.png) |
+
+- **Multiplayer:** a hub to customize your character and jump into online play
+- **Customization:** pick a colour preset or set every colour yourself, save your own looks, set your name tag and emotes
+- **Online lobby:** play together in Delfino Plaza with text chat and emotes
+- **Port settings:** display, graphics, controller, keyboard & mouse, audio and gameplay options, applied instantly
+
 ## Requirements
 
 - Windows 10/11 (x64) with a Direct3D 12 or Vulkan capable GPU
